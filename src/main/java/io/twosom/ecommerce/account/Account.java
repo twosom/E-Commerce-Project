@@ -1,5 +1,9 @@
 package io.twosom.ecommerce.account;
 
+import lombok.Getter;
+import lombok.Setter;
+import net.bytebuddy.utility.RandomString;
+
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -7,6 +11,8 @@ import javax.persistence.Id;
 import java.time.LocalDateTime;
 
 @Entity
+@Getter
+@Setter
 public class Account {
 
     @Id @GeneratedValue
@@ -26,4 +32,8 @@ public class Account {
 
     @Embedded
     private Address address;
+
+    public void createVerificationCode() {
+        this.emailVerificationCode = RandomString.make(6);
+    }
 }
