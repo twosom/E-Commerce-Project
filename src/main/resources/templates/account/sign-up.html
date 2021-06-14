@@ -1,0 +1,151 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments.html::head"></head>
+<body>
+<span th:replace="fragments.html::main-nav"></span>
+<header>
+    <div class="page-header min-vh-100">
+        <div class="oblique position-absolute top-0 h-100 d-md-block d-none">
+            <div class="oblique-image bg-cover position-absolute fixed-top ms-auto h-100 z-index-0 ms-n6"
+                 style="background-image:url('/images/curved-images/curved11.jpg')"></div>
+        </div>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-7 col-md-7 d-flex justify-content-center flex-column">
+                    <div class="card shadow-xl mt-8">
+                        <div class="card-header text-left">
+                            <h1 class="font-weight-bolder text-primary text-gradient fadeIn1 fadeInBottom">회원이 되어서</h1>
+                            <h2 class="mb-4 fadeIn2 fadeInBottom">다양한 상품을 쇼핑하세요!</h2>
+                            <p class="lead fadeIn3 fadeInBottom">E-Commerce&trade; 는 고객의 편의를 최우선으로 생각하는 온라인 쇼핑몰 입니다.</p>
+                        </div>
+                        <div class="card-body">
+                            <div class="row justify-content-center">
+                                <form class="needs-validation col-sm-10" action="#" th:action="@{/sign-up}"
+                                      th:object="${signUpForm}"
+                                      method="post" novalidate>
+
+                                    <div class="form-group">
+                                        <label for="nickname">닉네임</label>
+                                        <input id="nickname" type="text" class="form-control" placeholder="닉네임"
+                                               aria-describedby="nicknameHelp"
+                                               th:field="*{nickname}"
+                                               required minlength="3" maxlength="20"/>
+                                        <small id="nicknameHelp" class="form-text text-muted">
+                                            공백없이 문자와 숫자로만 3자 이상 20자 이내로 입력하세요. 가입후에 변경할 수 있습니다.
+                                        </small>
+                                        <small class="invalid-feedback">닉네임을 입력하세요.</small><br/>
+                                        <small class="form-text text-danger" th:if="${#fields.hasErrors('nickname')}"
+                                               th:errors="*{nickname}"></small>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="email">이메일</label>
+                                        <input id="email" type="email" th:field="*{email}" class="form-control"
+                                               placeholder="your@email.com"
+                                               aria-describedby="emailHelp" required/>
+                                        <small id="emailHelp" class="form-text text-muted">
+                                            GroupSTUDY! 는 사용자의 이메일을 공개하지 않습니다.
+                                        </small>
+                                        <small class="invalid-feedback">이메일을 입력하세요.</small><br/>
+                                        <small class="form-text text-danger" th:if="${#fields.hasErrors('email')}"
+                                               th:errors="*{email}"></small>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="password">비밀번호</label>
+                                        <input id="password" type="password" th:field="*{password}" class="form-control"
+                                               placeholder="password" required minlength="8" maxlength="50"/>
+                                        <small id="passwordHelp" class="form-text text-muted">
+                                            8자 이상 50자 이내로 입력하세요. 영문자, 숫자, 특수기호를 사용할 수 있으며 공백은 사용할 수 없습니다.
+                                        </small>
+                                        <small class="invalid-feedback">패스워드를 입력하세요.</small><br/>
+                                        <small class="form-text text-danger" th:if="${#fields.hasErrors('password')}"
+                                               th:errors="*{password}"></small>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="city">도시</label>
+                                        <input id="city" type="text" th:field="*{address.city}" class="form-control" placeholder="city" required/>
+                                        <small id="cityHelp" class="form-text text-muted">
+                                            살고 계신 도시 이름을 적어주세요.
+                                        </small>
+                                        <small class="invalid-feedback"> 도시 이름을 입력하세요.</small><br/>
+                                        <small class="form-text text-danger" th:if="${#fields.hasErrors('address.city')}"
+                                               th:errors="*{address.city}"></small>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="city">거리</label>
+                                        <input id="street" type="text" th:field="*{address.street}" class="form-control" placeholder="street" required/>
+                                        <small id="streetHelp" class="form-text text-muted">
+                                            거리 이름을 적어주세요.
+                                        </small>
+                                        <small class="invalid-feedback"> 거리 이름을 입력하세요.</small><br/>
+                                        <small class="form-text text-danger" th:if="${#fields.hasErrors('address.street')}"
+                                               th:errors="*{address.street}"></small>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="city">우편번호</label>
+                                        <input id="zipcode" type="text" th:field="*{address.zipcode}" class="form-control" placeholder="zipcode" required/>
+                                        <small id="zipcodeHelp" class="form-text text-muted">
+                                            우편 번호를 적어주세요.
+                                        </small>
+                                        <small class="invalid-feedback"> 우편 번호를 입력하세요.</small><br/>
+                                        <small class="form-text text-danger" th:if="${#fields.hasErrors('address.zipcode')}"
+                                               th:errors="*{address.zipcode}"></small>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <button type="submit" class="btn bg-gradient-primary btn-lg w-100 text-lg">가입하기
+                                        </button>
+                                        <small><a href="#" data-bs-toggle="modal" data-bs-target="#termModal">약관</a>에
+                                            동의하시면
+                                            가입하기
+                                            버튼을
+                                            클릭하세요.</small>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+<!-- MODAL_START -->
+<div class="modal fade" id="termModal" tabindex="-1" role="dialog" aria-labelledby="termModalTitle"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <!-- CONTENT -->
+        <div class="modal-content">
+            <!-- HEADER -->
+            <div class="modal-header">
+                <h5 class="modal-title" id="termModalTitle">약관</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <!-- BODY -->
+            <div class="modal-body">
+                약관에 동의 ㄱㄱ
+            </div>
+            <!-- FOOTER -->
+            <div class="modal-footer">
+                <button type="button" class="btn bg-gradient-secondary" data-bs-dismiss="modal">닫기
+                </button>
+                <button type="button" class="btn bg-gradient-primary" data-bs-dismiss="modal">동의
+                </button>
+            </div>
+        </div>
+
+    </div>
+</div>
+<!-- MODAL_END -->
+
+
+</body>
+<script th:replace="fragments.html::uiScripts"></script>
+<script th:replace="fragments.html::validate-form"></script>
+</html>
