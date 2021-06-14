@@ -15,7 +15,8 @@ import java.time.LocalDateTime;
 @Setter
 public class Account {
 
-    @Id @GeneratedValue
+    @Id
+    @GeneratedValue
     private Long id;
 
     private String email;
@@ -24,9 +25,11 @@ public class Account {
 
     private String password;
 
-    private String emailVerified;
+    private boolean emailVerified;
 
     private String emailVerificationCode;
+
+    private LocalDateTime emailVerificationCodeSendTime;
 
     private LocalDateTime joinedAt;
 
@@ -35,5 +38,24 @@ public class Account {
 
     public void createVerificationCode() {
         this.emailVerificationCode = RandomString.make(6);
+    }
+
+    public void beforeResendVerificationCode() {
+        createVerificationCode();
+        this.emailVerificationCodeSendTime = LocalDateTime.now();
+    }
+
+    public boolean verifyCode(String verificationCode) {
+        if (getEmailVerificationCode().equals(verificationCode)) {
+            this.emailVerified = true;
+            this.joinedAt = LocalDateTime.now();
+            return true;
+        }
+        return false;
+    }
+
+    public boolean canResendVerificationCode() {
+        return this.emailVerificationCodeSendTime == null
+                || this.emailVerificationCodeSendTime.isBefore(LocalDateTime.now().minusHours(1));
     }
 }

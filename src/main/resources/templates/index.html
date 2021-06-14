@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments.html::head"></head>
+<body>
+<span th:replace="fragments.html::main-nav"></span>
+<header class="header-2">
+    <div class="page-header min-vh-50 relative" style="background-image: url('/images/alesia.jpg')">
+        <div class="mask bg-gradient-primary"></div>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-7 text-center mx-auto">
+                    <h1 class="text-white pt-3 mt-n5">E-Commerce&trade;</h1>
+                    <p class="lead text-white mt-3">
+
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div th:replace="fragments.html::wave-animation"></div>
+    </div>
+</header>
+<div class="container-fluid">
+    <div th:if="${account!= null && !account.emailVerified}" class="alert alert-primary shadow-xl" role="alert">
+        <span class="text-bold text-white">이메일에 전송된 인증 코드를 입력하시려면</span>
+        <a class="text-white" href="#" data-bs-toggle="modal" data-bs-target="#emailVerificationModal"
+           aria-hidden="true"><strong class="text-info text-bolder">여기</strong></a>
+        <span class="text-white text-bold"> 를 클릭해주세요.</span>
+    </div>
+</div>
+
+
+<div class="modal fade" id="emailVerificationModal" th:if="${account!= null && !account.emailVerified}" tabindex="-1"
+     aria-labelledby="emailVerificationModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <!-- CONTENT -->
+        <div class="modal-content">
+            <div class="card">
+                <div class="card-body px-lg-5 py-lg-5 text-center">
+                    <div class="info mb-4">
+                        <div class="icon icon-shape icon-xl rounded-circle bg-gradient-warning shadow text-center py-3 mx-auto">
+                            <i class="ni ni-lock-circle-open" style="font-size: 100px;"></i>
+                        </div>
+                    </div>
+                    <h2 class="text-info text-gradient modal-title" id="emailVerificationModalLabel">인증 코드 확인</h2>
+                    <h3 class="text-danger text-gradient" id="emailVerificationFailedMessage"></h3>
+                    <h3 class="text-primary text-gradient" id="emailVerificationSuccessMessage"></h3>
+                    <p class="mb-4">
+                        이메일에 전송된 6자리의 인증 코드를 입력해주세요. <br/>
+                        <span class="text-primary text-gradient text-bold">대소문자를 구분합니다.</span>
+                    </p>
+                    <div class="row mb-4">
+                        <div class="col-lg-2 col-md-2 col-2 ps-0 ps-md-2">
+                            <input id="input1" type="text" class="form-control text-lg text-center" maxlength="1"/>
+                        </div>
+                        <div class="col-lg-2 col-md-2 col-2 ps-0 ps-md-2">
+                            <input id="input2" type="text" class="form-control text-lg text-center" maxlength="1"/>
+                        </div>
+                        <div class="col-lg-2 col-md-2 col-2 ps-0 ps-md-2">
+                            <input id="input3" type="text" class="form-control text-lg text-center" maxlength="1"/>
+                        </div>
+                        <div class="col-lg-2 col-md-2 col-2 ps-0 ps-md-2">
+                            <input id="input4" type="text" class="form-control text-lg text-center" maxlength="1"/>
+                        </div>
+                        <div class="col-lg-2 col-md-2 col-2 ps-0 ps-md-2">
+                            <input id="input5" type="text" class="form-control text-lg text-center" maxlength="1"/>
+                        </div>
+                        <div class="col-lg-2 col-md-2 col-2 ps-0 ps-md-2">
+                            <input id="input6" type="text" class="form-control text-lg text-center" maxlength="1"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn bg-gradient-secondary" data-bs-dismiss="modal">닫기</button>
+                    <button type="button" class="btn bg-gradient-warning" data-bs-toggle="modal"
+                            data-bs-target="#resendEmailVerificationCodeModal">인증 코드 재전송
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" th:if="${account!= null && !account.emailVerified}" id="resendEmailVerificationCodeModal"
+     tabindex="-1"
+     aria-labelledby="resendEmailVerificationCodeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <!-- CONTENT -->
+        <div class="modal-content">
+            <div class="card bg-gradient-dark">
+                <div class="card-body px-lg-5 py-lg-5">
+                    <div class="row">
+                        <div class="info mb-4 col-4">
+                            <div class="icon icon-shape icon-xl rounded-circle bg-gradient-primary shadow text-center py-3 mx-auto">
+                                <i class="ni ni-email-83" style="font-size: 50px;"></i>
+                            </div>
+                        </div>
+                        <div class="col-8">
+                            <div class="row justify-content-start">
+                                <h2 class="col-12 text-info text-gradient modal-title"
+                                    id="resendEmailVerificationCodeModalLabel">인증 코드 재전송</h2>
+                                <p class="col-12 mb-4 text-white">
+                                    이메일을 받지 못하셨나요?<br/>
+                                    인증 코드를 재전송 받을 이메일을 입력해주세요.
+                                </p>
+                            </div>
+                        </div>
+
+                    </div>
+                    <h3 class="text-warning text-gradient" id="resendEmailVerificationCodeFailedMessage"></h3>
+                    <h3 class="text-primary text-gradient" id="resendEmailVerificationCodeSuccessMessage"></h3>
+
+
+                    <div class="form-group">
+                        <label for="resendEmailAddress" class="ms-auto text-white">이메일</label>
+                        <input id="resendEmailAddress" type="email" class="form-control"
+                               placeholder="email@example.com"/>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-6 ms-auto mb-3 form-inline">
+                        <button type="button" class="btn bg-gradient-primary" id="resendBtn">전송하기</button>
+                        <button type="button" class="btn bg-gradient-secondary ms-auto me-auto" data-bs-dismiss="modal">닫기</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+<script th:replace="fragments.html::uiScripts"></script>
+<script th:if="${account != null && !account.emailVerified}">
+    function resendVerificationCode() {
+        const csrfHeader = document.querySelector('#_csrf_header').content;
+        const csrf = document.querySelector('#_csrf').content;
+
+        const emailAddress = document.querySelector('#resendEmailAddress').value;
+        const options = {
+            method: 'post',
+            headers: {
+                [csrfHeader]: csrf
+            },
+            body: emailAddress
+        };
+
+
+        fetch('/resend-email', options)
+            .then(response => {
+                if (response.ok) {
+                    document.querySelector('#resendEmailVerificationCodeFailedMessage').innerText = null;
+                    document.querySelector('#resendEmailVerificationCodeSuccessMessage').innerText = '해당 이메일로 인증 코드를 재전송하였습니다.';
+                } else {
+                    throw new Error();
+                }
+            })
+            .catch(error => {
+                document.querySelector('#resendEmailVerificationCodeSuccessMessage').innerText = null;
+                document.querySelector('#resendEmailVerificationCodeFailedMessage').innerText = '인증 코드 재전송은 한 시간에 한번만 가능합니다.';
+            });
+    }
+
+    (function () {
+        document.querySelector('#resendBtn').onclick = resendVerificationCode;
+        document.querySelector('#resendEmailAddress').onkeyup = function (event) {
+            if (event.keyCode === 13) {
+                console.log(event.keyCode);
+                resendVerificationCode();
+            }
+        };
+    }());
+</script>
+
+
+<script th:if="${account != null && !account.emailVerified}">
+    (function () {
+        let elementGroup = [];
+        let verificationCode = new String();
+
+        for (i = 1; i <= 6; i++) {
+            const inputElement = document.querySelector('#input' + i);
+            elementGroup.push(inputElement);
+            inputElement.onkeyup = function (event) {
+                if (inputElement.value.length === 1) {
+                    /* BACKSPACE 가 아닐 때 */
+                    let number = inputElement.id.substr(5);
+                    number = Number(number);
+                    const nextElement = document.querySelector('#input' + (number + 1));
+                    if (nextElement != null) {
+                        nextElement.focus();
+                    } else {
+                        console.log(verificationCode);
+                        /* 여기서 작업 */
+                        const csrfHeader = document.querySelector('#_csrf_header').content;
+                        const csrf = document.querySelector('#_csrf').content;
+
+                        elementGroup.forEach(element => {
+                            verificationCode += element.value;
+                        })
+                        const options = {
+                            method: 'post',
+                            headers: {
+                                [csrfHeader]: csrf
+                            },
+                            body: verificationCode
+                        };
+                        fetch('/verification-email-code', options)
+                            .then(response => {
+                                if (response.ok) {
+                                    const failedMessageBox = document.querySelector('#emailVerificationFailedMessage');
+                                    failedMessageBox.innerText = null;
+                                    return response.text();
+                                } else {
+                                    throw new Error();
+
+                                }
+                            })
+                            .then(text => {
+                                elementGroup[5].blur();
+                                let successMessageBox = document.querySelector('#emailVerificationSuccessMessage');
+                                successMessageBox.innerText = text;
+                                setTimeout(function () {
+                                    location.reload();
+                                }, 2000);
+                            })
+                            .catch(error => {
+                                elementGroup.forEach(element => {
+                                    element.value = '';
+                                });
+                                verificationCode = '';
+                                const failedMessageBox = document.querySelector('#emailVerificationFailedMessage');
+                                failedMessageBox.innerText = null;
+                                failedMessageBox.innerText = '잘못 입력하셨습니다.';
+                                elementGroup[0].focus();
+                            })
+                    }
+                }
+                if (event.keyCode === 8) {
+                    /* BACKSPACE 일 때 */
+                    let number = inputElement.id.substr(5);
+                    number = Number(number);
+                    const previousElement = document.querySelector('#input' + (number - 1));
+                    if (previousElement != null) {
+                        verificationCode = verificationCode.slice(0, -1);
+                        previousElement.focus();
+                    } else {
+                        verificationCode = '';
+                        console.log(verificationCode);
+                    }
+
+                }
+            }
+        }
+    }());
+</script>
+</html>
