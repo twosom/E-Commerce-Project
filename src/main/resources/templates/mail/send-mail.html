@@ -1,33 +1,20 @@
 <!doctype html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:replace="fragments.html::head"></head>
+<head>
+    <meta charset="UTF-8">
+    <title>E-Commerce&trade;</title>
+</head>
 <body>
-<header>
-    <div class="page-header min-vh-85">
-        <div>
-            <img class="position-absolute fixed-top ms-auto w-50 h-100 z-index-0 d-none d-sm-none d-md-block border-radius-section border-top-end-radius-0 border-top-start-radius-0 border-bottom-end-radius-0"
-                 src="/images/curved-images/curved6.jpg" alt="image">
-        </div>
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-7 d-flex">
-                    <div class="card card-body blur text-md-start text-center px-sm-5 shadow-lg mt-sm-5 py-sm-5">
-                        <h2 class="text-gradient text-primary mb-0"><span th:text="${nickname}"></span>님의 가입을 환영합니다.
-                        </h2>
-                        <h2 class="text-dark mb-4">홈페이지에 로그인 후 아래 인증번호를 입력해주세요.</h2>
-                        <p class="lead text-dark pe-md-5 me-md-5">
-                            인증번호 : <span th:text="${emailVerificationCode}"></span>
-                        </p>
-                        <div class="buttons">
-                            <a type="button" class="btn btn-rounded bg-gradient-primary mt-4" href="#"
-                               th:href="${link}">E-Commerce 홈페이지</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+<div>
+    <p>안녕하세요. <span th:text="${nickname}"></span>님</p>
+
+    <div>
+        <p>인증 번호는 <span th:text="${emailVerificationCode}">인증번호</span>입니다.</p>
+        <a th:href="${host}">Link</a>
     </div>
-</header>
+</div>
+<footer>
+    <small>E-Commerce&trade; 2021</small>
+</footer>
 </body>
-<script th:replace="fragments.html::uiScripts"></script>
 </html>

@@ -28,15 +28,18 @@ public class AccountEventListener {
 
     @EventListener
     public void handleAccountCreatedEvent(AccountCreatedEvent accountCreatedEvent) {
-        sendSignUpConfirmEmail(accountCreatedEvent.getAccount());
+        Account account = accountCreatedEvent.getAccount();
+        sendSignUpConfirmEmail(account, "E-Commerce 가입 확인 이메일입니다", account.getEmail());
+    }
+
+    @EventListener
+    public void handleMailResendEvent(AccountMailResendEvent accountMailResendEvent) {
+        Account account = accountMailResendEvent.getAccount();
+        sendSignUpConfirmEmail(account, "E-Commerce 인증번호 재전송 안내", accountMailResendEvent.getTo());
     }
 
 
-
-
-
-
-    private void sendSignUpConfirmEmail(Account account) {
+    private void sendSignUpConfirmEmail(Account account, String subject, String to) {
         Context context = new Context();
         context.setVariable("nickname", account.getNickname());
         context.setVariable("emailVerificationCode", account.getEmailVerificationCode());
@@ -44,8 +47,8 @@ public class AccountEventListener {
 
         String message = templateEngine.process("mail/send-mail", context);
         EmailMessage emailMessage = EmailMessage.builder()
-                .to(account.getEmail())
-                .subject("E-Commerce 가입 확인 이메일입니다")
+                .to(to)
+                .subject(subject)
                 .message(message)
                 .build();
 
