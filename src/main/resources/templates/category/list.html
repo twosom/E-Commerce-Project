@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments.html::head"></head>
+<body>
+<span th:replace="fragments.html::main-nav"></span>
+
+<header class="header-2">
+    <div class="page-header min-vh-50 relative" style="background-image: url('/images/annie-spratt.jpg')">
+        <div class="mask bg-gradient-info"></div>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-7 text-center mx-auto">
+                    <h1 class="text-white pt-3 mt-n5">관리자 메뉴 / 카테고리</h1>
+                    <p class="lead text-white mt-3">
+
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div th:replace="fragments.html::wave-animation"></div>
+    </div>
+</header>
+
+
+<div class="card">
+    <div class="table-responsive">
+        <table class="table align-items-center mb-0">
+            <thead>
+            <tr>
+                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">ID</th>
+                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">카테고리 이름</th>
+                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">카테고리 설명</th>
+                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">상위 카테고리 이름</th>
+<!--                <th class="text-secondary opacity-7"></th>-->
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="category : ${categoryList}">
+                <td th:text="${category.id}"></td>
+                <td th:text="${category.title}"></td>
+                <td th:text="${category.description}"></td>
+                <td th:if="${category.parentCategory != null}" th:text="${category.parentCategory.title}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="row justify-content-end">
+        <div class="col-4">
+            <a href="#" role="button" class="btn bg-gradient-info" th:href="@{/category/new}">신규 카테고리 생성</a>
+        </div>
+    </div>
+</div>
+</body>
+<script th:replace="fragments.html::uiScripts"></script>
+</html>

@@ -1,0 +1,81 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments.html::head"></head>
+<body>
+<div th:replace="fragments.html::main-nav"></div>
+<!-- SIGN_UP_FORM_START -->
+<section>
+    <div class="page-header min-vh-75">
+        <div class="container">
+            <div class="row">
+                <div class="col-xl-4 col-lg-5 col-md-6 d-flex flex-column mx-auto">
+                    <div class="card shadow-xl card-plain mt-8">
+                        <div class="card-header pb-0 text-left">
+                            <h3 class="font-weight-bolder text-info text-gradient">잘 돌아오셨어요!</h3>
+                            <p class="mb-0">로그인 하시려면 이메일 또는 닉네임과 패스워드를 입력해주세요.</p>
+                        </div>
+                        <div class="alert alert-warning text-white" th:if="${param.error}">
+                            <p>이메일(또는 닉네임)과 패스워드가 정확하지 않습니다.</p>
+                            <p>또는 확인되지 않은 이메일을 사용했습니다. 이메일을 확인해 주세요.</p>
+                            <p>확인 후 다시 입력하시거나, <a href="#" th:href="@{/find-password}">패스워드 찾기</a>를 입력하세요.</p>
+                        </div>
+                        <div class="card-body">
+                            <form action="#" th:action="@{/login}" method="post" class="needs-validation" novalidate>
+                                <div class="mb-3">
+                                    <label for="username">이메일 또는 닉네임</label>
+                                    <input id="username" name="username" type="text" class="form-control"
+                                           placeholder="your@email.com"
+                                           aria-describedby="emailHelp" required>
+                                    <small id="emailHelp" class="form-text text-muted">
+                                        가입할 때 사용한 이메일 또는 닉네임을 입력하세요.
+                                    </small>
+                                    <small class="invalid-feedback">이메일을 입력하세요.</small>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="password">비밀번호</label>
+                                    <input id="password" name="password" type="password" class="form-control"
+                                           placeholder="Password"
+                                           aria-describedby="passwordHelp" required/>
+                                    <small id="passwordHelp" class="form-text text-muted">
+                                        패스워드가 기억나지 않는다면, <strong><a href="#" th:href="@{/email-login}">패스워드 없이 로그인하기</a></strong>
+                                    </small>
+                                    <small class="invalid-feedback">패스워드를 입력하세요.</small>
+                                </div>
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" id="remember-me" name="remember-me"
+                                           checked>
+                                    <label class="form-check-label" for="remember-me">로그인 유지</label>
+                                </div>
+                                <div class="text-center">
+                                    <button type="submit" class="btn bg-gradient-info w-100 mt-4 mb-0">Sign in</button>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="card-footer text-center pt-0 px-lg-2 px-1">
+                            <p class="mb-4 text-sm mx-auto">
+                                아직 계정이 없으시다면
+                                <a href="#" th:href="@{/sign-up}"
+                                   class="text-info text-gradient font-weight-bold">가입하기</a>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="oblique position-absolute top-0 h-100 d-md-block d-none me-n8">
+                        <div class="oblique-image bg-cover position-absolute fixed-top ms-auto h-100 z-index-0 ms-n6"
+                             style="background-image:url('/images/curved-images/curved9.jpg')"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <footer th:replace="fragments.html::footer"></footer>
+</section>
+</body>
+
+
+<script th:replace="fragments.html::uiScripts"></script>
+<script th:replace="fragments.html::validate-form"></script>
+
+
+</html>
