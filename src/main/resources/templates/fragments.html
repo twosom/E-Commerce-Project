@@ -62,9 +62,190 @@
                             <span class="navbar-toggler-bar bar3"></span>
                         </span>
                         </button>
+                        <div class="navbar-collapse w-100 pt-3 pb-2 py-lg-0 collapse" id="navigation">
+                            <ul class="navbar-nav navbar-nav-hover mx-auto">
+                                <li class="nav-item dropdown dropdown-hover mx-2">
+                                    <a role="button"
+                                       class="nav-link ps-2 d-flex justify-content-between cursor-pointer align-items-center"
+                                       id="dropdownMenuBlocks" data-bs-toggle="dropdown" aria-expanded="true">
+                                        Products
+                                        <img src="/images/down-arrow-dark.svg" alt="down-arrow" class="arrow ms-1"/>
+                                    </a>
 
-                        <!-- NAVIGATION_ITEMS -->
-                        <div class="collapse navbar-collapse" id="navigation">
+                                    <div class="dropdown-menu dropdown-menu-animation dropdown-lg dropdown-lg-responsive p-3 border-radius-lg mt-0 mt-lg-3"
+                                         aria-labelledby="dropdownMenuBlocks" data-bs-popper="none">
+                                        <span th:each="category : ${categories}">
+                                            <!-- DESKTOP -->
+                                            <div class="d-none d-lg-block">
+                                                <ul class="list-group">
+                                                    <li class="nav-item dropdown dropdown-hover dropdown-subitem list-group-item border-0 p-0">
+                                                        <a class="dropdown-item py-2 ps-3 border-radius-md" href="#">
+                                                            <div class="d-flex">
+                                                                <div class="icon h-10 me-3 d-flex mt-1">
+                                                                    <i class="ni ni-single-copy-04 text-gradient- text-primary"></i>
+                                                                </div>
+                                                                <div class="w-100 d-flex align-items-center">
+                                                                    <div>
+                                                                        <h6 class="dropdown-header text-dark font-weight-bolder d-flex align-items-center p-0"
+                                                                            th:text="${category.title}">
+                                                                            <!-- TODO Category forEach 돌리기 -->
+                                                                            Page Sections
+                                                                        </h6>
+                                                                        <span class="text-sm"
+                                                                              th:text="${category.description}">See all 109 Sections</span>
+                                                                    </div>
+                                                                    <img src="/images/down-arrow.svg" alt="down-arrow"
+                                                                         class="arrow"/>
+                                                                </div>
+                                                            </div>
+                                                        </a>
+
+                                                        <div class="dropdown-menu mt-0 py-3 px-2 mt-3">
+                                                            <a class="dropdown-item ps-3 border-radius-md mb-1"
+                                                               href="#"
+                                                               th:each="childCategory : ${category.childCategory}"
+                                                               th:text="${childCategory.title}"></a>
+                                                            <span class="text-sm"
+                                                                  th:if="${childCategory != null && !#strings.isEmpty(childCategory.description)}"
+                                                                  th:text="${childCategory.description}">See all 109 Sections</span>
+                                                        </div>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                            <!-- MOBILE -->
+                                            <div class="row d-lg-none">
+                                                <div class="col-md-12">
+                                                    <div class="d-flex mb-2">
+                                                        <div class="icon h-10 me-3 d-flex mt-1">
+                                                            <!-- TODO CATEGORY 별 아이콘 설정할 수 있게 하기 -->
+                                                            <i class="ni ni-single-copy-04 text-gradient text-primary"></i>
+                                                        </div>
+                                                        <div class="w-100 d-flex align-items-center justify-content-between">
+                                                            <div>
+                                                                <h5 class="dropdown-header text-dark font-weight-bolder d-flex justify-content-center align-items-center p-0"
+                                                                    th:text="${category.title}">
+                                                                    <!--TODO category forEach 돌리기-->
+                                                                    Page Sections
+                                                                </h5>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <a class="dropdown-item ps-3 border-radius-md mb-1" href="#"
+                                                   th:each="childCategory : ${category.childCategory}"
+                                                   th:text="${childCategory.title}">
+                                                </a>
+                                            </div>
+                                        </span>
+                                    </div>
+                                </li>
+                            </ul>
+                            <ul class="navbar-nav navbar-nav-hover mx-auto" sec:authorize="isAuthenticated()">
+                                <li class="nav-item dropdown dropdown-hover mx-2">
+                                    <a role="button"
+                                       class="nav-link ps-2 d-flex justify-content-between cursor-pointer align-items-center"
+                                       id="dropdownMenuAccount" data-bs-toggle="dropdown" aria-expanded="true">
+                                        계정 관리
+                                        <img src="/images/down-arrow-dark.svg" alt="down-arrow" class="arrow ms-1"/>
+                                    </a>
+
+                                    <div class="dropdown-menu dropdown-menu-animation dropdown-lg dropdown-lg-responsive p-3 border-radius-lg mt-0 mt-lg-3"
+                                         aria-labelledby="dropdownMenuAccount" data-bs-popper="none">
+                                        <!-- DESKTOP -->
+                                        <div class="d-none d-lg-block">
+                                            <ul class="list-group">
+                                                <li class="nav-item dropdown dropdown-hover dropdown-subitem list-group-item border-0 p-0">
+                                                    <a class="dropdown-item py-2 ps-3 border-radius-md" href="#">
+                                                        <div class="d-flex">
+                                                            <div class="icon h-10 me-3 d-flex mt-1">
+                                                                <i class="ni ni-circle-08 text-gradient- text-primary"></i>
+                                                            </div>
+                                                            <div class="w-100 d-flex align-items-center ">
+                                                                <div>
+                                                                    <h6 class="dropdown-header text-primary text-gradient font-weight-bolder d-flex align-items-center p-0"
+                                                                        th:text="${#authentication.name}">
+                                                                        계정 이름
+                                                                    </h6>
+                                                                </div>
+                                                                <img src="/images/down-arrow.svg" alt="down-arrow"
+                                                                     class="arrow"/>
+                                                            </div>
+                                                        </div>
+                                                    </a>
+
+                                                    <div class="dropdown-menu mt-0 py-3 px-2 mt-3">
+                                                        <h6 class="dropdown-header ms-1 text-dark font-weight-bolder d-flex align-items-center p-0">
+                                                            계정 정보 설정
+                                                        </h6>
+                                                        <a class="dropdown-item ps-3 border-radius-md mb-1"
+                                                           href="#" th:href="@{/account/settings/profile}">기본 정보 수정</a>
+                                                        <a class="dropdown-item ps-3 border-radius-md mb-1"
+                                                           href="#" th:href="@{/account/settings/address}">배송 정보 변경</a>
+                                                    </div>
+                                                </li>
+
+                                                <li class="nav-item dropdown dropdown-hover dropdown-subitem list-group-item border-0 p-0">
+                                                    <a class="dropdown-item py-2 ps-3 border-radius-md" href="#">
+                                                        <div class="d-flex">
+                                                            <div class="icon h-10 me-3 d-flex mt-1">
+                                                                <i class="ni ni-lock-circle-open text-gradient text-primary"></i>
+                                                            </div>
+                                                            <div class="w-100 d-flex align-items-center">
+                                                                <div>
+                                                                    <h6 class="dropdown-header text-primary text-warning font-weight-bolder d-flex align-items-center p-0">
+                                                                        <form class="form-inline my-2 my-lg-0" action="#" th:action="@{/logout}" method="post">
+                                                                            <button class="dropdown-item text-dark" type="submit">
+                                                                                로그아웃
+                                                                            </button>
+                                                                        </form>
+                                                                    </h6>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                        <!-- MOBILE -->
+                                        <div class="row d-lg-none">
+                                            <div class="col-md-12">
+                                                <div class="d-flex mb-2">
+                                                    <div class="icon h-10 me-3 d-flex mt-1">
+                                                        <i class="ni ni-circle-08 text-gradient text-primary"></i>
+                                                    </div>
+                                                    <div class="w-100 d-flex align-items-center justify-content-between">
+                                                        <div>
+                                                            <h6 class="dropdown-header text-primary text-gradient font-weight-bolder d-flex align-items-center p-0"
+                                                                th:text="${#authentication.name}">
+                                                                계정 이름
+                                                            </h6>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <h6 class="dropdown-header ms-1 text-dark font-weight-bolder d-flex align-items-center p-0">
+                                                            계정 정보 설정
+                                            </h6>
+                                            <a class="dropdown-item ps-3 border-radius-md mb-1"
+                                               href="#" th:href="@{/account/settings/profile}">
+                                                기본 정보 수정
+                                            </a>
+                                            <a class="dropdown-item ps-3 border-radius-md mb-1"
+                                               href="#" th:href="@{/account/settings/address}">
+                                                배송 정보 변경
+                                            </a>
+                                            <form class="form-inline my-2 my-lg-0" action="#" th:action="@{/logout}"
+                                                  method="post">
+                                                <button class="dropdown-item text-dark" type="submit">로그아웃</button>
+                                            </form>
+                                        </div>
+                                    </div>
+
+
+                                </li>
+                            </ul>
+
+
                             <!-- SIGN_UP_LINK_ITEM -->
                             <ul class="navbar-nav justify-content-end ms-auto">
                                 <!-- LOGIN -->
@@ -75,13 +256,6 @@
                                 <!-- SIGN_UP -->
                                 <li class="nav-item me-1" sec:authorize="isAnonymous()">
                                     <a class="nav-link" href="#" th:href="@{/sign-up}">가입</a>
-                                </li>
-                                <!-- NOTIFICATIONS -->
-                                <li class="nav-item me-1 my-auto" sec:authorize="isAuthenticated()">
-                                    <a class="nav-link" href="#" th:href="@{/notifications}">
-                                        <i class="text-primary text-gradient fa fa-bell-o"
-                                           style="font-size: 20px; font-weight: bold;" aria-hidden="true"></i>
-                                    </a>
                                 </li>
                             </ul>
                         </div>

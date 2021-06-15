@@ -2,12 +2,17 @@ package io.twosom.ecommerce.account;
 
 import io.twosom.ecommerce.account.event.AccountCreatedEvent;
 import io.twosom.ecommerce.account.event.AccountMailResendEvent;
+import io.twosom.ecommerce.account.form.AccountPasswordEditForm;
+import io.twosom.ecommerce.account.form.AccountProfileEditForm;
 import io.twosom.ecommerce.account.form.SignUpForm;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,7 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class AccountService {
+public class AccountService implements UserDetailsService {
 
     private final AccountRepository accountRepository;
 
@@ -63,5 +68,45 @@ public class AccountService {
             return true;
         }
         return false;
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String nicknameOrEmail) throws UsernameNotFoundException {
+        Account account = accountRepository.findByNickname(nicknameOrEmail);
+
+        if (account == null) {
+            account = accountRepository.findByEmail(nicknameOrEmail);
+        }
+
+        if (account == null) {
+            throw new UsernameNotFoundException(nicknameOrEmail);
+        }
+
+        return new UserAccount(account);
+    }
+
+    public void editEmailAndNickname(Long accountId, AccountProfileEditForm editForm) {
+        Account account = accountRepository.findById(accountId).get();
+
+        if (!editForm.getEmail().equals(account.getEmail())) {
+            account.setEmail(editForm.getEmail());
+            account.setEmailVerified(false);
+            resendSignUpConfirmEmail(account.getId(), account.getEmail());
+        }
+
+        account.setNickname(editForm.getNickname());
+        login(account);
+    }
+
+    public void editPassword(Long accountId, AccountPasswordEditForm editForm) {
+        Account account = accountRepository.findById(accountId).get();
+        account.setPassword(passwordEncoder.encode(editForm.getNewPassword()));
+        login(account);
+    }
+
+    public void editAddress(Long accountId, Address address) {
+        Account account = accountRepository.findById(accountId).get();
+        account.setAddress(address);
+        login(account);
     }
 }

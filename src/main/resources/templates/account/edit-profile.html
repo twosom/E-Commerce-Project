@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments.html::head"></head>
+<body>
+<span th:replace="fragments.html::main-nav"></span>
+<header class="header-2">
+    <div class="page-header min-vh-50 relative"
+         style="background-image: url('/images/curved-images/curved5-small.jpg')">
+        <div class="mask bg-gradient-dark"></div>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-7 text-center mx-auto">
+                    <h1 class="text-white pt-3 mt-n5">기본 정보 수정</h1>
+                    <p class="lead text-white mt-3">
+                        고객님의 개인정보를 변경합니다.
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div th:replace="fragments.html::wave-animation"></div>
+    </div>
+</header>
+<section>
+    <div class="container">
+        <div class="row justify-content-center">
+            <!-- 2 -->
+            <div class="col-2">
+                <!-- NAV -->
+                <div class="nav-wrapper position-relative end-0">
+                    <ul class="nav nav-pills nav-fill flex-column p-1" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link active" id="v-pills-email-nickname-tab" data-bs-toggle="pill"
+                               href="#v-pills-email-nickname"
+                               role="tab" aria-controls="v-pills-email-nickname" aria-selected="true">이메일 / 닉네임 변경</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="v-pills-password-tab" data-bs-toggle="pill" href="#v-pills-password"
+                               role="tab" aria-controls="v-pills-password" aria-selected="true">비밀번호 변경</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <!-- 8 -->
+            <div class="col-8">
+                <div class="tab-content" id="v-pills-tabContent">
+                    <div class="tab-pane fade show active" id="v-pills-email-nickname" role="tabpanel"
+                         aria-labelledby="v-pills-email-nickname-tab">
+
+                        <div class="card z-index-0 shadow-lg mb-4">
+                            <div class="card-header text-center pt-4 pb-1">
+                                <h4 class="font-weight-bolder mb-1">이메일 / 닉네임 변경</h4>
+                                <p class="mb-0">이메일과 닉네임을 변경합니다.</p>
+                            </div>
+                            <div class="card-body">
+                                <form method="post" action="#" class="needs-validation"
+                                      th:action="@{/account/settings/profile}"
+                                      th:object="${accountProfileEditForm}" novalidate>
+                                    <div class="form-group">
+                                        <label for="email">이메일</label>
+                                        <input type="email" id="email" class="form-control"
+                                               placeholder="변경하실 이메일 주소를 입력해주세요." th:field="*{email}" required/>
+                                        <small class="invalid-feedback">이메일을 입력하세요.</small><br/>
+                                        <div class="alert alert-dark small" th:if="${#fields.hasErrors('email')}"
+                                             role="alert">
+                                            <strong class="text-white" th:errors="*{email}"></strong>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="nickname">닉네임</label>
+                                        <input type="text" id="nickname" class="form-control" placeholder="닉네임을 입력해주세요."
+                                               th:field="*{nickname}" required minlength="3" maxlength="20"/>
+                                        <small class="invalid-feedback">닉네임을 입력하세요.</small><br/>
+                                        <div class="alert alert-dark small" th:if="${#fields.hasErrors('nickname')}"
+                                             role="alert">
+                                            <strong class="text-white" th:errors="*{nickname}"></strong>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group text-end">
+                                        <button type="submit" class="btn btn-outline-primary">변경하기</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="tab-pane fade" id="v-pills-password" role="tabpanel"
+                         aria-labelledby="v-pills-password-tab">
+
+                        <div class="card z-index-0 shadow-lg mb-4">
+                            <div class="card-header text-center pt-4 pb-1">
+                                <h4 class="font-weight-bolder mb-1">비밀번호 변경</h4>
+                                <p class="mb-0">고객님의 소중한 비밀번호를 변경합니다.</p>
+                            </div>
+                            <div class="card-body">
+                                <form method="post" class="needs-validation" action="#"
+                                      th:action="@{/account/settings/password}"
+                                      th:object="${accountPasswordEditForm}" novalidate>
+
+                                    <div class="form-group">
+                                        <label for="currentPassword">현재 비밀번호</label>
+                                        <input type="password" id="currentPassword" class="form-control"
+                                               placeholder="현재 비밀번호를 입력해주세요." th:field="*{currentPassword}" required
+                                               minlength="8" maxlength="50"/>
+                                        <small class="form-text text-muted">
+                                            8자 이상 50자 이내로 입력하세요. 영문자, 숫자, 특수기호를 사용할 수 있으며 공백은 사용할 수 없습니다.
+                                        </small>
+                                        <small class="invalid-feedback">패스워드를 입력하세요.</small><br/>
+                                        <div class="alert alert-dark small" th:if="${#fields.hasErrors('currentPassword')}"
+                                             role="alert">
+                                            <strong class="text-white" th:errors="*{currentPassword}"></strong>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="newPassword">변경하실 비밀번호</label>
+                                        <input type="password" id="newPassword" class="form-control"
+                                               placeholder="새로 설정할 비밀번호를 입력해주세요."
+                                               th:field="*{newPassword}"/>
+                                        <small class="form-text text-muted">
+                                            8자 이상 50자 이내로 입력하세요. 영문자, 숫자, 특수기호를 사용할 수 있으며 공백은 사용할 수 없습니다.
+                                        </small>
+                                        <small class="invalid-feedback">패스워드를 입력하세요.</small><br/>
+                                        <div class="alert alert-dark small" th:if="${#fields.hasErrors('newPassword')}"
+                                             role="alert">
+                                            <strong class="text-white" th:errors="*{newPassword}"></strong>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="confirmNewPassword">변경하실 비밀번호</label>
+                                        <input type="password" id="confirmNewPassword" class="form-control"
+                                               placeholder="새로 설정할 비밀번호를 다시한번 입력해주세요."
+                                               th:field="*{confirmNewPassword}"/>
+                                        <small class="form-text text-muted">
+                                            8자 이상 50자 이내로 입력하세요. 영문자, 숫자, 특수기호를 사용할 수 있으며 공백은 사용할 수 없습니다.
+                                        </small>
+                                        <small class="invalid-feedback">패스워드를 입력하세요.</small><br/>
+                                    </div>
+
+                                    <div class="form-group text-end">
+                                        <button type="submit" class="btn btn-outline-primary">변경하기</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</section>
+</body>
+<script th:replace="fragments.html::uiScripts"></script>
+<script th:replace="fragments.html::validate-form"></script>
+</html>
