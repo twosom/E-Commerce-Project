@@ -27,9 +27,8 @@ public class CategoryInterceptor implements HandlerInterceptor {
                            Object handler,
                            ModelAndView modelAndView) throws Exception {
 
-        // TODO HandlerInterceptor 이용하여 View 렌더링 전에 Model 에 카테고리 정보들 담기
         if (modelAndView != null) {
-//            List<Category> categories = categoryRepository.findAllByParentCategoryIsNullAndPublish(true);
+
             List<CategoryDto> categories = categoryRepository.findAllByParentCategoryIsNullAndPublish(true)
                     .stream()
                     .map(category -> modelMapper.map(category, CategoryDto.class))

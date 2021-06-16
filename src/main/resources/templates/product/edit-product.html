@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments.html::head"></head>
+<link rel="stylesheet" href="/node_modules/croppie/croppie.css"/>
+<body>
+<span th:replace="fragments.html::main-nav"></span>
+<header class="header-2">
+    <div class="page-header min-vh-50 relative" style="background-image: url('/images/card-3.jpg')">
+        <div class="mask bg-gradient-warning opacity-4"></div>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-7 text-center mx-auto">
+                    <h1 class="text-white pt-3 mt-n5">관리자 메뉴 / 상품 수정</h1>
+                </div>
+            </div>
+        </div>
+        <div th:replace="fragments.html::wave-animation"></div>
+    </div>
+</header>
+
+<div class="container">
+    <div class="row">
+
+        <div class="col-lg-5 col-md-5 d-flex justify-content-center flex-column">
+            <div class="card shadow-xl">
+                <div class="card-header text-center">
+                    <h3 class="font-weight-bolder text-info text-gradient fadeIn1 fadeInBottom">상품 이미지</h3>
+                </div>
+
+                <div id="current-product-image" class="mt-3 justify-content-center text-center">
+                    <img th:if="${!#strings.isEmpty(productForm.productImage)}" class="rounded"
+                         th:src="${productForm.productImage}" alt="name"
+                         th:alt="${productForm.productName}"/>
+                </div>
+
+                <div class="card-body">
+                    <div id="new-product-image" class="mt-3 d-flex flex-column"></div>
+                </div>
+
+                <div class="card-body">
+                    <div class="input-group">
+                        <input type="file" accept="image/*" class="form-control" id="product-image-file"/>
+                        <label class="input-group-text" for="product-image-file">상품 이미지 변경</label>
+                    </div>
+                    <div id="new-product-image-control" class="d-grid gap-2 mt-3">
+                        <button class="btn btn-outline-primary" id="cut-button">자르기</button>
+                        <button class="btn btn-outline-success" id="confirm-button">확인</button>
+                        <button class="btn btn-outline-warning" id="reset-button">취소</button>
+                    </div>
+                    <div id="cropped-new-product-image-div" class="mt-3"></div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="row mt-2">
+        <div class="col-12 d-flex justify-content-center flex-column">
+            <div class="card shadow-xl">
+                <div class="card-header text-left">
+                    <h1 class="font-weight-bolder text-primary text-gradient fadeIn1 fadeInBottom">상품 수정</h1>
+                </div>
+                <div class="card-body">
+                    <div class="row justify-content-center">
+                        <form class="needs-validation col-sm-10" action="#" th:action="@{/admin/product/{id}(id=${productForm.id})}"
+                              th:object="${productForm}"
+                              method="post" novalidate>
+
+                            <div class="form-group">
+                                <input type="hidden" id="productImage" th:field="*{productImage}" class="form-control"/>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="categoryName">카테고리</label>
+                                <select class="form-select" id="categoryName" name="categoryName"
+                                        th:field="*{categoryName}">
+                                    <option th:value="${null}">없음</option>
+                                    <option th:each="categoryTitle : ${categoryTitleList}"
+                                            th:value="${categoryTitle}"
+                                            th:text="${categoryTitle}"></option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="productName">상품 명</label>
+                                <input id="productName" type="text" class="form-control" placeholder="상품 명"
+                                       aria-describedby="productNameHelp"
+                                       th:field="*{productName}"/>
+                                <small class="form-text text-muted" id="productNameHelp">상품 이름을 입력해주세요.</small>
+                                <small class="invalid-feedback">상품 이름을 입력하세요.</small><br/>
+                                <small class="form-text text-danger" th:if="${#fields.hasErrors('productName')}"
+                                       th:errors="*{productName}"></small>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="productPrice">상품 가격</label>
+                                <input id="productPrice" type="number" class="form-control" placeholder="상품 가격"
+                                       aria-describedby="productPriceHelp"
+                                       th:field="*{productPrice}" required min="0"/>
+                                <small class="form-text text-muted" id="productPriceHelp">상품 가격을 입력해주세요.</small>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="productStock">상품 재고</label>
+                                <input id="productStock" type="number" class="form-control" placeholder="상품 가격"
+                                       aria-describedby="productStockHelp"
+                                       th:field="*{productStock}" required min="0"/>
+                                <small class="form-text text-muted" id="productStockHelp">상품 가격을 입력해주세요.</small>
+                            </div>
+
+
+                            <div class="form-group">
+                                <label for="productDescription">상품 상세 정보</label>
+                                <textarea id="productDescription" type="textarea" th:field="*{productDescription}"
+                                          class="editor form-control" placeholder="상품 상세 정보를 입력해주세요." required
+                                          aria-labelledby="productDescriptionHelp"></textarea>
+                                <small id="productDescriptionHelp">상품의 상세 정보를 입력해주세요.</small>
+                                <small class="invalid-feedback">상품 상세 정보를 입력하세요.</small>
+                            </div>
+
+
+                            <div class="form-group">
+                                <button type="submit" class="btn bg-gradient-info btn-lg w-100 text-lg">
+                                    상품 수정
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<script src="/node_modules/croppie/croppie.js"></script>
+<script th:replace="fragments.html::uiScripts"></script>
+<script th:replace="fragments.html::validate-form"></script>
+<script th:replace="fragments.html::editor-script"></script>
+<script>
+    (function () {
+        function removeAllChildNodes(parent) {
+            while (parent.firstChild) {
+                parent.removeChild(parent.firstChild);
+            }
+        }
+
+        const confirmBtn = document.querySelector('#confirm-button');
+        const resetBtn = document.querySelector('#reset-button');
+        const cutBtn = document.querySelector('#cut-button');
+        const newProductImage = document.querySelector('#new-product-image');
+        const currentProductImage = document.querySelector('#current-product-image');
+        const resultImageDiv = document.querySelector('#cropped-new-product-image-div');
+        const productImage = document.querySelector('#productImage');
+        let croppie = '';
+
+        hideElements(newProductImage, cutBtn, resetBtn, confirmBtn);
+
+        document.querySelector('#product-image-file').addEventListener('change', function (event) {
+
+            removeAllChildNodes(newProductImage);
+            if (event.target.files.length === 1) {
+                let fileReader = new FileReader();
+                fileReader.onload = function (e) {
+
+                    if (e.target.result) {
+                        let img = document.createElement('img');
+                        img.id = 'new-product';
+                        img.src = e.target.result;
+                        img.setAttribute('width', '100%');
+
+                        img.onload = function () {
+                            if (this.height > 500) {
+                                newProductImage.style.height = this.height * 0.6 + 'px';
+                            } else {
+                                newProductImage.style.height = this.height + 'px';
+                            }
+                        };
+
+                        newProductImage.append(img);
+
+                        croppie = new Croppie(img, {
+                            viewport: {width: 240, height: 160},
+                            // boundary: {width: 300, height: 300}
+                        });
+
+
+                        hideElements(confirmBtn, currentProductImage);
+                        showElements(cutBtn, resetBtn, newProductImage);
+                    }
+                };
+
+                fileReader.readAsDataURL(event.target.files[0]);
+            }
+
+
+            resetBtn.onclick = function () {
+
+                showElements(currentProductImage);
+                ;
+                let croppedImage = document.querySelector('#cropped-new-product-image');
+                hideElements(newProductImage, resultImageDiv, resetBtn, cutBtn, confirmBtn, croppedImage);
+                document.querySelector('.croppie-container').style.display = 'none';
+                productImage.value = '';
+                document.querySelector('#product-image-file').value = '';
+            };
+
+
+            cutBtn.onclick = function () {
+
+                croppie.result('rawcanvas').then(rawcanvas => {
+                    const dataUrl = rawcanvas.toDataURL();
+
+                    if (dataUrl.length > 1000 * 1024) {
+                        alert("이미지 파일이 너무 큽니다. 1024000 보다 작은 파일을 사용하세요. 현재 이미지 사이즈 " + dataUrl.length);
+                        return;
+                    }
+
+                    const newImage = document.createElement('img');
+                    newImage.id = 'cropped-new-product-image';
+                    newImage.src = dataUrl;
+
+
+                    resultImageDiv.append(newImage);
+                    showElements(resultImageDiv, confirmBtn);
+                    hideElements(cutBtn);
+
+                    confirmBtn.onclick = function () {
+                        document.querySelector('.croppie-container').style.display = 'none';
+
+                        newProductImage.append(newImage);
+                        hideElements(cutBtn, confirmBtn, newProductImage);
+                        productImage.value = dataUrl;
+                    };
+
+                });
+            };
+        });
+
+
+        function hideElements(...elements) {
+            elements.forEach(element => element.style.display = 'none');
+        }
+
+        function showElements(...elements) {
+            elements.forEach(element => element.style.display = 'block');
+        }
+
+    })();
+</script>
+
+
+</html>

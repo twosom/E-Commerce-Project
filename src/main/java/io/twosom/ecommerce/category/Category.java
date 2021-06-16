@@ -1,6 +1,5 @@
 package io.twosom.ecommerce.category;
 
-import io.twosom.ecommerce.category.form.CategoryCreateForm;
 import io.twosom.ecommerce.category.form.CategoryEditForm;
 import lombok.*;
 

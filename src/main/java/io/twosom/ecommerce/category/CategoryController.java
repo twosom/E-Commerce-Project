@@ -43,11 +43,11 @@ public class CategoryController {
 
     @GetMapping("/admin/category")
     public String getAllCategories(Model model) {
-        List<CategoryDto> categories = categoryRepository.findAll()
+        List<CategoryDto> categoryList = categoryRepository.findAll()
                 .stream().map(category -> modelMapper.map(category, CategoryDto.class))
                 .collect(Collectors.toList());
 
-        model.addAttribute("categoryList", categories);
+        model.addAttribute("categoryList", categoryList);
 
         return "category/list";
     }

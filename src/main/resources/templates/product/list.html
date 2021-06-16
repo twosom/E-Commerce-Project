@@ -3,24 +3,19 @@
 <head th:replace="fragments.html::head"></head>
 <body>
 <span th:replace="fragments.html::main-nav"></span>
-
 <header class="header-2">
     <div class="page-header min-vh-50 relative" style="background-image: url('/images/annie-spratt.jpg')">
         <div class="mask bg-gradient-info"></div>
         <div class="container">
             <div class="row">
                 <div class="col-lg-7 text-center mx-auto">
-                    <h1 class="text-white pt-3 mt-n5">관리자 메뉴 / 카테고리</h1>
-                    <p class="lead text-white mt-3">
-
-                    </p>
+                    <h1 class="text-white pt-3 mt-n5">관리자 메뉴 / 상품 리스트</h1>
                 </div>
             </div>
         </div>
         <div th:replace="fragments.html::wave-animation"></div>
     </div>
 </header>
-
 
 <div class="card">
 
@@ -32,11 +27,11 @@
                     <div class="accordion" id="accordionRental" th:each="category : ${categoryList}">
 
 
-                        <div class="accordion-item mb-3" th:if="${category.parentCategory == null}">
+                        <div class="accordion-item mb-3">
                             <h5 class="accordion-header" id="headingOne">
                                 <button class="accordion-button border-bottom font-weight-bold collapsed" type="button"
                                         data-bs-toggle="collapse"
-                                        th:data-bs-target="${'#' + 'category' + category.id}"
+                                        th:data-bs-target="${'#' + 'category'  + category.id}"
                                         aria-expanded="false"
                                         aria-controls="collapseOne"
                                         th:text="${category.title}">
@@ -50,26 +45,11 @@
                                        th:text="${category.description}"></small>
                                 <div class="row justify-content-end" th:object="${category}">
                                     <div class="col-sm-3">
-                                        <form th:if="${!category.publish}"
-                                              th:action="@{/admin/category/{id}/publish(id=${category.id})}"
-                                              method="post">
-                                            <button type="submit" class="btn bg-gradient-primary btn-sm">
-                                                상위 카테고리 공개하기
-                                            </button>
-                                        </form>
-
-                                        <form th:if="${category.publish}"
-                                              th:action="@{/admin/category/{id}/unpublish(id=${category.id})}"
-                                              method="post">
-                                            <button type="submit" class="btn bg-gradient-danger btn-sm">
-                                                상위 카테고리 비공개하기
-                                            </button>
-                                        </form>
+                                        <!-- ?? -->
                                     </div>
                                 </div>
                             </h5>
                             <div th:id="${'category' + category.id}"
-
                                  class="accordion-collapse collapse"
                                  aria-labelledby="headingOne"
                                  data-bs-parent="#accordionRental" style="">
@@ -82,38 +62,57 @@
                                                     ID
                                                 </th>
                                                 <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
-                                                    카테고리 이름
+                                                    상품 이름
                                                 </th>
                                                 <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
-                                                    카테고리 설명
+                                                    상품 가격
                                                 </th>
                                                 <th class="text-uppercase text-primary text-xxs font-weight-bolder ps-2">
-                                                    공개여부
+                                                    상품 재고
                                                 </th>
+                                                <th class="text-uppercase text-primary text-xxs font-weight-bolder ps-2">
+                                                    판매자
+                                                </th>
+                                                <th class="text-uppercase text-primary text-xxs font-weight-bolder ps-2">
+                                                    공개 여부
+                                                </th>
+                                                <th class="text-uppercase text-primary text-xxs font-weight-bolder ps-2">
+                                                    삭제
+                                                </th>
+
                                             </tr>
                                             </thead>
                                             <tbody>
-                                            <tr th:each="childCategory : ${category.childCategory}">
-                                                <td th:text="${childCategory.id}"></td>
+                                            <tr th:each="product : ${productList}"
+                                                th:if="${product.category.id == category.id}">
+                                                <td th:text="${product.id}"></td>
                                                 <td><a href="#" class="text-decoration-none"
-                                                       th:href="@{/admin/category/{id}(id=${childCategory.id})}"><span
-                                                        th:text="${childCategory.title}"> </span></a></td>
-                                                <td th:text="${childCategory.description}"></td>
+                                                       th:href="@{/admin/product/{id}(id=${product.id})}"><span
+                                                        th:text="${product.productName}"> </span></a></td>
+                                                <td th:text="${product.productPrice}"></td>
+                                                <td th:text="${product.productStock}"></td>
+                                                <td th:text="${product.sellerName}"></td>
                                                 <td>
-                                                    <form th:if="${!childCategory.publish}"
-                                                          th:action="@{/admin/category/{id}/publish(id=${childCategory.id})}"
+                                                    <form th:if="${!product.publish}"
+                                                          th:action="@{/admin/product/{id}/publish(id=${product.id})}"
                                                           method="post">
                                                         <button type="submit" class="btn bg-gradient-primary">공개하기
                                                         </button>
                                                     </form>
 
-                                                    <form th:if="${childCategory.publish}"
-                                                          th:action="@{/admin/category/{id}/unpublish(id=${childCategory.id})}"
+                                                    <form th:if="${product.publish}"
+                                                          th:action="@{/admin/product/{id}/unpublish(id=${product.id})}"
                                                           method="post">
                                                         <button type="submit" class="btn bg-gradient-danger">비공개하기
                                                         </button>
                                                     </form>
-
+                                                </td>
+                                                <td>
+                                                    <form th:action="@{/admin/product/{id}(id=${product.id})}"
+                                                          th:method="delete">
+                                                        <button type="submit" class="btn bg-gradient-danger">상품 삭제
+                                                        </button>
+                                                    </form>
                                                 </td>
                                             </tr>
                                             </tbody>
@@ -133,7 +132,7 @@
     </div>
     <div class="row justify-content-end">
         <div class="col-4 mt-5">
-            <a href="#" role="button" class="btn bg-gradient-info" th:href="@{/admin/category/new}">신규 카테고리 생성</a>
+            <a href="#" role="button" class="btn bg-gradient-info" th:href="@{/admin/product/new}">신규 상품 등록</a>
         </div>
     </div>
 </div>
