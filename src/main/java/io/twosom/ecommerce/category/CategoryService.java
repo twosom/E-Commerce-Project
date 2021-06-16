@@ -1,6 +1,7 @@
 package io.twosom.ecommerce.category;
 
-import io.twosom.ecommerce.category.form.CategoryForm;
+import io.twosom.ecommerce.category.form.CategoryCreateForm;
+import io.twosom.ecommerce.category.form.CategoryEditForm;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -16,13 +17,39 @@ public class CategoryService {
     private final ModelMapper mapper;
 
 
-    public void createNewCategory(CategoryForm categoryForm) {
-        Category category = mapper.map(categoryForm, Category.class);
+    public void createNewCategory(CategoryCreateForm categoryCreateForm) {
+        Category category = mapper.map(categoryCreateForm, Category.class);
         Category savedCategory = categoryRepository.save(category);
 
-        if (StringUtils.hasText(categoryForm.getParentCategoryTitle())) {
-            Category parentCategory = categoryRepository.findByTitle(categoryForm.getParentCategoryTitle());
+        if (StringUtils.hasText(categoryCreateForm.getParentCategoryTitle())) {
+            Category parentCategory = categoryRepository.findByTitle(categoryCreateForm.getParentCategoryTitle());
             parentCategory.addChildCategory(savedCategory);
         }
+    }
+
+    public void updateCategory(Long categoryId, CategoryEditForm categoryEditForm) {
+        Category findCategory = categoryRepository.findById(categoryId).get();
+
+        if (StringUtils.hasText(categoryEditForm.getParentCategoryTitle())) {
+            if (findCategory.getParentCategory() != null) {
+                findCategory.getParentCategory().removeChildCategory(findCategory);
+            }
+
+            Category parentCategory = categoryRepository.findByTitle(categoryEditForm.getParentCategoryTitle());
+            parentCategory.addChildCategory(findCategory);
+        }
+
+        findCategory.updateTitleAndDescription(categoryEditForm);
+
+    }
+
+    public void publishCategory(Long categoryId) {
+        Category category = categoryRepository.findById(categoryId).get();
+        category.setPublish(true);
+    }
+
+    public void unPublishCategory(Long categoryId) {
+        Category category = categoryRepository.findById(categoryId).get();
+        category.setPublish(false);
     }
 }

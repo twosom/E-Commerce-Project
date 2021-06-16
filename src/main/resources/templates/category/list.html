@@ -23,30 +23,151 @@
 
 
 <div class="card">
-    <div class="table-responsive">
-        <table class="table align-items-center mb-0">
-            <thead>
-            <tr>
-                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">ID</th>
-                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">카테고리 이름</th>
-                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">카테고리 설명</th>
-                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">상위 카테고리 이름</th>
-<!--                <th class="text-secondary opacity-7"></th>-->
-            </tr>
-            </thead>
-            <tbody>
-            <tr th:each="category : ${categoryList}">
-                <td th:text="${category.id}"></td>
-                <td th:text="${category.title}"></td>
-                <td th:text="${category.description}"></td>
-                <td th:if="${category.parentCategory != null}" th:text="${category.parentCategory.title}"></td>
-            </tr>
-            </tbody>
-        </table>
+
+    <div class="accordion-1">
+        <div class="container">
+
+            <div class="row">
+                <div class="col-md-10 mx-auto">
+                    <div class="accordion" id="accordionRental" th:each="category : ${categoryList}">
+
+
+                        <div class="accordion-item mb-3" th:if="${category.parentCategory == null}">
+                            <h5 class="accordion-header" id="headingOne">
+                                <button class="accordion-button border-bottom font-weight-bold collapsed" type="button"
+                                        data-bs-toggle="collapse"
+                                        th:data-bs-target="${'#' + category.title}"
+                                        aria-expanded="false"
+                                        aria-controls="collapseOne"
+                                        th:text="${category.title}">
+
+                                    <i class="collapse-close fa fa-plus text-primary text-xs pt-1 position-absolute end-0 me-3"
+                                       aria-hidden="true"></i>
+                                    <i class="collapse-open fa fa-minus text-primary text-xs pt-1 position-absolute end-0 me-3"
+                                       aria-hidden="true"></i>
+                                </button>
+                                <small class="ms-3 mx-auto text-muted small h6"
+                                       th:text="${category.description}"></small>
+                                <div class="row justify-content-end" th:object="${category}">
+                                    <div class="col-sm-3">
+                                        <form th:if="${!category.publish}"
+                                              th:action="@{/admin/category/{id}/publish(id=${category.id})}"
+                                              method="post">
+                                            <button type="submit" class="btn bg-gradient-primary btn-sm">
+                                                상위 카테고리 공개하기
+                                            </button>
+                                        </form>
+
+                                        <form th:if="${category.publish}"
+                                              th:action="@{/admin/category/{id}/unpublish(id=${category.id})}"
+                                              method="post">
+                                            <button type="submit" class="btn bg-gradient-danger btn-sm">
+                                                상위 카테고리 비공개하기
+                                            </button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </h5>
+                            <div th:id="${category.title}"
+
+                                 class="accordion-collapse collapse"
+                                 aria-labelledby="headingOne"
+                                 data-bs-parent="#accordionRental" style="">
+                                <div class="accordion-body text-sm opacity-8">
+                                    <div class="table-responsive">
+                                        <table class="table text-center align-items-center mb-0">
+                                            <thead>
+                                            <tr>
+                                                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                                    ID
+                                                </th>
+                                                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
+                                                    카테고리 이름
+                                                </th>
+                                                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
+                                                    카테고리 설명
+                                                </th>
+                                                <th class="text-uppercase text-primary text-xxs font-weight-bolder ps-2">
+                                                    공개여부
+                                                </th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr th:each="childCategory : ${category.childCategory}">
+                                                <td th:text="${childCategory.id}"></td>
+                                                <td><a href="#" class="text-decoration-none"
+                                                       th:href="@{/admin/category/{id}(id=${childCategory.id})}"><span
+                                                        th:text="${childCategory.title}"> </span></a></td>
+                                                <td th:text="${childCategory.description}"></td>
+                                                <td>
+                                                    <form th:if="${!childCategory.publish}"
+                                                          th:action="@{/admin/category/{id}/publish(id=${childCategory.id})}"
+                                                          method="post">
+                                                        <button type="submit" class="btn bg-gradient-primary">공개하기
+                                                        </button>
+                                                    </form>
+
+                                                    <form th:if="${childCategory.publish}"
+                                                          th:action="@{/admin/category/{id}/unpublish(id=${childCategory.id})}"
+                                                          method="post">
+                                                        <button type="submit" class="btn bg-gradient-danger">비공개하기
+                                                        </button>
+                                                    </form>
+
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
+
+
+    <!--        <div class="table-responsive">-->
+    <!--            <table class="table text-center align-items-center mb-0">-->
+    <!--                <thead>-->
+    <!--                <tr>-->
+    <!--                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">ID</th>-->
+    <!--                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">카테고리 이름</th>-->
+    <!--                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">카테고리 설명</th>-->
+    <!--                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">상위 카테고리 이름</th>-->
+    <!--                    <th class="text-uppercase text-primary text-xxs font-weight-bolder ps-2">공개여부</th>-->
+    <!--                </tr>-->
+    <!--                </thead>-->
+    <!--                <tbody>-->
+    <!--                <tr th:each="category : ${categoryList}">-->
+    <!--                    <td th:text="${category.id}"></td>-->
+    <!--                    <td><a href="#" class="text-decoration-none" th:href="@{/admin/category/{id}(id=${category.id})}"><span-->
+    <!--                            th:text="${category.title}"> </span></a></td>-->
+    <!--                    <td th:text="${category.description}"></td>-->
+    <!--                    <td th:text="${category.parentCategory != null} ? ${category.parentCategory.title} : '없음' "></td>-->
+    <!--                    <td>-->
+    <!--                        <form th:if="${!category.publish}" th:action="@{/admin/category/{id}/publish(id=${category.id})}" method="post">-->
+    <!--                            <button type="submit" class="btn bg-gradient-primary">공개</button>-->
+    <!--                        </form>-->
+
+    <!--                        <form th:if="${category.publish}" th:action="@{/admin/category/{id}/unpublish(id=${category.id})}" method="post">-->
+    <!--                            <button type="submit" class="btn bg-gradient-danger">비공개</button>-->
+    <!--                        </form>-->
+
+    <!--                    </td>-->
+    <!--                </tr>-->
+    <!--                </tbody>-->
+    <!--            </table>-->
+    <!--        </div>-->
     <div class="row justify-content-end">
-        <div class="col-4">
-            <a href="#" role="button" class="btn bg-gradient-info" th:href="@{/category/new}">신규 카테고리 생성</a>
+        <div class="col-4 mt-5">
+            <a href="#" role="button" class="btn bg-gradient-info" th:href="@{/admin/category/new}">신규 카테고리 생성</a>
         </div>
     </div>
 </div>
