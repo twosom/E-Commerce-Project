@@ -1,7 +1,14 @@
 spring:
   profiles:
     active: local
+  mvc:
+    hiddenmethod:
+      filter:
+        enabled: true
 
+server:
+  tomcat:
+    max-http-form-post-size: 5MB
 
 app:
   host: http://localhost:8080

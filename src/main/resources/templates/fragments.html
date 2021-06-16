@@ -355,5 +355,22 @@
     </svg>
 </div>
 
+<div th:fragment="editor-script">
+    <script src="/node_modules/tinymce/tinymce.min.js"></script>
+    <script>
+        (function () {
+            tinymce.init({
+                selector: '.editor',
+                plugins: 'image code, autoresize',
+                images_upload_url: 'postAcceptor.php',
+                branding: false,
+                automatic_uploads: false
+            })
+        }());
+    </script>
+</div>
+
+
+
 
 </html>

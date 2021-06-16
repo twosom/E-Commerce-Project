@@ -38,3 +38,7 @@ out/
 
 ### dev ###
 /src/main/resources/application-dev.yml
+
+
+### npm ###
+/src/main/resources/static/node_modules
