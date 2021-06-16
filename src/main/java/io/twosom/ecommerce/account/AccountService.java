@@ -2,10 +2,14 @@ package io.twosom.ecommerce.account;
 
 import io.twosom.ecommerce.account.event.AccountCreatedEvent;
 import io.twosom.ecommerce.account.event.AccountMailResendEvent;
+import io.twosom.ecommerce.account.event.AccountResetPasswordConfirmEvent;
+import io.twosom.ecommerce.account.event.AccountResetPasswordEmailSendEvent;
 import io.twosom.ecommerce.account.form.AccountPasswordEditForm;
 import io.twosom.ecommerce.account.form.AccountProfileEditForm;
 import io.twosom.ecommerce.account.form.SignUpForm;
+import io.twosom.ecommerce.main.form.ResetPasswordForm;
 import lombok.RequiredArgsConstructor;
+import net.bytebuddy.utility.RandomString;
 import org.modelmapper.ModelMapper;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -108,5 +112,19 @@ public class AccountService implements UserDetailsService {
         Account account = accountRepository.findById(accountId).get();
         account.setAddress(address);
         login(account);
+    }
+
+    public void sendResetPasswordEmail(ResetPasswordForm resetPasswordForm) {
+        Account findAccount = accountRepository.findByEmail(resetPasswordForm.getEmail());
+        findAccount.createVerificationCode();
+        eventPublisher.publishEvent(new AccountResetPasswordEmailSendEvent(findAccount));
+    }
+
+    public void resetPassword(ResetPasswordForm resetPasswordForm) {
+        Account findAccount = accountRepository.findByEmail(resetPasswordForm.getEmail());
+        String newPassword = RandomString.make(10);
+        findAccount.setPassword(passwordEncoder.encode(newPassword));
+
+        eventPublisher.publishEvent(new AccountResetPasswordConfirmEvent(findAccount, newPassword));
     }
 }

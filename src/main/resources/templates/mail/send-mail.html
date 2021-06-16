@@ -9,7 +9,7 @@
     <p>안녕하세요. <span th:text="${nickname}"></span>님</p>
 
     <div>
-        <p>인증 번호는 <span th:text="${emailVerificationCode}">인증번호</span>입니다.</p>
+        <p th:text="${message}"></p>
         <a th:href="${host}">Link</a>
     </div>
 </div>

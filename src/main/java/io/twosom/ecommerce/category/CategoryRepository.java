@@ -11,5 +11,14 @@ public interface CategoryRepository extends JpaRepository<Category, Long> {
 
     Category findByTitle(String title);
 
+    @EntityGraph(value = "Category.withChildCategory")
+    List<Category> findAllByParentCategoryIsNullAndPublish(boolean publish);
+
+
     List<Category> findAllByParentCategoryIsNull();
+
+    @EntityGraph(value = "Category.withChildCategory")
+    List<Category> findAll();
+
+    boolean existsByTitle(String title);
 }

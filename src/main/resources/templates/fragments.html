@@ -84,7 +84,7 @@
                                                                 <div class="icon h-10 me-3 d-flex mt-1">
                                                                     <i class="ni ni-single-copy-04 text-gradient- text-primary"></i>
                                                                 </div>
-                                                                <div class="w-100 d-flex align-items-center">
+                                                                <div class="w-100 d-flex justify-content-between align-items-center">
                                                                     <div>
                                                                         <h6 class="dropdown-header text-dark font-weight-bolder d-flex align-items-center p-0"
                                                                             th:text="${category.title}">
@@ -102,12 +102,9 @@
 
                                                         <div class="dropdown-menu mt-0 py-3 px-2 mt-3">
                                                             <a class="dropdown-item ps-3 border-radius-md mb-1"
-                                                               href="#"
                                                                th:each="childCategory : ${category.childCategory}"
+                                                               href="#" th:if="${childCategory.publish}"
                                                                th:text="${childCategory.title}"></a>
-                                                            <span class="text-sm"
-                                                                  th:if="${childCategory != null && !#strings.isEmpty(childCategory.description)}"
-                                                                  th:text="${childCategory.description}">See all 109 Sections</span>
                                                         </div>
                                                     </li>
                                                 </ul>
@@ -133,6 +130,7 @@
                                                 </div>
                                                 <a class="dropdown-item ps-3 border-radius-md mb-1" href="#"
                                                    th:each="childCategory : ${category.childCategory}"
+                                                   th:if="${childCategory.publish}"
                                                    th:text="${childCategory.title}">
                                                 </a>
                                             </div>
@@ -297,8 +295,8 @@
                                        placeholder="Password"
                                        aria-describedby="passwordHelp" required/>
                                 <small id="passwordHelp" class="form-text text-muted">
-                                    패스워드가 기억나지 않는다면, <strong><a href="#"
-                                                                th:href="@{/email-login}">패스워드 없이 로그인하기</a></strong>
+                                    비밀번호가 기억나지 않는다면, <strong><a href="#"
+                                                                th:href="@{/reset-password}">비밀번호 변경하기</a></strong>
                                 </small>
                                 <small class="invalid-feedback">패스워드를 입력하세요.</small>
                             </div>

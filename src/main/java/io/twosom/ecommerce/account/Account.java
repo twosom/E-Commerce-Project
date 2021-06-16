@@ -1,5 +1,6 @@
 package io.twosom.ecommerce.account;
 
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import net.bytebuddy.utility.RandomString;
@@ -13,6 +14,7 @@ import java.time.LocalDateTime;
 @Entity
 @Getter
 @Setter
+@EqualsAndHashCode(of = "id")
 public class Account {
 
     @Id

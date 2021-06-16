@@ -34,18 +34,15 @@ public class AccountProfileEditFormValidator implements Validator {
 
 
         if (accountRepository.existsByEmail(form.getEmail())) {
-            if (form.getEmail().equals(account.getEmail())) {
-                return;
+            if (!form.getEmail().equals(account.getEmail())) {
+                errors.rejectValue("email", "wrong.email", "이미 사용중인 이메일입니다.");
             }
-            errors.rejectValue("email", "wrong.email", "이미 사용중인 이메일입니다.");
         }
 
         if (accountRepository.existsByNickname(form.getNickname())) {
-            if (form.getNickname().equals(account.getNickname())) {
-                validateCanEmailResend(errors, account);
-                return;
+            if (!form.getNickname().equals(account.getNickname())) {
+                errors.rejectValue("nickname", "wrong.nickname", "이미 사용중인 닉네임입니다.");
             }
-            errors.rejectValue("nickname", "wrong.nickname", "이미 사용중인 닉네임입니다.");
         }
 
         validateCanEmailResend(errors, account);
