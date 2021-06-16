@@ -16,6 +16,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.test.context.support.TestExecutionEvent;
 import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.web.servlet.MockMvc;
@@ -76,8 +78,11 @@ class MainControllerTest {
     @Test
     void access_index_page_with_unauthenticated() throws Exception {
 
+        AnonymousAuthenticationToken token = new AnonymousAuthenticationToken("key", "anonymousUser",
+                AuthorityUtils.createAuthorityList("ROLE_ANONYMOUS"));
+
         mockMvc.perform(get("/")
-                .with(anonymous()))
+                .with(authentication(token)))
                 .andExpect(status().isOk())
                 .andExpect(view().name("index"))
                 .andExpect(model().attributeDoesNotExist("account"));
