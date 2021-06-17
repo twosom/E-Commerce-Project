@@ -4,6 +4,7 @@ import io.twosom.ecommerce.account.UserAccount;
 import io.twosom.ecommerce.account.domain.Account;
 import io.twosom.ecommerce.account.domain.Address;
 import io.twosom.ecommerce.account.domain.PreviousPassword;
+import io.twosom.ecommerce.account.domain.Role;
 import io.twosom.ecommerce.account.event.AccountCreatedEvent;
 import io.twosom.ecommerce.account.event.AccountMailResendEvent;
 import io.twosom.ecommerce.account.event.AccountResetPasswordConfirmEvent;
@@ -57,8 +58,24 @@ public class AccountService implements UserDetailsService {
     private Account saveNewAccount(SignUpForm signUpForm) {
         signUpForm.setPassword(passwordEncoder.encode(signUpForm.getPassword()));
         Account account = modelMapper.map(signUpForm, Account.class);
+
+        checkRole(signUpForm, account);
+
         account.createVerificationCode();
         return accountRepository.save(account);
+    }
+
+    private void checkRole(SignUpForm signUpForm, Account account) {
+        switch (signUpForm.getUserOrSeller()) {
+            case "user":
+                account.setRole(Role.ROLE_USER);
+                break;
+            case "seller":
+                account.setRole(Role.ROLE_SELLER);
+                break;
+            default:
+                throw new RuntimeException("잘못된 접근입니다.");
+        }
     }
 
     public boolean verifyCode(Account account, String verificationCode) {

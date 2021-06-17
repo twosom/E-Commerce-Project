@@ -45,5 +45,19 @@ public class SignUpFormValidator implements Validator {
         if (!StringUtils.hasText(address.getZipcode())) {
             errors.rejectValue("address.zipcode", "empty.zipcode", "우편번호는 필수입니다.");
         }
+
+        String userOrSeller = signUpForm.getUserOrSeller();
+        if (!StringUtils.hasText(userOrSeller)) {
+            errors.rejectValue("userOrSeller", "empty.userOrSeller", "이 값은 필수입니다.");
+        } else {
+            switch (userOrSeller) {
+                case "user":
+                    break;
+                case "seller":
+                    break;
+                default:
+                    errors.rejectValue("userOrSeller", "wrong.userOrSeller", "잘못된 접근입니다.");
+            }
+        }
     }
 }

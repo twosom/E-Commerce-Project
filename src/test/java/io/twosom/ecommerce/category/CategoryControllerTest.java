@@ -1,5 +1,7 @@
 package io.twosom.ecommerce.category;
 
+import io.twosom.ecommerce.account.domain.Account;
+import io.twosom.ecommerce.account.domain.Role;
 import io.twosom.ecommerce.account.repository.AccountRepository;
 import io.twosom.ecommerce.account.service.AccountService;
 import io.twosom.ecommerce.account.domain.Address;
@@ -73,9 +75,17 @@ class CategoryControllerTest {
                 .email(email)
                 .password(password)
                 .address(new Address("city", "street", "zipcode"))
+                .userOrSeller("user")
                 .build();
 
         accountService.createAccount(signUpForm);
+
+        changeToAdmin(nickname);
+    }
+
+    private void changeToAdmin(String nickname) {
+        Account account = accountRepository.findByNickname(nickname);
+        account.setRole(Role.ROLE_ADMIN);
     }
 
     @WithUserDetails(value = "twosom", setupBefore = TestExecutionEvent.TEST_EXECUTION)

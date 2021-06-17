@@ -33,4 +33,6 @@ public class SignUpForm {
 
     private Address address;
 
+    private String userOrSeller;
+
 }
