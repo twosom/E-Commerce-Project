@@ -2,6 +2,31 @@ plugins {
     id 'org.springframework.boot' version '2.5.1'
     id 'io.spring.dependency-management' version '1.0.11.RELEASE'
     id 'java'
+
+    id 'org.siouan.frontend-jdk11' version '5.2.0'
+    id "org.siouan.frontend" version "3.0.2"
+}
+
+
+def preinstalledNodeDistributionDirectory = file("${projectDir}/src/main/resources/static/node")
+
+apply plugin: 'org.siouan.frontend-jdk11'
+
+frontend {
+    nodeDistributionProvided = false
+
+    nodeInstallDirectory = file("${projectDir}/src/main/resources/static/node")
+
+    packageJsonDirectory = file("${projectDir}/src/main/resources/static")
+
+    nodeVersion = '16.0.0'
+
+    assembleScript = 'run build'
+
+    cleanScript = 'run clean'
+
+    checkScript = 'run check'
+
 }
 
 group = 'io.twosom'
@@ -40,6 +65,7 @@ dependencies {
 
     // SPRING_BOOT_STARTER_VALIDATION
     implementation 'org.springframework.boot:spring-boot-starter-validation'
+
 
 }
 
