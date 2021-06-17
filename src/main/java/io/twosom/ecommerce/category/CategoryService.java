@@ -6,7 +6,11 @@ import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -41,6 +45,13 @@ public class CategoryService {
 
         findCategory.updateTitleAndDescription(categoryEditForm);
 
+    }
+
+    public void addCategoryTitleListToModel(Model model, List<Category> categoryList) {
+        List<String> categoryTitleList = categoryList.stream().map(Category::getTitle)
+                .collect(Collectors.toList());
+
+        model.addAttribute("categoryTitleList", categoryTitleList);
     }
 
     public void publishCategory(Long categoryId) {

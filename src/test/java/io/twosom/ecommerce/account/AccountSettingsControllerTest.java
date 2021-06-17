@@ -81,6 +81,7 @@ class AccountSettingsControllerTest {
                 .email(email)
                 .password(password)
                 .address(new Address("city", "street", "zipcode"))
+                .userOrSeller("user")
                 .build();
 
         accountService.createAccount(signUpForm);

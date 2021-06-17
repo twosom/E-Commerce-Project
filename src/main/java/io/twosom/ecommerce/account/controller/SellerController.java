@@ -1,11 +1,14 @@
-package io.twosom.ecommerce.product;
+package io.twosom.ecommerce.account.controller;
 
-import io.twosom.ecommerce.account.domain.Account;
 import io.twosom.ecommerce.account.CurrentAccount;
+import io.twosom.ecommerce.account.domain.Account;
 import io.twosom.ecommerce.category.Category;
-import io.twosom.ecommerce.category.CategoryDto;
 import io.twosom.ecommerce.category.CategoryRepository;
 import io.twosom.ecommerce.category.CategoryService;
+import io.twosom.ecommerce.product.Product;
+import io.twosom.ecommerce.product.ProductDto;
+import io.twosom.ecommerce.product.ProductRepository;
+import io.twosom.ecommerce.product.ProductService;
 import io.twosom.ecommerce.product.form.ProductForm;
 import io.twosom.ecommerce.product.validator.ProductFormValidator;
 import lombok.RequiredArgsConstructor;
@@ -21,14 +24,16 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Controller
+@RequestMapping("/seller")
 @RequiredArgsConstructor
-public class ProductController {
+public class SellerController {
 
     private final ProductRepository productRepository;
-    private final ProductService productService;
-
     private final CategoryRepository categoryRepository;
+
+    private final ProductService productService;
     private final CategoryService categoryService;
+
     private final ModelMapper modelMapper;
 
 
@@ -38,41 +43,45 @@ public class ProductController {
     }
 
 
-    @GetMapping("/admin/product")
-    public String productList(Model model) {
-        List<ProductDto> productList = productService.convertProductListToProductDtoList(productRepository.findAll());
-
-        List<CategoryDto> categoryList = categoryRepository.findAllByParentCategoryIsNotNull()
-                .stream().map(category -> modelMapper.map(category, CategoryDto.class))
-                .collect(Collectors.toList());
-
-        model.addAttribute("categoryList", categoryList);
-        model.addAttribute("productList", productList);
-
-        return "product/list";
+    @GetMapping("/menu")
+    public String sellerMenu() {
+        return "seller/menu";
     }
 
-    @GetMapping("/admin/product/new")
+    @GetMapping("/product")
+    public String sellerProductList(@CurrentAccount Account account, Model model) {
+        List<Product> productList = productRepository.findAllBySeller(account);
+        List<Category> categoryList = productList.stream()
+                .map(Product::getCategory)
+                .collect(Collectors.toList());
+
+        List<ProductDto> productDtoList = productService.convertProductListToProductDtoList(productList);
+        model.addAttribute("productList", productDtoList);
+        model.addAttribute("categoryList", categoryList);
+        return "seller/product-list";
+    }
+
+    @GetMapping("/product/new")
     public String createProductForm(Model model) {
         categoryService.addCategoryTitleListToModel(model, categoryRepository.findAllByParentCategoryIsNotNull());
         model.addAttribute(new ProductForm());
 
-        return "product/new-product";
+        return "seller/new-product";
     }
 
-    @PostMapping("/admin/product/new")
+    @PostMapping("/product/new")
     public String createProduct(@CurrentAccount Account account, @Valid ProductForm productForm, Errors errors, Model model) {
 
         if (errors.hasErrors()) {
             categoryService.addCategoryTitleListToModel(model, categoryRepository.findAllByParentCategoryIsNotNull());
-            return "product/new-product";
+            return "seller/new-product";
         }
 
         productService.createProduct(account, productForm);
-        return "redirect:/admin/product";
+        return "redirect:/seller/product";
     }
 
-    @GetMapping("/admin/product/{id}")
+    @GetMapping("/product/{id}")
     public String editProductForm(@PathVariable("id") Product product, Model model) {
         ProductForm productForm = modelMapper.map(product, ProductForm.class);
         productForm.setCategoryName(product.getCategory().getTitle());
@@ -80,38 +89,26 @@ public class ProductController {
         categoryService.addCategoryTitleListToModel(model, categoryRepository.findAllByParentCategoryIsNotNull());
         model.addAttribute(productForm);
 
-        return "product/edit-product";
+        return "seller/edit-product";
     }
 
-    @PostMapping("/admin/product/{id}")
-    public String editProduct(@PathVariable("id") Long productId,
-                              @Valid ProductForm productForm,
-                              Errors errors, Model model) {
 
-        if (errors.hasErrors()) {
-            categoryService.addCategoryTitleListToModel(model, categoryRepository.findAllByParentCategoryIsNotNull());
-            return "product/edit-product";
-        }
-
-        productService.updateProduct(productId, productForm);
-        return "redirect:/admin/product";
-    }
-
-    @DeleteMapping("/admin/product/{id}")
+    @DeleteMapping("/product/{id}")
     public String deleteProduct(@PathVariable("id") Long productId, @CurrentAccount Account account) {
         productService.removeProduct(productId, account);
-        return "redirect:/admin/product";
+        return "redirect:/seller/product";
     }
 
-    @PostMapping("/admin/product/{id}/publish")
+    @PostMapping("/product/{id}/publish")
     public String publishProduct(@PathVariable("id") Long productId, @CurrentAccount Account account) {
         productService.publishProduct(productId, account);
-        return "redirect:/admin/product";
+        return "redirect:/seller/product";
     }
 
-    @PostMapping("/admin/product/{id}/unpublish")
+    @PostMapping("/product/{id}/unpublish")
     public String unPublishProduct(@PathVariable("id") Long productId, @CurrentAccount Account account) {
         productService.unPublishProduct(productId, account);
-        return "redirect:/admin/product";
+        return "redirect:/seller/product";
     }
+
 }

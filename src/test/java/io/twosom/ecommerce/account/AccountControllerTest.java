@@ -68,6 +68,7 @@ class AccountControllerTest{
                         .param("address.city", "city")
                         .param("address.street", "street")
                         .param("address.zipcode", "zipcode")
+                        .param("userOrSeller", "user")
                         .with(csrf()))
                 .andExpect(status().isOk())
                 .andExpect(view().name("account/sign-up"))
@@ -86,6 +87,7 @@ class AccountControllerTest{
                         .param("address.city", "Seoul")
                         .param("address.street", "Garosugil")
                         .param("address.zipcode", "222111")
+                        .param("userOrSeller", "user")
                         .with(csrf()))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(view().name("redirect:/"));

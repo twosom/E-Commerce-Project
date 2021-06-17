@@ -1,8 +1,11 @@
 package io.twosom.ecommerce.config;
 
+import io.twosom.ecommerce.account.domain.Role;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
+import org.springframework.security.access.hierarchicalroles.RoleHierarchy;
+import org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
@@ -29,6 +32,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
                 .antMatchers("/", "/login", "/logout", "/sign-up", "/favicon.ico", "/error", "/test", "/reset-password/**")
                 .permitAll()
+                .antMatchers("/admin/**").hasAuthority("ROLE_ADMIN")
+                .antMatchers("/seller/**").hasAuthority("ROLE_SELLER")
                 .anyRequest().authenticated();
 
         http.formLogin()
@@ -63,5 +68,22 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         JdbcTokenRepositoryImpl jdbcTokenRepository = new JdbcTokenRepositoryImpl();
         jdbcTokenRepository.setDataSource(dataSource);
         return jdbcTokenRepository;
+    }
+
+    @Bean
+    public RoleHierarchy roleHierarchy() {
+        RoleHierarchyImpl roleHierarchy = new RoleHierarchyImpl();
+
+        StringBuilder sb = new StringBuilder();
+        sb.append(Role.ROLE_ADMIN);
+        sb.append(" > ");
+        sb.append(Role.ROLE_SELLER);
+        sb.append("\n");
+        sb.append(Role.ROLE_SELLER);
+        sb.append(" > ");
+        sb.append(Role.ROLE_USER);
+
+        roleHierarchy.setHierarchy(sb.toString());
+        return roleHierarchy;
     }
 }

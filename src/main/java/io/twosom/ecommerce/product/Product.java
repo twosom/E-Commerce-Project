@@ -21,6 +21,10 @@ public class Product {
     @ManyToOne
     private Account seller;
 
+    @ManyToOne
+    @JoinColumn(name = "category_id")
+    private Category category;
+
     @Lob
     private String productDescription;
 
@@ -30,7 +34,4 @@ public class Product {
 
     private boolean publish;
 
-    @ManyToOne
-    @JoinColumn(name = "category_id")
-    private Category category;
 }

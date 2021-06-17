@@ -9,6 +9,9 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 @Transactional
 @RequiredArgsConstructor
@@ -61,5 +64,16 @@ public class ProductService {
     public void unPublishProduct(Long productId, Account account) {
         Product product = findProductAndValidateSeller(productId, account);
         product.setPublish(false);
+    }
+
+
+    public List<ProductDto> convertProductListToProductDtoList(List<Product> productList) {
+        return productList.stream()
+                            .map(product -> {
+                                ProductDto productDto = modelMapper.map(product, ProductDto.class);
+                                productDto.setSellerName(product.getSeller().getNickname());
+                                return productDto;
+                            })
+                            .collect(Collectors.toList());
     }
 }

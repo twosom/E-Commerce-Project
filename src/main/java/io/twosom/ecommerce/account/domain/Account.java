@@ -5,10 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 import net.bytebuddy.utility.RandomString;
 
-import javax.persistence.Embedded;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
@@ -34,6 +31,9 @@ public class Account {
     private LocalDateTime emailVerificationCodeSendTime;
 
     private LocalDateTime joinedAt;
+
+    @Enumerated(EnumType.STRING)
+    private Role role;
 
     @Embedded
     private Address address;

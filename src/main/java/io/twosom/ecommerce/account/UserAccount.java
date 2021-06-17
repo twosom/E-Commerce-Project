@@ -13,7 +13,7 @@ public class UserAccount extends User {
     private final Account account;
 
     public UserAccount(Account account) {
-        super(account.getNickname(), account.getPassword(), Collections.singleton(new SimpleGrantedAuthority("ROLE_USER")));
+        super(account.getNickname(), account.getPassword(), Collections.singleton(new SimpleGrantedAuthority(account.getRole().toString())));
         this.account = account;
     }
 }

@@ -1,5 +1,6 @@
 package io.twosom.ecommerce.product;
 
+import io.twosom.ecommerce.account.domain.Account;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,4 +15,5 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
     Product findByProductName(String productName);
 
+    List<Product> findAllBySeller(Account account);
 }

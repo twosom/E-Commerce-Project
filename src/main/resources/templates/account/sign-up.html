@@ -96,6 +96,15 @@
                                                th:errors="*{address.zipcode}"></small>
                                     </div>
 
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="userOrSeller" id="isUser" value="user" checked>
+                                        <label class="form-check-label" for="isUser">일반유저</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="userOrSeller" id="isSeller" value="seller">
+                                        <label class="form-check-label" for="isSeller">판매자</label>
+                                    </div>
+
                                     <div class="form-group">
                                         <button type="submit" class="btn bg-gradient-primary btn-lg w-100 text-lg">가입하기
                                         </button>
