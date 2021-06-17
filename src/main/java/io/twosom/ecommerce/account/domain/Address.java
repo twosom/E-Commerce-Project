@@ -1,4 +1,4 @@
-package io.twosom.ecommerce.account;
+package io.twosom.ecommerce.account.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

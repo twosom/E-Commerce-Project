@@ -1,6 +1,6 @@
 package io.twosom.ecommerce.account.event;
 
-import io.twosom.ecommerce.account.Account;
+import io.twosom.ecommerce.account.domain.Account;
 import lombok.Getter;
 
 @Getter

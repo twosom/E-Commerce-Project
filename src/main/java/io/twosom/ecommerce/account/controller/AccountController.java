@@ -1,6 +1,10 @@
-package io.twosom.ecommerce.account;
+package io.twosom.ecommerce.account.controller;
 
+import io.twosom.ecommerce.account.CurrentAccount;
+import io.twosom.ecommerce.account.domain.Account;
 import io.twosom.ecommerce.account.form.SignUpForm;
+import io.twosom.ecommerce.account.repository.AccountRepository;
+import io.twosom.ecommerce.account.service.AccountService;
 import io.twosom.ecommerce.account.validator.SignUpFormValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

@@ -1,8 +1,10 @@
 package io.twosom.ecommerce.account;
 
+import io.twosom.ecommerce.account.domain.Account;
 import io.twosom.ecommerce.account.event.AccountCreatedEvent;
 import io.twosom.ecommerce.account.event.AccountEventListener;
 import io.twosom.ecommerce.account.event.AccountMailResendEvent;
+import io.twosom.ecommerce.account.repository.AccountRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

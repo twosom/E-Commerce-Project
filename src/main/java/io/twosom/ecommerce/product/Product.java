@@ -1,8 +1,7 @@
 package io.twosom.ecommerce.product;
 
-import io.twosom.ecommerce.account.Account;
+import io.twosom.ecommerce.account.domain.Account;
 import io.twosom.ecommerce.category.Category;
-import io.twosom.ecommerce.product.form.ProductForm;
 import lombok.*;
 
 import javax.persistence.*;

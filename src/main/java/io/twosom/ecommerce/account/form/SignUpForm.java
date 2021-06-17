@@ -1,6 +1,6 @@
 package io.twosom.ecommerce.account.form;
 
-import io.twosom.ecommerce.account.Address;
+import io.twosom.ecommerce.account.domain.Address;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

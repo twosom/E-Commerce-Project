@@ -1,9 +1,15 @@
 package io.twosom.ecommerce.account;
 
+import io.twosom.ecommerce.account.domain.Account;
+import io.twosom.ecommerce.account.domain.Address;
+import io.twosom.ecommerce.account.domain.PreviousPassword;
 import io.twosom.ecommerce.account.event.AccountCreatedEvent;
 import io.twosom.ecommerce.account.event.AccountEventListener;
 import io.twosom.ecommerce.account.event.AccountMailResendEvent;
 import io.twosom.ecommerce.account.form.SignUpForm;
+import io.twosom.ecommerce.account.repository.AccountRepository;
+import io.twosom.ecommerce.account.repository.PreviousPasswordRepository;
+import io.twosom.ecommerce.account.service.AccountService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -17,6 +23,9 @@ import org.springframework.security.test.context.support.TestExecutionEvent;
 import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.time.LocalDateTime;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -44,6 +53,9 @@ class AccountSettingsControllerTest {
     @Autowired
     AccountRepository accountRepository;
 
+    @Autowired
+    PreviousPasswordRepository previousPasswordRepository;
+
     @MockBean
     AccountEventListener accountEventListener;
 
@@ -60,6 +72,7 @@ class AccountSettingsControllerTest {
     @AfterEach
     void afterEach() {
         accountRepository.deleteAll();
+        previousPasswordRepository.deleteAll();
     }
 
     private void createNewAccount(String nickname, String email, String password) {
@@ -194,6 +207,51 @@ class AccountSettingsControllerTest {
 
         assertTrue(passwordEncoder.matches("newPassword", findAccount.getPassword()));
     }
+
+
+    @WithUserDetails(value = "twosom", setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    @DisplayName("비밀번호 수정 - 이전 비밀번호 사용 - 3개월 안지난 시점")
+    @Test
+    void password_edit_with_previous_password_before_3months() throws Exception {
+
+        password_edit_with_correct_value();
+        mockMvc.perform(
+                post("/account/settings/password")
+                        .param("currentPassword", "newPassword")
+                        .param("newPassword", "11111111")
+                        .param("confirmNewPassword", "11111111")
+                        .with(csrf()))
+                .andExpect(status().isOk())
+                .andExpect(model().hasErrors());
+    }
+
+    @WithUserDetails(value = "twosom", setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    @DisplayName("비밀번호 수정 - 이전 비밀번호 사용 - 3개월 지난 시점")
+    @Test
+    void password_edit_with_previous_password_after_3months() throws Exception {
+
+        Account account = accountRepository.findByNickname("twosom");
+        password_edit_with_correct_value();
+        List<PreviousPassword> previousPasswordList = previousPasswordRepository.findAllByAccount(account);
+        PreviousPassword previousPassword = previousPasswordList.get(0);
+        previousPassword.setPasswordChangedDate(LocalDateTime.now().minusMonths(4));
+
+
+        mockMvc.perform(
+                post("/account/settings/password")
+                        .param("currentPassword", "newPassword")
+                        .param("newPassword", "11111111")
+                        .param("confirmNewPassword", "11111111")
+                        .with(csrf()))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/"))
+                .andExpect(view().name("redirect:/"));
+
+        assertTrue(passwordEncoder.matches("11111111", account.getPassword()));
+
+
+    }
+
 
     @WithUserDetails(value = "twosom", setupBefore = TestExecutionEvent.TEST_EXECUTION)
     @DisplayName("주소 수정 - 폼 접근")
