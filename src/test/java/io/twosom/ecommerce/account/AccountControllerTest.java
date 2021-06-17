@@ -27,7 +27,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @Transactional
 @SpringBootTest
 @AutoConfigureMockMvc
-class AccountControllerTest {
+class AccountControllerTest{
 
     @Autowired
     MockMvc mockMvc;
