@@ -1,9 +1,12 @@
-package io.twosom.ecommerce.product;
+package io.twosom.ecommerce.product.service;
 
 import io.twosom.ecommerce.account.domain.Account;
 import io.twosom.ecommerce.category.Category;
 import io.twosom.ecommerce.category.CategoryRepository;
+import io.twosom.ecommerce.product.domain.Product;
+import io.twosom.ecommerce.product.dto.ProductDto;
 import io.twosom.ecommerce.product.form.ProductForm;
+import io.twosom.ecommerce.product.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;

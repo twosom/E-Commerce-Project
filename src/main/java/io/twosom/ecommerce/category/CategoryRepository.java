@@ -24,4 +24,7 @@ public interface CategoryRepository extends JpaRepository<Category, Long> {
     List<Category> findAll();
 
     boolean existsByTitle(String title);
+
+    /* 네비게이션 바 조회용 */
+    Category findByTitleAndPublish(String title, boolean publish);
 }

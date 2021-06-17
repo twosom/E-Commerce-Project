@@ -82,7 +82,7 @@
                                                         <a class="dropdown-item py-2 ps-3 border-radius-md" href="#">
                                                             <div class="d-flex">
                                                                 <div class="icon h-10 me-3 d-flex mt-1">
-                                                                    <i class="ni ni-single-copy-04 text-gradient- text-primary"></i>
+                                                                    <i class="ni ni-single-copy-04 text-gradient text-primary"></i>
                                                                 </div>
                                                                 <div class="w-100 d-flex justify-content-between align-items-center">
                                                                     <div>
@@ -103,7 +103,9 @@
                                                         <div class="dropdown-menu mt-0 py-3 px-2 mt-3">
                                                             <a class="dropdown-item ps-3 border-radius-md mb-1"
                                                                th:each="childCategory : ${category.childCategory}"
-                                                               href="#" th:if="${childCategory.publish}"
+                                                               href="#"
+                                                               th:href="@{/product(category=${childCategory.title})}"
+                                                               th:if="${childCategory.publish}"
                                                                th:text="${childCategory.title}"></a>
                                                         </div>
                                                     </li>
@@ -128,7 +130,8 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <a class="dropdown-item ps-3 border-radius-md mb-1" href="#"
+                                                <a class="dropdown-item ps-3 border-radius-md mb-1"
+                                                   href="#" th:href="@{/product(category=${childCategory.title})}"
                                                    th:each="childCategory : ${category.childCategory}"
                                                    th:if="${childCategory.publish}"
                                                    th:text="${childCategory.title}">
@@ -138,6 +141,16 @@
                                     </div>
                                 </li>
                             </ul>
+
+                            <ul class="navbar-nav ms-auto">
+                                <li class="nav-item">
+                                    <form th:action="@{/search/product}" class="form-inline" method="get">
+                                        <input class="form-control me-lg-8 text-center" name="keyword" type="search"
+                                               placeholder="상품 검색"/>
+                                    </form>
+                                </li>
+                            </ul>
+
                             <ul class="navbar-nav navbar-nav-hover mx-auto" sec:authorize="isAuthenticated()">
                                 <li class="nav-item dropdown dropdown-hover mx-2">
                                     <a role="button"
@@ -385,5 +398,88 @@
     </script>
 </div>
 
+<script th:fragment="currencyFormatter">
+    (function () {
+        let priceDisplay = document.querySelector('#formattedPrice');
+        priceDisplay.style.display = 'none';
+        const productValueInput = document.querySelector('#productPrice');
+
+        productValueInput.onkeyup = function () {
+            let value = productValueInput.value;
+            priceDisplay.innerText = new Intl.NumberFormat('ko-KR', {
+                style: 'currency',
+                currency: 'KRW'
+            }).format(value);
+            if (priceDisplay.style.display === 'none') {
+                priceDisplay.style.display = 'block';
+            }
+        };
+
+    }());
+</script>
+
+
+<div th:fragment="date-time">
+    <script src="/node_modules/moment/min/moment-with-locales.min.js"></script>
+    <script type="application/javascript">
+        (function () {
+            function momentFunction(e, localizedFormat) {
+                e.innerText = moment(e.textContent, 'YYYY-MM-DD`T`hh:mm').format(localizedFormat);
+            }
+
+            moment().format();
+            moment.locale('ko');
+
+            function searchElementAndMoment(elementName, localizedFormat) {
+                const element = document.querySelectorAll(elementName);
+                element.forEach(e => {
+                    momentFunction(e, localizedFormat);
+                });
+            }
+
+            searchElementAndMoment('.date-time', 'LLL');
+            searchElementAndMoment('.date', 'LL');
+            searchElementAndMoment('.weekday', 'dddd');
+            searchElementAndMoment('.time', 'LT');
+            searchElementAndMoment('.date-weekday-time', 'LLLL');
+
+
+            const calendar = document.querySelectorAll('.calendar');
+            calendar.forEach(e => {
+                e.innerText = moment(e.textContent, 'YYYY-MM-DD`T`hh:mm').calendar();
+            });
+
+            const fromNow = document.querySelectorAll('.fromNow');
+            fromNow.forEach(e => {
+                e.innerText = moment(e.textContent, 'YYYY-MM-DD`T`hh:mm').fromNow();
+            });
+
+
+        }());
+    </script>
+</div>
+
+
+<footer th:fragment="footer" class="footer pt-5 mt-5">
+    <hr class="horizontal dark mb-5"/>
+    <div class="row">
+        <div class="col-md-3 mb-4 ms-auto">
+            <div>
+                <h6 class="text-gradient text-primary font-weight-bolder">E-Commerce&trade;</h6>
+            </div>
+            <div>
+                <h6 class="mt-3 mb-2 opacity-8">Social</h6>
+                <ul class="d-flex flex-row ms-n3 nav">
+                    <li class="nav-item">
+                        <a class="nav-link pe-1" href="https://github.com/twosom" target="_blank">
+                            <i class="fab fa-github text-lg opacity-8" aria-hidden="true"></i>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+        </div>
+    </div>
+</footer>
 
 </html>

@@ -62,7 +62,8 @@
                 </div>
                 <div class="card-body">
                     <div class="row justify-content-center">
-                        <form class="needs-validation col-sm-10" action="#" th:action="@{/admin/product/{id}(id=${productForm.id})}"
+                        <form class="needs-validation col-sm-10" action="#"
+                              th:action="@{/admin/product/{id}(id=${productForm.id})}"
                               th:object="${productForm}"
                               method="post" novalidate>
 
@@ -97,6 +98,8 @@
                                 <input id="productPrice" type="number" class="form-control" placeholder="상품 가격"
                                        aria-describedby="productPriceHelp"
                                        th:field="*{productPrice}" required min="0"/>
+                                <small class="form-text text-dark font-weight-bolder text-gradient"
+                                       id="formattedPrice"></small>
                                 <small class="form-text text-muted" id="productPriceHelp">상품 가격을 입력해주세요.</small>
                             </div>
 
@@ -105,7 +108,7 @@
                                 <input id="productStock" type="number" class="form-control" placeholder="상품 가격"
                                        aria-describedby="productStockHelp"
                                        th:field="*{productStock}" required min="0"/>
-                                <small class="form-text text-muted" id="productStockHelp">상품 가격을 입력해주세요.</small>
+                                <small class="form-text text-muted" id="productStockHelp">상품 수량을 입력해주세요.</small>
                             </div>
 
 
@@ -131,8 +134,10 @@
         </div>
     </div>
 </div>
+<footer th:replace="fragments.html::footer"></footer>
 </body>
 <script src="/node_modules/croppie/croppie.js"></script>
+<script th:replace="fragments.html::currencyFormatter"></script>
 <script th:replace="fragments.html::uiScripts"></script>
 <script th:replace="fragments.html::validate-form"></script>
 <script th:replace="fragments.html::editor-script"></script>
