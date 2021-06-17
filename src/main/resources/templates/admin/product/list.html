@@ -9,7 +9,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-7 text-center mx-auto">
-                    <h1 class="text-white pt-3 mt-n5">판매자 메뉴 / 상품 리스트</h1>
+                    <h1 class="text-white pt-3 mt-n5">관리자 메뉴 / 상품 리스트</h1>
                 </div>
             </div>
         </div>
@@ -87,28 +87,28 @@
                                                 th:if="${product.category.id == category.id}">
                                                 <td th:text="${product.id}"></td>
                                                 <td><a href="#" class="text-decoration-none"
-                                                       th:href="@{/seller/product/{id}(id=${product.id})}"><span
+                                                       th:href="@{/admin/product/{id}(id=${product.id})}"><span
                                                         th:text="${product.productName}"> </span></a></td>
                                                 <td th:text="${product.productPrice}"></td>
                                                 <td th:text="${product.productStock}"></td>
                                                 <td th:text="${product.sellerName}"></td>
                                                 <td>
                                                     <form th:if="${!product.publish}"
-                                                          th:action="@{/seller/product/{id}/publish(id=${product.id})}"
+                                                          th:action="@{/admin/product/{id}/publish(id=${product.id})}"
                                                           method="post">
                                                         <button type="submit" class="btn bg-gradient-primary">공개하기
                                                         </button>
                                                     </form>
 
                                                     <form th:if="${product.publish}"
-                                                          th:action="@{/seller/product/{id}/unpublish(id=${product.id})}"
+                                                          th:action="@{/admin/product/{id}/unpublish(id=${product.id})}"
                                                           method="post">
                                                         <button type="submit" class="btn bg-gradient-danger">비공개하기
                                                         </button>
                                                     </form>
                                                 </td>
                                                 <td>
-                                                    <form th:action="@{/seller/product/{id}(id=${product.id})}"
+                                                    <form th:action="@{/admin/product/{id}(id=${product.id})}"
                                                           th:method="delete">
                                                         <button type="submit" class="btn bg-gradient-danger">상품 삭제
                                                         </button>
@@ -132,7 +132,7 @@
     </div>
     <div class="row justify-content-end">
         <div class="col-4 mt-5">
-            <a href="#" role="button" class="btn bg-gradient-info" th:href="@{/seller/product/new}">신규 상품 등록</a>
+            <a href="#" role="button" class="btn bg-gradient-info" th:href="@{/admin/product/new}">신규 상품 등록</a>
         </div>
     </div>
 </div>

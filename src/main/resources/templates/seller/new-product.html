@@ -97,6 +97,7 @@
                                 <input id="productPrice" type="number" class="form-control" placeholder="상품 가격"
                                        aria-describedby="productPriceHelp"
                                        th:field="*{productPrice}" required min="0"/>
+                                <small class="form-text text-dark font-weight-bolder text-gradient" id="formattedPrice"></small>
                                 <small class="form-text text-muted" id="productPriceHelp">상품 가격을 입력해주세요.</small>
                             </div>
 
@@ -105,7 +106,7 @@
                                 <input id="productStock" type="number" class="form-control" placeholder="상품 가격"
                                        aria-describedby="productStockHelp"
                                        th:field="*{productStock}" required min="0"/>
-                                <small class="form-text text-muted" id="productStockHelp">상품 가격을 입력해주세요.</small>
+                                <small class="form-text text-muted" id="productStockHelp">상품 수량을 입력해주세요.</small>
                             </div>
 
 
@@ -131,6 +132,7 @@
         </div>
     </div>
 </div>
+<footer th:replace="fragments.html::footer"></footer>
 </body>
 <script src="/node_modules/croppie/croppie.js"></script>
 <script th:replace="fragments.html::uiScripts"></script>
@@ -179,8 +181,7 @@
                         newProductImage.append(img);
 
                         croppie = new Croppie(img, {
-                            viewport: {width: 240, height: 160},
-                            // boundary: {width: 300, height: 300}
+                            viewport: {width: 240, height: 160}
                         });
 
 
@@ -196,7 +197,6 @@
             resetBtn.onclick = function () {
 
                 showElements(currentProductImage);
-                ;
                 let croppedImage = document.querySelector('#cropped-new-product-image');
                 hideElements(newProductImage, resultImageDiv, resetBtn, cutBtn, confirmBtn, croppedImage);
                 document.querySelector('.croppie-container').style.display = 'none';
@@ -247,6 +247,6 @@
 
     })();
 </script>
-
+<script th:replace="fragments.html::currencyFormatter"></script>
 
 </html>

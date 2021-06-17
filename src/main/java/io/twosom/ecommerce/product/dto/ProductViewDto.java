@@ -1,29 +1,26 @@
-package io.twosom.ecommerce.product;
+package io.twosom.ecommerce.product.dto;
 
-
-import io.twosom.ecommerce.category.CategoryDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class ProductDto {
+public class ProductViewDto {
 
     private Long id;
     private String productName;
     private String productImage;
+    private String seller;
+    private String categoryTitle;
+    private LocalDateTime createdDate;
     private String productDescription;
-
-    private String sellerName;
 
     private int productPrice;
     private int productStock;
-    private boolean publish;
-
-    private CategoryDto category;
-
 }

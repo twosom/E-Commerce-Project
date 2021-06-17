@@ -3,13 +3,17 @@
 <head th:replace="fragments.html::head"></head>
 <body>
 <span th:replace="fragments.html::main-nav"></span>
+
 <header class="header-2">
-    <div class="page-header min-vh-50 relative" style="background-image: url('/images/annie-spratt.jpg')">
-        <div class="mask bg-gradient-info"></div>
+    <div class="page-header min-vh-50 relative" style="background-image: url('/images/office-2.jpeg')">
+        <div class="mask bg-gradient-faded-light opacity-4"></div>
         <div class="container">
             <div class="row">
                 <div class="col-lg-7 text-center mx-auto">
-                    <h1 class="text-white pt-3 mt-n5">관리자 메뉴 / 상품 리스트</h1>
+                    <h1 class="text-white pt-3 mt-n5">상품 조회</h1>
+                    <p class="lead text-white mt-3">
+
+                    </p>
                 </div>
             </div>
         </div>
@@ -17,125 +21,47 @@
     </div>
 </header>
 
-<div class="card">
+<div class="container">
+    <div class="row">
+        <div class="col-9 text-center mx-auto">
+            <h3 class="mb-5" th:text="${categoryTitle}"></h3>
+        </div>
 
-    <div class="accordion-1">
-        <div class="container">
+        <div class="col-lg-4 mb-lg-0 mb-4" th:each="product : ${productList}">
+            <div class="card">
+                <div class="card-header p-0 mx-3 mt-3 position-relative z-index-1">
+                    <a href="#" th:href="@{/product/info(id=${product.id})}" class="d-block blur-shadow-image">
+                        <img th:src="${product.productImage}" class="img-fluid border-radius-md"
+                             th:alt="${product.productName}"/>
+                    </a>
+                    <div class="colored-shadow"
+                         th:style="'background-image:url(' + ${product.productImage} + ');'"></div>
+                </div>
 
-            <div class="row">
-                <div class="col-md-10 mx-auto">
-                    <div class="accordion" id="accordionRental" th:each="category : ${categoryList}">
-
-
-                        <div class="accordion-item mb-3">
-                            <h5 class="accordion-header" id="headingOne">
-                                <button class="accordion-button border-bottom font-weight-bold collapsed" type="button"
-                                        data-bs-toggle="collapse"
-                                        th:data-bs-target="${'#' + 'category'  + category.id}"
-                                        aria-expanded="false"
-                                        aria-controls="collapseOne"
-                                        th:text="${category.title}">
-
-                                    <i class="collapse-close fa fa-plus text-primary text-xs pt-1 position-absolute end-0 me-3"
-                                       aria-hidden="true"></i>
-                                    <i class="collapse-open fa fa-minus text-primary text-xs pt-1 position-absolute end-0 me-3"
-                                       aria-hidden="true"></i>
-                                </button>
-                                <small class="ms-3 mx-auto text-muted small h6"
-                                       th:text="${category.description}"></small>
-                                <div class="row justify-content-end" th:object="${category}">
-                                    <div class="col-sm-3">
-                                        <!-- ?? -->
-                                    </div>
-                                </div>
-                            </h5>
-                            <div th:id="${'category' + category.id}"
-                                 class="accordion-collapse collapse"
-                                 aria-labelledby="headingOne"
-                                 data-bs-parent="#accordionRental" style="">
-                                <div class="accordion-body text-sm opacity-8">
-                                    <div class="table-responsive">
-                                        <table class="table text-center align-items-center mb-0">
-                                            <thead>
-                                            <tr>
-                                                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                                    ID
-                                                </th>
-                                                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
-                                                    상품 이름
-                                                </th>
-                                                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
-                                                    상품 가격
-                                                </th>
-                                                <th class="text-uppercase text-primary text-xxs font-weight-bolder ps-2">
-                                                    상품 재고
-                                                </th>
-                                                <th class="text-uppercase text-primary text-xxs font-weight-bolder ps-2">
-                                                    판매자
-                                                </th>
-                                                <th class="text-uppercase text-primary text-xxs font-weight-bolder ps-2">
-                                                    공개 여부
-                                                </th>
-                                                <th class="text-uppercase text-primary text-xxs font-weight-bolder ps-2">
-                                                    삭제
-                                                </th>
-
-                                            </tr>
-                                            </thead>
-                                            <tbody>
-                                            <tr th:each="product : ${productList}"
-                                                th:if="${product.category.id == category.id}">
-                                                <td th:text="${product.id}"></td>
-                                                <td><a href="#" class="text-decoration-none"
-                                                       th:href="@{/admin/product/{id}(id=${product.id})}"><span
-                                                        th:text="${product.productName}"> </span></a></td>
-                                                <td th:text="${product.productPrice}"></td>
-                                                <td th:text="${product.productStock}"></td>
-                                                <td th:text="${product.sellerName}"></td>
-                                                <td>
-                                                    <form th:if="${!product.publish}"
-                                                          th:action="@{/admin/product/{id}/publish(id=${product.id})}"
-                                                          method="post">
-                                                        <button type="submit" class="btn bg-gradient-primary">공개하기
-                                                        </button>
-                                                    </form>
-
-                                                    <form th:if="${product.publish}"
-                                                          th:action="@{/admin/product/{id}/unpublish(id=${product.id})}"
-                                                          method="post">
-                                                        <button type="submit" class="btn bg-gradient-danger">비공개하기
-                                                        </button>
-                                                    </form>
-                                                </td>
-                                                <td>
-                                                    <form th:action="@{/admin/product/{id}(id=${product.id})}"
-                                                          th:method="delete">
-                                                        <button type="submit" class="btn bg-gradient-danger">상품 삭제
-                                                        </button>
-                                                    </form>
-                                                </td>
-                                            </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-
-
-                                </div>
+                <div class="card-body">
+                    <span class="text-gradient text-primary text-uppercase font-weight-bold"
+                          th:text="${product.categoryTitle}"></span>
+                    <a href="#" th:href="@{/product/info(id=${product.id})}"
+                       class="card-title mt-3 h5 d-block text-darker" th:text="${product.productName}"></a>
+                    <p class="card-description mb-4" th:text="${#numbers.formatCurrency(product.productPrice)}"></p>
+                    <p class="card-description mb-4 text-end me-3" th:text="${product.productStock + '개 남음'}"></p>
+                    <div class="author align-items-center">
+                        <div class="name ps-2">
+                            <span>판매자 : </span>
+                            <span th:text="${product.seller}"></span>
+                            <div class="stats">
+                                <small>작성 시간 : </small><small th:text="${product.createdDate}" class="fromNow"></small>
                             </div>
                         </div>
-
-
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-    <div class="row justify-content-end">
-        <div class="col-4 mt-5">
-            <a href="#" role="button" class="btn bg-gradient-info" th:href="@{/admin/product/new}">신규 상품 등록</a>
-        </div>
+
     </div>
 </div>
+<footer th:replace="fragments.html::footer"></footer>
 </body>
 <script th:replace="fragments.html::uiScripts"></script>
+<script th:replace="fragments.html::date-time"></script>
 </html>

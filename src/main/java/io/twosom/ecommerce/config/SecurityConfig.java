@@ -30,7 +30,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers("/", "/login", "/logout", "/sign-up", "/favicon.ico", "/error", "/test", "/reset-password/**")
+                .antMatchers("/", "/login", "/logout", "/sign-up", "/favicon.ico", "/error", "/test", "/reset-password/**", "/product/**")
                 .permitAll()
                 .antMatchers("/admin/**").hasAuthority("ROLE_ADMIN")
                 .antMatchers("/seller/**").hasAuthority("ROLE_SELLER")

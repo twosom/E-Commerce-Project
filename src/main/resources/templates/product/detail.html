@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments.html::head"></head>
+<body>
+<span th:replace="fragments.html::main-nav"></span>
+
+<header class="header-2">
+    <div class="page-header min-vh-50 relative" style="background-image: url('/images/curved-images/curved-11.jpg')">
+        <div class="mask bg-gradient-faded-dark opacity-3"></div>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-7 text-center mx-auto">
+                    <h1 class="text-white pt-3 mt-n5">상품 상세</h1>
+                    <p class="lead text-white mt-3">
+
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div th:replace="fragments.html::wave-animation"></div>
+    </div>
+</header>
+
+<div class="container">
+    <div class="row">
+
+        <div class="card-group">
+            <div class="card">
+                <div class="card-header text-center p-0 mx-3 mt-3 position-relative z-index-1">
+                    <img th:src="${product.productImage}" class="img-fluid border-radius-lg" width="400" height="auto"/>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-body pt-2">
+                    <span class="text-gradient text-primary text-lg font-weight-bolder my-2"
+                          th:text="${product.productName}">
+                    </span>
+
+                    <hr class="horizontal dark mb-2"/>
+
+                    <span class="card-title h5 d-block text-darker" id="priceDisplay"
+                          th:text="${#numbers.formatCurrency(product.productPrice)}"></span>
+                    <input type="hidden" id="currentPrice" th:value="${product.productPrice}"/>
+
+                    <!-- TODO 사용자 등급 보여주고 예상 할인 가격과 포인트 적립 보여주기 -->
+                    <form action="#" method="post" class="row row-cols-lg-auto g-3 my-auto">
+                        <input type="hidden" th:value="${product.id}"/>
+                        <div class="col-12 align-items-center">
+                            <label class="visually-hidden" for="quantity">수량</label>
+                            <input type="number" class="form-control" id="quantity" value="1" placeholder="수량" min="0"/>
+                        </div>
+
+                        <div class="col-12 align-items-center">
+                            <button type="button" class="btn btn-outline-info">장바구니 담기</button>
+                        </div>
+
+                        <div class="col-12 align-items-center">
+                            <button type="submit" class="btn btn-primary">바로구매</button>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+    <div class="row">
+        <div th:utext="${product.productDescription}"></div>
+    </div>
+
+
+    <footer th:replace="fragments.html::footer"></footer>
+</body>
+<script>
+    (function () {
+        const quantityElement = document.querySelector('#quantity');
+        const priceDisplay = document.querySelector('#priceDisplay');
+
+        quantityElement.onkeyup = function () {
+            let value = quantityElement.value * document.querySelector('#currentPrice').value;
+            priceDisplay.innerText = new Intl.NumberFormat('ko-KR', {
+                style: 'currency',
+                currency: 'KRW'
+            }).format(value);
+        };
+    }());
+</script>
+<script th:replace="fragments.html::uiScripts"></script>
+<script th:replace="fragments.html::date-time"></script>
+</html>

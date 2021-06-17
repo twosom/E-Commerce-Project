@@ -1,12 +1,16 @@
-package io.twosom.ecommerce.product;
+package io.twosom.ecommerce.product.domain;
 
 import io.twosom.ecommerce.account.domain.Account;
 import io.twosom.ecommerce.category.Category;
 import lombok.*;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
+@EntityListeners(AuditingEntityListener.class)
 @Getter @Setter @EqualsAndHashCode(of = "id")
 public class Product {
 
@@ -24,6 +28,9 @@ public class Product {
     @ManyToOne
     @JoinColumn(name = "category_id")
     private Category category;
+
+    @CreatedDate
+    private LocalDateTime createdDate;
 
     @Lob
     private String productDescription;
