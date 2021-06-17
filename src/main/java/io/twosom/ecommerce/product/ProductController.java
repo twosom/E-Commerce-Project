@@ -1,6 +1,6 @@
 package io.twosom.ecommerce.product;
 
-import io.twosom.ecommerce.account.Account;
+import io.twosom.ecommerce.account.domain.Account;
 import io.twosom.ecommerce.account.CurrentAccount;
 import io.twosom.ecommerce.category.Category;
 import io.twosom.ecommerce.category.CategoryDto;

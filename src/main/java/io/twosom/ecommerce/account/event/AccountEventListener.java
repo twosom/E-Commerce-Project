@@ -1,7 +1,7 @@
 package io.twosom.ecommerce.account.event;
 
-import io.twosom.ecommerce.account.Account;
-import io.twosom.ecommerce.account.AccountService;
+import io.twosom.ecommerce.account.domain.Account;
+import io.twosom.ecommerce.account.service.AccountService;
 import io.twosom.ecommerce.config.AppProperties;
 import io.twosom.ecommerce.mail.EmailMessage;
 import io.twosom.ecommerce.mail.EmailService;

@@ -1,5 +1,9 @@
-package io.twosom.ecommerce.account;
+package io.twosom.ecommerce.account.service;
 
+import io.twosom.ecommerce.account.UserAccount;
+import io.twosom.ecommerce.account.domain.Account;
+import io.twosom.ecommerce.account.domain.Address;
+import io.twosom.ecommerce.account.domain.PreviousPassword;
 import io.twosom.ecommerce.account.event.AccountCreatedEvent;
 import io.twosom.ecommerce.account.event.AccountMailResendEvent;
 import io.twosom.ecommerce.account.event.AccountResetPasswordConfirmEvent;
@@ -7,6 +11,8 @@ import io.twosom.ecommerce.account.event.AccountResetPasswordEmailSendEvent;
 import io.twosom.ecommerce.account.form.AccountPasswordEditForm;
 import io.twosom.ecommerce.account.form.AccountProfileEditForm;
 import io.twosom.ecommerce.account.form.SignUpForm;
+import io.twosom.ecommerce.account.repository.AccountRepository;
+import io.twosom.ecommerce.account.repository.PreviousPasswordRepository;
 import io.twosom.ecommerce.main.form.ResetPasswordForm;
 import lombok.RequiredArgsConstructor;
 import net.bytebuddy.utility.RandomString;
@@ -27,6 +33,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class AccountService implements UserDetailsService {
 
     private final AccountRepository accountRepository;
+    private final PreviousPasswordRepository previousPasswordRepository;
 
     private final ModelMapper modelMapper;
     private final PasswordEncoder passwordEncoder;
@@ -104,8 +111,16 @@ public class AccountService implements UserDetailsService {
 
     public void editPassword(Long accountId, AccountPasswordEditForm editForm) {
         Account account = accountRepository.findById(accountId).get();
-        account.setPassword(passwordEncoder.encode(editForm.getNewPassword()));
-        login(account);
+        if (!passwordEncoder.matches(editForm.getNewPassword(), account.getPassword())) {
+            PreviousPassword previousPassword = PreviousPassword.builder()
+                    .encodedPreviousPassword(account.getPassword())
+                    .account(account)
+                    .build();
+
+            previousPasswordRepository.save(previousPassword);
+            account.setPassword(passwordEncoder.encode(editForm.getNewPassword()));
+            login(account);
+        }
     }
 
     public void editAddress(Long accountId, Address address) {

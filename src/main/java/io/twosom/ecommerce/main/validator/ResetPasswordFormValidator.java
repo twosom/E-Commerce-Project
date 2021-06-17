@@ -1,7 +1,7 @@
 package io.twosom.ecommerce.main.validator;
 
-import io.twosom.ecommerce.account.Account;
-import io.twosom.ecommerce.account.AccountRepository;
+import io.twosom.ecommerce.account.domain.Account;
+import io.twosom.ecommerce.account.repository.AccountRepository;
 import io.twosom.ecommerce.main.form.ResetPasswordForm;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;

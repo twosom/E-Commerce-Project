@@ -1,9 +1,9 @@
 package io.twosom.ecommerce.main;
 
-import io.twosom.ecommerce.account.Account;
-import io.twosom.ecommerce.account.AccountRepository;
-import io.twosom.ecommerce.account.AccountService;
-import io.twosom.ecommerce.account.Address;
+import io.twosom.ecommerce.account.domain.Account;
+import io.twosom.ecommerce.account.repository.AccountRepository;
+import io.twosom.ecommerce.account.service.AccountService;
+import io.twosom.ecommerce.account.domain.Address;
 import io.twosom.ecommerce.account.event.AccountCreatedEvent;
 import io.twosom.ecommerce.account.event.AccountEventListener;
 import io.twosom.ecommerce.account.event.AccountResetPasswordEmailSendEvent;
