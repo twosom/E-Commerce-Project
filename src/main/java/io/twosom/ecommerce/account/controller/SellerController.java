@@ -92,6 +92,22 @@ public class SellerController {
         return "seller/edit-product";
     }
 
+    @PostMapping("/product/{id}")
+    public String editProduct(@PathVariable("id") Long productId,
+                              @Valid ProductForm productForm,
+                              Errors errors, Model model) {
+
+        if (errors.hasErrors()) {
+            categoryService.addCategoryTitleListToModel(model, categoryRepository.findAllByParentCategoryIsNotNull());
+            return "seller/edit-product";
+        }
+
+        productService.updateProduct(productId, productForm);
+        return "redirect:/seller/product";
+    }
+
+
+
 
     @DeleteMapping("/product/{id}")
     public String deleteProduct(@PathVariable("id") Long productId, @CurrentAccount Account account) {
