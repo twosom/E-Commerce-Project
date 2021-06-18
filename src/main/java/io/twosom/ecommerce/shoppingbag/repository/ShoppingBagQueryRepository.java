@@ -1,0 +1,40 @@
+package io.twosom.ecommerce.shoppingbag.repository;
+
+import com.querydsl.core.types.Projections;
+import com.querydsl.jpa.impl.JPAQueryFactory;
+import io.twosom.ecommerce.account.domain.Account;
+import io.twosom.ecommerce.shoppingbag.QShoppingBag;
+import io.twosom.ecommerce.shoppingbag.ShoppingBagStatus;
+import io.twosom.ecommerce.shoppingbag.dto.ShoppingBagListDto;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Repository;
+
+import javax.persistence.EntityManager;
+import java.util.List;
+
+import static io.twosom.ecommerce.shoppingbag.QShoppingBag.*;
+
+@Repository
+public class ShoppingBagQueryRepository {
+
+    private final JPAQueryFactory queryFactory;
+
+    public ShoppingBagQueryRepository(EntityManager em) {
+        this.queryFactory = new JPAQueryFactory(em);
+    }
+
+
+    public List<ShoppingBagListDto> findByAccountAndStatusToDto(Account account, ShoppingBagStatus status) {
+
+        return queryFactory.select(Projections.fields(ShoppingBagListDto.class,
+                            shoppingBag.product.id.as("productId"),
+                            shoppingBag.product.productName,
+                            shoppingBag.product.productImage,
+                            shoppingBag.quantity.as("shoppingBagQuantity"),
+                            shoppingBag.product.productPrice))
+                .from(shoppingBag)
+                .where(shoppingBag.account.eq(account).and(shoppingBag.status.eq(status)))
+                .fetch();
+
+    }
+}

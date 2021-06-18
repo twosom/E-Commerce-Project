@@ -22,7 +22,7 @@ public class ProductQueryRepository {
     }
 
 
-    public List<ProductViewDto> findAllByCategoryAndPublished(Category category) {
+    public List<ProductViewDto> findAllByCategoryTitleAndPublished(String categoryTitle) {
         return queryFactory.select(Projections.fields(ProductViewDto.class,
                             product.id,
                             product.productName,
@@ -33,7 +33,7 @@ public class ProductQueryRepository {
                             product.category.title.as("categoryTitle"),
                             product.createdDate))
                 .from(product)
-                .where(product.category.eq(category)
+                .where(product.category.title.eq(categoryTitle)
                         .and(product.publish.isTrue()))
                 .fetch();
     }
