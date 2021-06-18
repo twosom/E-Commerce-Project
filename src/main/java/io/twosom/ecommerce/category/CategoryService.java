@@ -21,7 +21,7 @@ public class CategoryService {
     private final ModelMapper mapper;
 
 
-    public void createNewCategory(CategoryCreateForm categoryCreateForm) {
+    public Category createNewCategory(CategoryCreateForm categoryCreateForm) {
         Category category = mapper.map(categoryCreateForm, Category.class);
         Category savedCategory = categoryRepository.save(category);
 
@@ -29,6 +29,7 @@ public class CategoryService {
             Category parentCategory = categoryRepository.findByTitle(categoryCreateForm.getParentCategoryTitle());
             parentCategory.addChildCategory(savedCategory);
         }
+        return savedCategory;
     }
 
     public void updateCategory(Long categoryId, CategoryEditForm categoryEditForm) {

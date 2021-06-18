@@ -42,10 +42,11 @@ public class AccountService implements UserDetailsService {
     private final ApplicationEventPublisher eventPublisher;
 
 
-    public void createAccount(SignUpForm signUpForm) {
+    public Account createAccount(SignUpForm signUpForm) {
         Account savedAccount = saveNewAccount(signUpForm);
         eventPublisher.publishEvent(new AccountCreatedEvent(savedAccount));
         login(savedAccount);
+        return savedAccount;
     }
 
     private void login(Account savedAccount) {
