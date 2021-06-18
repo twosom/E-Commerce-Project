@@ -22,5 +22,9 @@ public class ProductFormValidator implements Validator {
         if (form.getProductStock() < 0) {
             errors.rejectValue("productStock", "error.productStock", "재고가 0개보다 작을 순 없습니다.");
         }
+
+        if (form.getSaleRate() < 0 || form.getSaleRate() > 100) {
+            errors.rejectValue("saleRate", "error.saleRate", "할인률이 잘못되었습니다.");
+        }
     }
 }

@@ -43,7 +43,22 @@
                           th:text="${product.categoryTitle}"></span>
                     <a href="#" th:href="@{/product/info(id=${product.id})}"
                        class="card-title mt-3 h5 d-block text-darker" th:text="${product.productName}"></a>
-                    <p class="card-description mb-4" th:text="${#numbers.formatCurrency(product.productPrice)}"></p>
+<!--                    <p class="card-description mb-4" th:text="${#numbers.formatCurrency(product.productPrice)}"></p>-->
+
+
+                    <span th:if="${!product.isSale()}" class="card-title h5 d-block text-darker" id="priceDisplay"
+                          th:text="${#numbers.formatCurrency(product.productPrice)}">
+                    </span>
+
+                    <span th:if="${product.isSale()}" class="card-title">
+                        <del th:text="${#numbers.formatCurrency(product.productPrice)}"></del>
+                        <span class="text-bolder text-lg text-danger text-gradient ms-3" th:text="${'-' +  product.saleRate + '%'}"></span>
+                        <span class="h5 d-block text-darker" id="salePriceDisplay"
+                              th:text="${#numbers.formatCurrency(product.getSalePrice())}"></span>
+                    </span>
+
+
+
                     <p class="card-description mb-4 text-end me-3" th:text="${product.productStock + '개 남음'}"></p>
                     <div class="author align-items-center">
                         <div class="name ps-2">

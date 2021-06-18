@@ -17,9 +17,17 @@ public class ShoppingBagListDto {
 
     private int shoppingBagQuantity;
     private int productPrice;
+    private int salePrice;
+
+    private boolean sale;
+    private int saleRate;
 
     public int getTotalPrice() {
-        return productPrice * shoppingBagQuantity;
+        if (isSale()) {
+            return salePrice * shoppingBagQuantity;
+        } else {
+            return productPrice * shoppingBagQuantity;
+        }
     }
 
 }

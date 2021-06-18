@@ -1,9 +1,9 @@
 package io.twosom.ecommerce.account.validator;
 
-import io.twosom.ecommerce.account.domain.Account;
-import io.twosom.ecommerce.account.repository.AccountRepository;
 import io.twosom.ecommerce.account.UserAccount;
+import io.twosom.ecommerce.account.domain.Account;
 import io.twosom.ecommerce.account.form.AccountProfileEditForm;
+import io.twosom.ecommerce.account.repository.AccountRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;

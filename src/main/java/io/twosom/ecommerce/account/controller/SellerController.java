@@ -7,9 +7,9 @@ import io.twosom.ecommerce.category.CategoryRepository;
 import io.twosom.ecommerce.category.CategoryService;
 import io.twosom.ecommerce.product.domain.Product;
 import io.twosom.ecommerce.product.dto.ProductDto;
+import io.twosom.ecommerce.product.form.ProductForm;
 import io.twosom.ecommerce.product.repository.ProductRepository;
 import io.twosom.ecommerce.product.service.ProductService;
-import io.twosom.ecommerce.product.form.ProductForm;
 import io.twosom.ecommerce.product.validator.ProductFormValidator;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -55,7 +55,7 @@ public class SellerController {
                 .map(Product::getCategory)
                 .distinct()
                 .collect(Collectors.toList());
-
+        //TODO 그냥 QueryDSL 사용하기
         List<ProductDto> productDtoList = productService.convertProductListToProductDtoList(productList);
         model.addAttribute("productList", productDtoList);
         model.addAttribute("categoryList", categoryList);

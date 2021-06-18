@@ -10,7 +10,9 @@ import io.twosom.ecommerce.category.CategoryRepository;
 import io.twosom.ecommerce.category.CategoryService;
 import io.twosom.ecommerce.category.form.CategoryCreateForm;
 import io.twosom.ecommerce.product.domain.Product;
+import io.twosom.ecommerce.product.domain.SaleHistory;
 import io.twosom.ecommerce.product.repository.ProductRepository;
+import io.twosom.ecommerce.product.repository.SaleHistoryRepository;
 import io.twosom.ecommerce.product.service.ProductService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -24,6 +26,8 @@ import org.springframework.security.test.context.support.TestExecutionEvent;
 import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -63,6 +67,9 @@ class SellerControllerTest {
     @Autowired
     ProductService productService;
 
+    @Autowired
+    SaleHistoryRepository saleHistoryRepository;
+
     @BeforeEach
     void beforeEach() {
         createNewAccount("twosom", "twosom@twosom.com", "11111111", "seller");
@@ -88,6 +95,7 @@ class SellerControllerTest {
 
     @AfterEach
     void afterEach() {
+        saleHistoryRepository.deleteAll();
         productRepository.deleteAll();
         accountRepository.deleteAll();
         categoryRepository.deleteAll();
@@ -304,8 +312,71 @@ class SellerControllerTest {
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/seller/product"));
 
-
         assertFalse(testProduct.isPublish());
+    }
+
+
+    @WithUserDetails(value = "twosom", setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    @DisplayName("상품 할인 - 입력 값 정상")
+    @Test
+    void sale_product_with_correct_value() throws Exception {
+
+        seller_create_new_product_with_correct_value();
+        Product testProduct = productRepository.findByProductName("testProduct");
+        assertNotNull(testProduct);
+
+
+        mockMvc.perform(
+                post("/seller/product/{id}", testProduct.getId())
+                        .param("categoryName", "childCategory")
+                        .param("productName", "newTestProduct")
+                        .param("productImage", "newTestImage")
+                        .param("productDescription", "newTestProductDescription")
+                        .param("productPrice", "100")
+                        .param("productStock", "100")
+                        .param("saleRate", "50")
+                        .with(csrf()))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/seller/product"));
+
+        assertEquals(testProduct.getProductName(), "newTestProduct");
+        assertTrue(testProduct.isSale());
+        List<SaleHistory> saleHistoryList = saleHistoryRepository.findAll();
+        assertEquals(saleHistoryList.size(), 1);
+        SaleHistory saleHistory = saleHistoryList.get(0);
+
+        assertEquals(saleHistory.getProduct(), testProduct);
+        assertEquals(saleHistory.getOriginalPrice(), testProduct.getProductPrice());
+        assertEquals(saleHistory.getSalePrice(), testProduct.calculateSalePrice());
+        assertEquals(saleHistory.getSaleRate(), testProduct.getSaleRate());
+
+    }
+
+
+    @WithUserDetails(value = "twosom", setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    @DisplayName("상품 할인 - 입력 값 오류")
+    @Test
+    void sale_product_with_wrong_value() throws Exception {
+
+        seller_create_new_product_with_correct_value();
+        Product testProduct = productRepository.findByProductName("testProduct");
+        assertNotNull(testProduct);
+
+
+        mockMvc.perform(
+                post("/seller/product/{id}", testProduct.getId())
+                        .param("categoryName", "childCategory")
+                        .param("productName", "newTestProduct")
+                        .param("productImage", "newTestImage")
+                        .param("productDescription", "newTestProductDescription")
+                        .param("productPrice", "100")
+                        .param("productStock", "100")
+                        .param("saleRate", "-10")
+                        .with(csrf()))
+                .andExpect(status().isOk())
+                .andExpect(model().hasErrors())
+                .andExpect(view().name("seller/edit-product"));
+
     }
 
 

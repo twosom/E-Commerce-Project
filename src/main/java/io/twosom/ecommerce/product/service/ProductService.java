@@ -4,9 +4,11 @@ import io.twosom.ecommerce.account.domain.Account;
 import io.twosom.ecommerce.category.Category;
 import io.twosom.ecommerce.category.CategoryRepository;
 import io.twosom.ecommerce.product.domain.Product;
+import io.twosom.ecommerce.product.domain.SaleHistory;
 import io.twosom.ecommerce.product.dto.ProductDto;
 import io.twosom.ecommerce.product.form.ProductForm;
 import io.twosom.ecommerce.product.repository.ProductRepository;
+import io.twosom.ecommerce.product.repository.SaleHistoryRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -22,6 +24,7 @@ public class ProductService {
 
     private final ProductRepository productRepository;
     private final CategoryRepository categoryRepository;
+    private final SaleHistoryRepository saleHistoryRepository;
 
     private final ModelMapper modelMapper;
 
@@ -37,12 +40,8 @@ public class ProductService {
     public void updateProduct(Long productId, ProductForm productForm) {
         Product findProduct = productRepository.findById(productId).get();
         modelMapper.map(productForm, findProduct);
-
-        Category category = categoryRepository.findByTitle(productForm.getCategoryName());
-
-        if (!findProduct.getCategory().equals(category)) {
-            findProduct.setCategory(category);
-        }
+        setSaleIfActivated(productForm, findProduct);
+        setCategoryIfChanged(productForm, findProduct);
     }
 
     public void removeProduct(Long productId, Account account) {
@@ -78,5 +77,31 @@ public class ProductService {
                                 return productDto;
                             })
                             .collect(Collectors.toList());
+    }
+
+    private void setSaleIfActivated(ProductForm productForm, Product findProduct) {
+        if (productForm.getSaleRate() > 0) {
+            findProduct.setSale(true);
+            findProduct.setSalePrice(findProduct.calculateSalePrice());
+        } else if (productForm.getSaleRate() == 0) {
+            findProduct.setSale(false);
+        }
+        saveSaleHistory(findProduct);
+    }
+
+    private void saveSaleHistory(Product findProduct) {
+        SaleHistory saleHistory = new SaleHistory();
+        saleHistory.setProduct(findProduct);
+        saleHistory.setOriginalPrice(findProduct.getProductPrice());
+        saleHistory.setSalePrice(findProduct.calculateSalePrice());
+        saleHistory.setSaleRate(findProduct.getSaleRate());
+        saleHistoryRepository.save(saleHistory);
+    }
+
+    private void setCategoryIfChanged(ProductForm productForm, Product findProduct) {
+        Category category = categoryRepository.findByTitle(productForm.getCategoryName());
+        if (!findProduct.getCategory().equals(category)) {
+            findProduct.setCategory(category);
+        }
     }
 }

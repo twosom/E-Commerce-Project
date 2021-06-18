@@ -5,7 +5,6 @@ import io.twosom.ecommerce.product.domain.Product;
 import io.twosom.ecommerce.shoppingbag.ShoppingBag;
 import io.twosom.ecommerce.shoppingbag.ShoppingBagStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;

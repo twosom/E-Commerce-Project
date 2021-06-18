@@ -74,6 +74,9 @@
                                                     판매자
                                                 </th>
                                                 <th class="text-uppercase text-primary text-xxs font-weight-bolder ps-2">
+                                                    할인 여부
+                                                </th>
+                                                <th class="text-uppercase text-primary text-xxs font-weight-bolder ps-2">
                                                     공개 여부
                                                 </th>
                                                 <th class="text-uppercase text-primary text-xxs font-weight-bolder ps-2">
@@ -93,24 +96,29 @@
                                                 <td th:text="${product.productStock}"></td>
                                                 <td th:text="${product.sellerName}"></td>
                                                 <td>
+                                                    <span th:if="${product.isSale()}" class="badge bg-gradient-primary">할인중</span>
+                                                    <span th:if="${!product.isSale()}" class="badge bg-gradient-secondary">할인중 아님</span>
+                                                </td>
+                                                <td>
                                                     <form th:if="${!product.publish}"
                                                           th:action="@{/seller/product/{id}/publish(id=${product.id})}"
                                                           method="post">
-                                                        <button type="submit" class="btn bg-gradient-primary">공개하기
+                                                        <button type="submit" class="btn bg-gradient-primary btn-sm">공개하기
                                                         </button>
                                                     </form>
 
                                                     <form th:if="${product.publish}"
                                                           th:action="@{/seller/product/{id}/unpublish(id=${product.id})}"
                                                           method="post">
-                                                        <button type="submit" class="btn bg-gradient-danger">비공개하기
+                                                        <button type="submit" class="btn bg-gradient-danger btn-sm">비공개하기
                                                         </button>
                                                     </form>
                                                 </td>
+
                                                 <td>
                                                     <form th:action="@{/seller/product/{id}(id=${product.id})}"
                                                           th:method="delete">
-                                                        <button type="submit" class="btn bg-gradient-danger">상품 삭제
+                                                        <button type="submit" class="btn bg-gradient-danger btn-sm">상품 삭제
                                                         </button>
                                                     </form>
                                                 </td>

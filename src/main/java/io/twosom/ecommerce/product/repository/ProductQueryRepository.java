@@ -2,15 +2,13 @@ package io.twosom.ecommerce.product.repository;
 
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import io.twosom.ecommerce.category.Category;
-import io.twosom.ecommerce.product.dto.ProductDto;
 import io.twosom.ecommerce.product.dto.ProductViewDto;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import java.util.List;
 
-import static io.twosom.ecommerce.product.domain.QProduct.*;
+import static io.twosom.ecommerce.product.domain.QProduct.product;
 
 @Repository
 public class ProductQueryRepository {
@@ -31,7 +29,9 @@ public class ProductQueryRepository {
                             product.productPrice,
                             product.productStock,
                             product.category.title.as("categoryTitle"),
-                            product.createdDate))
+                            product.createdDate,
+                            product.sale,
+                            product.saleRate))
                 .from(product)
                 .where(product.category.title.eq(categoryTitle)
                         .and(product.publish.isTrue()))
@@ -48,7 +48,9 @@ public class ProductQueryRepository {
                             product.productStock,
                             product.category.title.as("categoryTitle"),
                             product.createdDate,
-                            product.productDescription))
+                            product.productDescription,
+                            product.sale,
+                            product.saleRate))
                 .from(product)
                 .where(product.id.eq(id).and(product.publish.isTrue()))
                 .fetchOne();

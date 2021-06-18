@@ -25,4 +25,16 @@ public class ProductViewDto {
     private int productStock;
 
     private boolean shoppingBagAdded;
+
+    private boolean sale;
+    private int saleRate;
+
+
+    //originalPriceValue - (originalPriceValue * saleRate * 0.01
+    public Double getSalePrice() {
+        if (isSale()) {
+            return getProductPrice() - (getProductPrice() * getSaleRate() * 0.01);
+        }
+        return null;
+    }
 }

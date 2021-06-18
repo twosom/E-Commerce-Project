@@ -1,7 +1,7 @@
 package io.twosom.ecommerce.account.validator;
 
-import io.twosom.ecommerce.account.domain.Account;
 import io.twosom.ecommerce.account.UserAccount;
+import io.twosom.ecommerce.account.domain.Account;
 import io.twosom.ecommerce.account.form.AccountPasswordEditForm;
 import io.twosom.ecommerce.account.service.PreviousPasswordService;
 import lombok.RequiredArgsConstructor;

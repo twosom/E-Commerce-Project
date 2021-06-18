@@ -12,9 +12,9 @@ import io.twosom.ecommerce.category.validator.CategoryCreateFormValidator;
 import io.twosom.ecommerce.category.validator.CategoryEditFormValidator;
 import io.twosom.ecommerce.product.domain.Product;
 import io.twosom.ecommerce.product.dto.ProductDto;
+import io.twosom.ecommerce.product.form.ProductForm;
 import io.twosom.ecommerce.product.repository.ProductRepository;
 import io.twosom.ecommerce.product.service.ProductService;
-import io.twosom.ecommerce.product.form.ProductForm;
 import io.twosom.ecommerce.product.validator.ProductFormValidator;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -68,6 +68,7 @@ public class AdminController {
 
     @GetMapping("/product")
     public String productList(Model model) {
+        // TODO 그냥 QueryDSL 사용하기
         List<ProductDto> productList = productService.convertProductListToProductDtoList(productRepository.findAll());
 
         List<CategoryDto> categoryList = categoryRepository.findAllByParentCategoryIsNotNull()
