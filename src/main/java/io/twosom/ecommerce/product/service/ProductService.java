@@ -25,13 +25,13 @@ public class ProductService {
 
     private final ModelMapper modelMapper;
 
-    public void createProduct(Account account, ProductForm productForm) {
+    public Product createProduct(Account account, ProductForm productForm) {
         Product product = modelMapper.map(productForm, Product.class);
         product.setSeller(account);
         Category category = categoryRepository.findByTitle(productForm.getCategoryName());
         product.setCategory(category);
 
-        productRepository.save(product);
+        return productRepository.save(product);
     }
 
     public void updateProduct(Long productId, ProductForm productForm) {
