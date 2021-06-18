@@ -53,6 +53,7 @@ public class SellerController {
         List<Product> productList = productRepository.findAllBySeller(account);
         List<Category> categoryList = productList.stream()
                 .map(Product::getCategory)
+                .distinct()
                 .collect(Collectors.toList());
 
         List<ProductDto> productDtoList = productService.convertProductListToProductDtoList(productList);

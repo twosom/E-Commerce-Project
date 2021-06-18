@@ -18,4 +18,8 @@ public class ShoppingBagListDto {
     private int shoppingBagQuantity;
     private int productPrice;
 
+    public int getTotalPrice() {
+        return productPrice * shoppingBagQuantity;
+    }
+
 }

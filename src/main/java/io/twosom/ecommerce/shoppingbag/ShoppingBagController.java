@@ -16,7 +16,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 @Controller
 @RequiredArgsConstructor
@@ -53,7 +56,15 @@ public class ShoppingBagController {
     @GetMapping("/shopping-bag/list")
     public String shoppingBagList(@CurrentAccount Account account, Model model) {
         List<ShoppingBagListDto> shoppingBagList = shoppingBagQueryRepository.findByAccountAndStatusToDto(account, ShoppingBagStatus.STANDBY);
+        List<Integer> totalPriceList = shoppingBagList.stream().map(ShoppingBagListDto::getTotalPrice)
+                .collect(Collectors.toList());
+
+        int totalPrice = totalPriceList.stream().mapToInt(i -> i).sum();
+
+
         model.addAttribute("shoppingBagList", shoppingBagList);
+        model.addAttribute("totalPrice", totalPrice);
+
         return "shopping-bag/list";
     }
 

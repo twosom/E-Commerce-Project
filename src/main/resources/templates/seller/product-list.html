@@ -89,7 +89,7 @@
                                                 <td><a href="#" class="text-decoration-none"
                                                        th:href="@{/seller/product/{id}(id=${product.id})}"><span
                                                         th:text="${product.productName}"> </span></a></td>
-                                                <td th:text="${product.productPrice}"></td>
+                                                <td th:text="${#numbers.formatCurrency(product.productPrice)}"></td>
                                                 <td th:text="${product.productStock}"></td>
                                                 <td th:text="${product.sellerName}"></td>
                                                 <td>
