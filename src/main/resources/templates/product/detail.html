@@ -39,9 +39,21 @@
 
                     <hr class="horizontal dark mb-2"/>
 
-                    <span class="card-title h5 d-block text-darker" id="priceDisplay"
-                          th:text="${#numbers.formatCurrency(product.productPrice)}"></span>
-                    <input type="hidden" id="currentPrice" th:value="${product.productPrice}"/>
+                    <span th:if="${!product.isSale()}" class="card-title h5 d-block text-darker" id="priceDisplay"
+                          th:text="${#numbers.formatCurrency(product.productPrice)}">
+                    </span>
+
+                    <span th:if="${product.isSale()}" class="card-title">
+                        <del th:text="${#numbers.formatCurrency(product.productPrice)}"></del>
+                        <span class="text-bolder text-lg text-danger text-gradient ms-3" th:text="${'-' +  product.saleRate + '%'}"></span>
+                        <span class="h5 d-block text-darker" id="salePriceDisplay"
+                              th:text="${#numbers.formatCurrency(product.getSalePrice())}"></span>
+                    </span>
+
+
+                    <input th:if="${!product.isSale()}" type="hidden" id="currentPrice" th:value="${product.productPrice}"/>
+                    <input th:if="${product.isSale()}" type="hidden" id="currentSalePrice"
+                           th:value="${product.getSalePrice()}"/>
 
                     <p class="card-description mb-4">
                         <span th:text="${product.productStock + '개 남음'}"></span>
@@ -159,7 +171,7 @@
         });
     };
 </script>
-<script>
+<script th:if="${!product.isSale()}">
     (function () {
         const quantityElement = document.querySelector('#quantity');
         const priceDisplay = document.querySelector('#priceDisplay');
@@ -173,6 +185,21 @@
         };
     }());
 </script>
+<script th:if="${product.isSale()}">
+    (function () {
+        const quantityElement = document.querySelector('#quantity');
+        const salePriceDisplay = document.querySelector('#salePriceDisplay');
+
+        quantityElement.onkeyup = function () {
+            let value = quantityElement.value * document.querySelector('#currentSalePrice').value;
+            salePriceDisplay.innerText = new Intl.NumberFormat('ko-KR', {
+                style: 'currency',
+                currency: 'KRW'
+            }).format(value);
+        };
+    }());
+</script>
+
 <script th:replace="fragments.html::uiScripts"></script>
 <script th:replace="fragments.html::date-time"></script>
 </html>

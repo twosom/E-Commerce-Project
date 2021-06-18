@@ -1,8 +1,8 @@
 package io.twosom.ecommerce.account.validator;
 
-import io.twosom.ecommerce.account.repository.AccountRepository;
 import io.twosom.ecommerce.account.domain.Address;
 import io.twosom.ecommerce.account.form.SignUpForm;
+import io.twosom.ecommerce.account.repository.AccountRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;

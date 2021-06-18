@@ -30,4 +30,6 @@ public class ProductForm {
 
     private int productStock;
 
+    private int saleRate;
+
 }

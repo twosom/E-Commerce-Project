@@ -23,6 +23,7 @@ public class ProductDto {
     private int productPrice;
     private int productStock;
     private boolean publish;
+    private boolean sale;
 
     private CategoryDto category;
 

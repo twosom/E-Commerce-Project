@@ -1,8 +1,8 @@
 package io.twosom.ecommerce.main;
 
+import io.twosom.ecommerce.account.CurrentAccount;
 import io.twosom.ecommerce.account.domain.Account;
 import io.twosom.ecommerce.account.service.AccountService;
-import io.twosom.ecommerce.account.CurrentAccount;
 import io.twosom.ecommerce.main.form.ResetPasswordForm;
 import io.twosom.ecommerce.main.validator.ResetPasswordFormValidator;
 import lombok.RequiredArgsConstructor;

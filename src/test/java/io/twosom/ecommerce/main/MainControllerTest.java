@@ -1,13 +1,13 @@
 package io.twosom.ecommerce.main;
 
 import io.twosom.ecommerce.account.domain.Account;
-import io.twosom.ecommerce.account.repository.AccountRepository;
-import io.twosom.ecommerce.account.service.AccountService;
 import io.twosom.ecommerce.account.domain.Address;
 import io.twosom.ecommerce.account.event.AccountCreatedEvent;
 import io.twosom.ecommerce.account.event.AccountEventListener;
 import io.twosom.ecommerce.account.event.AccountResetPasswordEmailSendEvent;
 import io.twosom.ecommerce.account.form.SignUpForm;
+import io.twosom.ecommerce.account.repository.AccountRepository;
+import io.twosom.ecommerce.account.service.AccountService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;

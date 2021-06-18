@@ -3,16 +3,14 @@ package io.twosom.ecommerce.shoppingbag.repository;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import io.twosom.ecommerce.account.domain.Account;
-import io.twosom.ecommerce.shoppingbag.QShoppingBag;
 import io.twosom.ecommerce.shoppingbag.ShoppingBagStatus;
 import io.twosom.ecommerce.shoppingbag.dto.ShoppingBagListDto;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import java.util.List;
 
-import static io.twosom.ecommerce.shoppingbag.QShoppingBag.*;
+import static io.twosom.ecommerce.shoppingbag.QShoppingBag.shoppingBag;
 
 @Repository
 public class ShoppingBagQueryRepository {
@@ -31,7 +29,10 @@ public class ShoppingBagQueryRepository {
                             shoppingBag.product.productName,
                             shoppingBag.product.productImage,
                             shoppingBag.quantity.as("shoppingBagQuantity"),
-                            shoppingBag.product.productPrice))
+                            shoppingBag.product.sale,
+                            shoppingBag.product.saleRate,
+                            shoppingBag.product.productPrice,
+                            shoppingBag.product.salePrice))
                 .from(shoppingBag)
                 .where(shoppingBag.account.eq(account).and(shoppingBag.status.eq(status)))
                 .fetch();
