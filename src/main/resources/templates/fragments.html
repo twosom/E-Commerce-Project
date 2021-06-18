@@ -437,11 +437,16 @@
                 });
             }
 
-            searchElementAndMoment('.date-time', 'LLL');
-            searchElementAndMoment('.date', 'LL');
-            searchElementAndMoment('.weekday', 'dddd');
-            searchElementAndMoment('.time', 'LT');
-            searchElementAndMoment('.date-weekday-time', 'LLLL');
+            const elementMap = new Map();
+            elementMap.set('.date-time', 'LLL');
+            elementMap.set('.date', 'LL');
+            elementMap.set('.weekday', 'dddd');
+            elementMap.set('time', 'LT');
+            elementMap.set('.date-weekday-time', 'LLLL');
+
+            elementMap.forEach((localizedFormat, elementName) => {
+                searchElementAndMoment(elementName, localizedFormat);
+            });
 
 
             const calendar = document.querySelectorAll('.calendar');
