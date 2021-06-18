@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.view.RedirectView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -27,7 +28,7 @@ public class CategoryInterceptor implements HandlerInterceptor {
                            Object handler,
                            ModelAndView modelAndView) throws Exception {
 
-        if (modelAndView != null) {
+        if (modelAndView != null && !isRedirect(modelAndView)) {
 
             List<CategoryDto> categories = categoryRepository.findAllByParentCategoryIsNullAndPublish(true)
                     .stream()
@@ -35,6 +36,10 @@ public class CategoryInterceptor implements HandlerInterceptor {
                     .collect(Collectors.toList());
             modelAndView.addObject("categories", categories);
         }
+    }
+
+    private boolean isRedirect(ModelAndView modelAndView) {
+        return modelAndView.getViewName().startsWith("redirect:") || modelAndView.getView() instanceof RedirectView;
     }
 
 

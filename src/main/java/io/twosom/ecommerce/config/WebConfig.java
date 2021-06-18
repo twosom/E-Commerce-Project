@@ -1,6 +1,7 @@
 package io.twosom.ecommerce.config;
 
 import io.twosom.ecommerce.category.CategoryInterceptor;
+import io.twosom.ecommerce.shoppingbag.ShoppingBagInterceptor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.security.StaticResourceLocation;
 import org.springframework.context.annotation.Configuration;
@@ -18,6 +19,7 @@ import java.util.stream.Collectors;
 public class WebConfig implements WebMvcConfigurer {
 
     private final CategoryInterceptor categoryInterceptor;
+    private final ShoppingBagInterceptor shoppingBagInterceptor;
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
@@ -25,6 +27,9 @@ public class WebConfig implements WebMvcConfigurer {
                 .collect(Collectors.toList());
 
         registry.addInterceptor(categoryInterceptor)
+                .excludePathPatterns(staticResourcesPatterns);
+
+        registry.addInterceptor(shoppingBagInterceptor)
                 .excludePathPatterns(staticResourcesPatterns);
     }
 }

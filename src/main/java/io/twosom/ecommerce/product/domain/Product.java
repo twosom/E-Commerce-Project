@@ -41,4 +41,6 @@ public class Product {
 
     private boolean publish;
 
+    //TODO 세일 기능 만들기
+
 }

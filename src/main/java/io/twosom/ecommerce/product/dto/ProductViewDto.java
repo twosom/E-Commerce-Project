@@ -23,4 +23,6 @@ public class ProductViewDto {
 
     private int productPrice;
     private int productStock;
+
+    private boolean shoppingBagAdded;
 }

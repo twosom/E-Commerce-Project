@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments.html::head"></head>
+<body>
+<span th:replace="fragments.html::main-nav"></span>
+<header class="header-2">
+    <div class="page-header min-vh-50 relative" style="background-image: url('/images/card-3.jpg')">
+        <div class="mask bg-gradient-warning opacity-4"></div>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-7 text-center mx-auto">
+                    <h1 class="text-white pt-3 mt-n5">장바구니</h1>
+                </div>
+            </div>
+        </div>
+        <div th:replace="fragments.html::wave-animation"></div>
+    </div>
+</header>
+
+<div class="row">
+    <div class="container col-md-10">
+        <div class="card">
+            <div class="table-responsive">
+                <table class="table align-items-center mb-0">
+                    <thead>
+                    <tr>
+                        <th class="text-uppercase text-secondary text-lg font-weight-bolder">상품 정보</th>
+                        <th class="text-uppercase text-secondary text-lg font-weight-bolder ps-2">수량 / 총 가격</th>
+                        <th class="text-uppercase text-secondary text-lg font-weight-bolder ps-2"></th>
+
+
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="shoppingBag : ${shoppingBagList}">
+                        <td>
+                            <div class="d-flex px-2 py-1">
+                                <div>
+                                    <img th:src="${shoppingBag.productImage}"
+                                         class="avatar avatar-sm me-3">
+                                </div>
+                                <div class="d-flex flex-column justify-content-center">
+                                    <h6 class="mb-0 text-xs" th:text="${shoppingBag.productName}">상품 이미지</h6>
+                                    <p class="text-xs text-secondary mb-0"
+                                       th:text="${#numbers.formatCurrency(shoppingBag.productPrice)}">
+                                        상품 가격
+                                    </p>
+                                </div>
+                            </div>
+                        </td>
+
+                        <td>
+                            <p class="text-xs font-weight-bold mb-0" th:text="${shoppingBag.shoppingBagQuantity + '개'}">
+                                수량</p>
+                            <p class="text-xs text-secondary mb-0"
+                               th:text="${#numbers.formatCurrency(shoppingBag.shoppingBagQuantity * shoppingBag.productPrice)}">
+                                총 가격</p>
+                        </td>
+                        <td>
+                            <button type="button" id="cancelBtn" th:onclick="|removeItem('${shoppingBag.productId}')|"
+                                    class="btn btn-outline-danger btn-sm">취소하기
+                            </button>
+                        </td>
+
+
+                    </tr>
+
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+</body>
+<script th:replace="fragments.html::uiScripts"></script>
+<script>
+    function removeItem(productId) {
+
+        const csrfHeader = document.querySelector('#_csrf_header').content;
+        const csrf = document.querySelector('#_csrf').content;
+
+        const data = {
+            productId: productId
+        };
+
+        const options = {
+            method: 'post',
+            headers: {
+                'Content-Type': 'application/json',
+                [csrfHeader]: csrf
+            },
+            body: JSON.stringify(data)
+        };
+
+        fetch('/shopping-bag/minus', options)
+            .then(response => {
+                if (response.ok) {
+                    location.reload();
+                } else {
+                    throw new Error();
+                }
+            }).catch(err => {
+            alert('오류가 발생하였습니다. 다시 시도해주세요.');
+        });
+
+    }
+</script>
+</html>

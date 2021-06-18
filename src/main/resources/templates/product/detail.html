@@ -43,16 +43,26 @@
                           th:text="${#numbers.formatCurrency(product.productPrice)}"></span>
                     <input type="hidden" id="currentPrice" th:value="${product.productPrice}"/>
 
+                    <p class="card-description mb-4">
+                        <span th:text="${product.productStock + '개 남음'}"></span>
+                    </p>
+
+
                     <!-- TODO 사용자 등급 보여주고 예상 할인 가격과 포인트 적립 보여주기 -->
                     <form action="#" method="post" class="row row-cols-lg-auto g-3 my-auto">
-                        <input type="hidden" th:value="${product.id}"/>
+                        <input type="hidden" id="productId" th:value="${product.id}"/>
                         <div class="col-12 align-items-center">
                             <label class="visually-hidden" for="quantity">수량</label>
                             <input type="number" class="form-control" id="quantity" value="1" placeholder="수량" min="0"/>
                         </div>
 
-                        <div class="col-12 align-items-center">
-                            <button type="button" class="btn btn-outline-info">장바구니 담기</button>
+                        <div th:if="${!product.isShoppingBagAdded()}" class="col-12 align-items-center">
+                            <button type="button" id="addShoppingBagBtn" class="btn btn-outline-info">장바구니 담기</button>
+                        </div>
+
+                        <div th:if="${product.isShoppingBagAdded()}" class="col-12 align-items-center">
+                            <button type="button" id="minusShoppingBagBtn" class="btn btn-outline-danger">장바구니 빼기
+                            </button>
                         </div>
 
                         <div class="col-12 align-items-center">
@@ -75,7 +85,80 @@
 
 
     <footer th:replace="fragments.html::footer"></footer>
+</div>
 </body>
+<script th:if="${!product.isShoppingBagAdded()}">
+    (function () {
+        const addBtn = document.querySelector('#addShoppingBagBtn');
+
+        addBtn.onclick = async function () {
+            const productId = document.querySelector('#productId').value;
+            const quantity = document.querySelector('#quantity').value;
+
+
+            const csrfHeader = document.querySelector('#_csrf_header').content;
+            const csrf = document.querySelector('#_csrf').content;
+
+            const data = {
+                productId: productId,
+                quantity: quantity
+            };
+
+            const options = {
+                method: 'post',
+                headers: {
+                    'Content-Type': 'application/json',
+                    [csrfHeader]: csrf
+                },
+                body: JSON.stringify(data)
+            };
+
+
+            const response = await fetch('/shopping-bag/add', options);
+
+            if (response.ok) {
+                location.reload();
+            } else {
+                const message = await response.text();
+                alert(message);
+            }
+
+        };
+    }());
+</script>
+<script th:if="${product.isShoppingBagAdded()}">
+    const minusBtn = document.querySelector('#minusShoppingBagBtn');
+
+    minusBtn.onclick = function () {
+        const productId = document.querySelector('#productId').value;
+        const csrfHeader = document.querySelector('#_csrf_header').content;
+        const csrf = document.querySelector('#_csrf').content;
+
+        const data = {
+            productId: productId
+        };
+
+        const options = {
+            method: 'post',
+            headers: {
+                'Content-Type': 'application/json',
+                [csrfHeader]: csrf
+            },
+            body: JSON.stringify(data)
+        };
+
+        fetch('/shopping-bag/minus', options)
+            .then(response => {
+                if (response.ok) {
+                    location.reload();
+                } else {
+                    throw new Error();
+                }
+            }).catch(err => {
+            alert('오류가 발생하였습니다. 다시 시도해주세요.');
+        });
+    };
+</script>
 <script>
     (function () {
         const quantityElement = document.querySelector('#quantity');

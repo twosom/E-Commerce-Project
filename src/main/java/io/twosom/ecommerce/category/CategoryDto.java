@@ -16,5 +16,5 @@ public class CategoryDto {
     private String description;
     private boolean publish;
     private List<CategoryDto> childCategory = new ArrayList<>();
-    private CategoryDto parentCategory;
+//    private CategoryDto parentCategory;
 }
