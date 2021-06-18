@@ -32,7 +32,7 @@
                     <div class="accordion" id="accordionRental" th:each="category : ${categoryList}">
 
 
-                        <div class="accordion-item mb-3" th:if="${category.parentCategory == null}">
+                        <div class="accordion-item mb-3" th:if="${category.childCategory.size() > 0}">
                             <h5 class="accordion-header" id="headingOne">
                                 <button class="accordion-button border-bottom font-weight-bold collapsed" type="button"
                                         data-bs-toggle="collapse"

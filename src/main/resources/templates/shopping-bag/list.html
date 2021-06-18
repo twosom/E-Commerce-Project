@@ -25,7 +25,7 @@
                     <thead>
                     <tr>
                         <th class="text-uppercase text-secondary text-lg font-weight-bolder">상품 정보</th>
-                        <th class="text-uppercase text-secondary text-lg font-weight-bolder ps-2">수량 / 총 가격</th>
+                        <th class="text-uppercase text-secondary text-lg font-weight-bolder ps-2">수량 / 가격</th>
                         <th class="text-uppercase text-secondary text-lg font-weight-bolder ps-2"></th>
 
 
@@ -68,7 +68,16 @@
 
                     </tbody>
                 </table>
+
+                <div class="card-footer text-center">
+                    <h5 class="mt-3 mb-1 d-md-block">합계 : <span
+                            class="h5 mb-0 text-lg font-weight-bolder text-primary text-gradient text-uppercase"
+                            th:text="${#numbers.formatCurrency(totalPrice)}"></span></h5>
+
+                </div>
             </div>
+            <hr class="horizontal dark mb-3"/>
+
         </div>
     </div>
 

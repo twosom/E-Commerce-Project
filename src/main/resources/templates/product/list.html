@@ -28,8 +28,8 @@
         </div>
 
         <div class="col-lg-4 mb-lg-0 mb-4" th:each="product : ${productList}">
-            <div class="card">
-                <div class="card-header p-0 mx-3 mt-3 position-relative z-index-1">
+            <div class="card my-3">
+                <div class="card-header p-0 mx-3 mt-3 position-relative z-index-1 text-center">
                     <a href="#" th:href="@{/product/info(id=${product.id})}" class="d-block blur-shadow-image">
                         <img th:src="${product.productImage}" class="img-fluid border-radius-md"
                              th:alt="${product.productName}"/>
