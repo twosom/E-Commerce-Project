@@ -146,6 +146,8 @@
                                     <h3 class="mt-2 text-info text-gradient"
                                         th:text="${'주문번호 : ' + order.orderId}"></h3>
                             <h5 class="text-dark" th:text="${'주문 상태 : ' + order.status.description}"></h5>
+                            <span class="h6 text-muted fromNow inline" th:text="${order.orderedDate}"></span>
+                            <span class="h6 text-muted inline">에 주문</span>
                         </span>
                         <tr th:each="orderProduct: ${order.productDtoList}">
                             <td>
@@ -213,7 +215,9 @@
                         <span class="text-center">
                                     <h3 class="mt-2 text-info text-gradient"
                                         th:text="${'주문번호 : ' + order.orderId}"></h3>
-                            <h5 class="text-dark" th:text="${'주문 상태 : ' + order.status.description}"></h5>
+                                    <h5 class="text-dark" th:text="${'주문 상태 : ' + order.status.description}"></h5>
+                                    <span class="h6 text-muted fromNow inline" th:text="${order.orderedDate}"></span>
+                                    <span class="h6 text-muted inline">에 주문</span>
                         </span>
                         <tr th:each="orderProduct: ${order.productDtoList}">
                             <td>
@@ -282,6 +286,8 @@
                                     <h3 class="mt-2 text-info text-gradient"
                                         th:text="${'주문번호 : ' + order.orderId}"></h3>
                             <h5 class="text-dark" th:text="${'주문 상태 : ' + order.status.description}"></h5>
+                            <span class="h6 text-muted fromNow inline" th:text="${order.orderedDate}"></span>
+                            <span class="h6 text-muted inline">에 주문</span>
                         </span>
                         <tr th:each="orderProduct: ${order.productDtoList}">
                             <td>
@@ -346,4 +352,5 @@
 
     }());
 </script>
+<script th:replace="fragments.html::date-time"></script>
 </html>
