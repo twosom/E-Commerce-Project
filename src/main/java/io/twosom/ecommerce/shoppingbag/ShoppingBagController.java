@@ -54,14 +54,7 @@ public class ShoppingBagController {
     @GetMapping("/shopping-bag/list")
     public String shoppingBagList(@CurrentAccount Account account, Model model) {
         List<ShoppingBagListDto> shoppingBagList = shoppingBagQueryRepository.findByAccountAndStatusToDto(account, ShoppingBagStatus.STANDBY);
-        List<Integer> totalPriceList = shoppingBagList.stream().map(ShoppingBagListDto::getTotalPrice)
-                .collect(Collectors.toList());
-
-        int totalPrice = totalPriceList.stream().mapToInt(i -> i).sum();
-
-
         model.addAttribute("shoppingBagList", shoppingBagList);
-        model.addAttribute("totalPrice", totalPrice);
 
         return "shopping-bag/list";
     }

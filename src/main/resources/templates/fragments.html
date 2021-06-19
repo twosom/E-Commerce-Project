@@ -88,7 +88,6 @@
                                                                     <div>
                                                                         <h6 class="dropdown-header text-dark font-weight-bolder d-flex align-items-center p-0"
                                                                             th:text="${category.title}">
-                                                                            <!-- TODO Category forEach 돌리기 -->
                                                                             Page Sections
                                                                         </h6>
                                                                         <span class="text-sm"
@@ -123,7 +122,6 @@
                                                             <div>
                                                                 <h5 class="dropdown-header text-dark font-weight-bolder d-flex justify-content-center align-items-center p-0"
                                                                     th:text="${category.title}">
-                                                                    <!--TODO category forEach 돌리기-->
                                                                     Page Sections
                                                                 </h5>
                                                             </div>
@@ -270,6 +268,11 @@
                                 <!-- SIGN_UP -->
                                 <li class="nav-item me-1" sec:authorize="isAnonymous()">
                                     <a class="nav-link" href="#" th:href="@{/sign-up}">가입</a>
+                                </li>
+
+                                <li class="nav-item me-1" sec:authorize="isAuthenticated()" >
+                                    <a class="nav-link" href="#"
+                                       th:href="@{/order/list}">주문 조회</a>
                                 </li>
 
                                 <!-- ADMIN_MENU -->

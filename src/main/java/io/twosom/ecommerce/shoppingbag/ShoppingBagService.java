@@ -3,12 +3,16 @@ package io.twosom.ecommerce.shoppingbag;
 import io.twosom.ecommerce.account.domain.Account;
 import io.twosom.ecommerce.product.domain.Product;
 import io.twosom.ecommerce.product.repository.ProductRepository;
+import io.twosom.ecommerce.shoppingbag.domain.ShoppingBag;
+import io.twosom.ecommerce.shoppingbag.exception.NotValidShoppingBagException;
 import io.twosom.ecommerce.shoppingbag.exception.ProductStockNotEnoughException;
 import io.twosom.ecommerce.shoppingbag.form.ShoppingBagForm;
 import io.twosom.ecommerce.shoppingbag.repository.ShoppingBagRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 @Transactional
@@ -18,24 +22,28 @@ public class ShoppingBagService {
     private final ShoppingBagRepository shoppingBagRepository;
     private final ProductRepository productRepository;
 
-    public void add(Account account, ShoppingBagForm shoppingBagForm) {
+    public Long add(Account account, ShoppingBagForm shoppingBagForm) {
         Product findProduct = findProductAndValidateIsNull(shoppingBagForm);
 
         if (findProduct.getProductStock() < shoppingBagForm.getQuantity()) {
-            //TODO 예외 타입 정하기
             throw new ProductStockNotEnoughException("재고가 부족합니다.");
         }
 
+        ShoppingBag shoppingBag = createNewShoppingBag(account, shoppingBagForm, findProduct);
+        minusProductStock(shoppingBagForm, findProduct);
+        return shoppingBagRepository.save(shoppingBag).getId();
+    }
 
+    private ShoppingBag createNewShoppingBag(Account account, ShoppingBagForm shoppingBagForm, Product findProduct) {
         ShoppingBag shoppingBag = new ShoppingBag();
+        if (findProduct.isSale()) {
+            shoppingBag.setSalePrice(findProduct.calculateSalePrice());
+        }
         shoppingBag.setAccount(account);
         shoppingBag.setProduct(findProduct);
         shoppingBag.setQuantity(shoppingBagForm.getQuantity());
         shoppingBag.setStatus(ShoppingBagStatus.STANDBY);
-
-        minusProductStock(shoppingBagForm, findProduct);
-
-        shoppingBagRepository.save(shoppingBag);
+        return shoppingBag;
     }
 
 
@@ -72,4 +80,11 @@ public class ShoppingBagService {
     }
 
 
+    public void validateAccount(List<ShoppingBag> shoppingBagProductList, Account account) {
+        for (ShoppingBag shoppingBag : shoppingBagProductList) {
+            if (!shoppingBag.getAccount().equals(account)) {
+                throw new NotValidShoppingBagException("잘못된 접근입니다.");
+            }
+        }
+    }
 }

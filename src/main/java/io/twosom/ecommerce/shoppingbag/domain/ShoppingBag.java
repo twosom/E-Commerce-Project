@@ -1,7 +1,9 @@
-package io.twosom.ecommerce.shoppingbag;
+package io.twosom.ecommerce.shoppingbag.domain;
 
 import io.twosom.ecommerce.account.domain.Account;
+import io.twosom.ecommerce.order.Order;
 import io.twosom.ecommerce.product.domain.Product;
+import io.twosom.ecommerce.shoppingbag.ShoppingBagStatus;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -33,4 +35,10 @@ public class ShoppingBag {
 
     @CreatedDate
     private LocalDateTime createdDate;
+
+    //TODO 주문이 완료된 상태에는 최종 할인된 가격으로 표기하기.
+    private int salePrice;
+
+    @ManyToOne
+    private Order order;
 }
