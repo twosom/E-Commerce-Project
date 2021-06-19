@@ -17,6 +17,7 @@ import io.twosom.ecommerce.product.domain.Product;
 import io.twosom.ecommerce.product.form.ProductForm;
 import io.twosom.ecommerce.product.repository.ProductRepository;
 import io.twosom.ecommerce.product.service.ProductService;
+import io.twosom.ecommerce.shoppingbag.domain.ShoppingBag;
 import io.twosom.ecommerce.shoppingbag.form.ShoppingBagForm;
 import io.twosom.ecommerce.shoppingbag.repository.ShoppingBagRepository;
 import org.junit.jupiter.api.AfterEach;

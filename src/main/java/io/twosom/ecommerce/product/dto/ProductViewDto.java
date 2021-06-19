@@ -16,10 +16,11 @@ public class ProductViewDto {
     private Long id;
     private String productName;
     private String productImage;
+    private String productDescription;
+
     private String seller;
     private String categoryTitle;
     private LocalDateTime createdDate;
-    private String productDescription;
 
     private int productPrice;
     private int productStock;

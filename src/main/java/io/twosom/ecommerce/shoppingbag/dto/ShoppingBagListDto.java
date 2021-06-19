@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 @Builder
 public class ShoppingBagListDto {
 
+    private Long shoppingBagId;
     private Long productId;
     private String productName;
     private String productImage;
@@ -29,5 +30,6 @@ public class ShoppingBagListDto {
             return productPrice * shoppingBagQuantity;
         }
     }
+
 
 }

@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 import javax.persistence.EntityManager;
 import java.util.List;
 
-import static io.twosom.ecommerce.shoppingbag.QShoppingBag.shoppingBag;
+import static io.twosom.ecommerce.shoppingbag.domain.QShoppingBag.shoppingBag;
 
 @Repository
 public class ShoppingBagQueryRepository {
@@ -25,6 +25,7 @@ public class ShoppingBagQueryRepository {
     public List<ShoppingBagListDto> findByAccountAndStatusToDto(Account account, ShoppingBagStatus status) {
 
         return queryFactory.select(Projections.fields(ShoppingBagListDto.class,
+                            shoppingBag.id.as("shoppingBagId"),
                             shoppingBag.product.id.as("productId"),
                             shoppingBag.product.productName,
                             shoppingBag.product.productImage,
@@ -37,5 +38,21 @@ public class ShoppingBagQueryRepository {
                 .where(shoppingBag.account.eq(account).and(shoppingBag.status.eq(status)))
                 .fetch();
 
+    }
+
+    public List<ShoppingBagListDto> findAllByIdIn(List<Long> idArray) {
+        return queryFactory.select(Projections.fields(ShoppingBagListDto.class,
+                shoppingBag.id.as("shoppingBagId"),
+                shoppingBag.product.id.as("productId"),
+                shoppingBag.product.productName,
+                shoppingBag.product.productImage,
+                shoppingBag.quantity.as("shoppingBagQuantity"),
+                shoppingBag.product.sale,
+                shoppingBag.product.saleRate,
+                shoppingBag.product.productPrice,
+                shoppingBag.product.salePrice))
+                .from(shoppingBag)
+                .where(shoppingBag.id.in(idArray))
+                .fetch();
     }
 }
