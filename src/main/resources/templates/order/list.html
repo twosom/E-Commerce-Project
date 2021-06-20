@@ -62,6 +62,7 @@
                     <div class="card-header pb-0 text-left">
                         <h3 class="font-weight-bolder text-info text-gradient">주문 확인</h3>
                         <p class="mb-0" th:text="${'주문번호 : ' + orderDtoForModal.orderId}">주문번호</p>
+                        <p class="mb-0" th:text="${'결제 방식 : ' + orderDtoForModal.payment.description}">결제 방식</p>
                     </div>
                     <div class="card-body">
                         <!-- 주문 확인 내용 -->
@@ -91,7 +92,7 @@
                                             </div>
                                             <div class="d-flex flex-column justify-content-center">
                                                 <h6 class="mb-0 text-xs" th:text="${orderProduct.productName}">상품
-                                                    이미지</h6>
+                                                    이름</h6>
 
                                                 <p class="text-xs text-secondary mb-0"
                                                    th:text="${#numbers.formatCurrency(orderProduct.productPrice)}">
@@ -111,6 +112,10 @@
                                 </tr>
                                 </tbody>
                             </table>
+                        </div>
+                        <div class="row">
+                            <span class="ms-3 text-uppercase text-secondary text-lg font-weight-bolder">주소</span>
+                            <h6 class="ms-3" th:text="${orderDtoForModal.address.city + ' ' + orderDtoForModal.address.street + ' ' + orderDtoForModal.address.zipcode}"></h6>
                         </div>
                         <div class="card-footer text-center">
                             <h5 class="mt-3 mb-1">합계 :
@@ -146,6 +151,8 @@
                                     <h3 class="mt-2 text-info text-gradient"
                                         th:text="${'주문번호 : ' + order.orderId}"></h3>
                             <h5 class="text-dark" th:text="${'주문 상태 : ' + order.status.description}"></h5>
+                            <p class="mb-0" th:text="${'결제 방식 : ' + order.payment.description}">결제 방식</p>
+
                             <span class="h6 text-muted fromNow inline" th:text="${order.orderedDate}"></span>
                             <span class="h6 text-muted inline">에 주문</span>
                         </span>
@@ -178,6 +185,10 @@
                         </tbody>
                     </table>
                 </div>
+            </div>
+            <div class="row">
+                <span class="ms-3 text-uppercase text-secondary text-lg font-weight-bolder">주소</span>
+                <h6 class="ms-3 text-sm" th:text="${order.address.city + ' ' + order.address.street + ' ' + order.address.zipcode}"></h6>
             </div>
             <div class="card-footer text-center">
                 <h5 class="mt-3 mb-1">합계 :
@@ -216,6 +227,7 @@
                                     <h3 class="mt-2 text-info text-gradient"
                                         th:text="${'주문번호 : ' + order.orderId}"></h3>
                                     <h5 class="text-dark" th:text="${'주문 상태 : ' + order.status.description}"></h5>
+                                    <p class="mb-0" th:text="${'결제 방식 : ' + order.payment.description}">결제 방식</p>
                                     <span class="h6 text-muted fromNow inline" th:text="${order.orderedDate}"></span>
                                     <span class="h6 text-muted inline">에 주문</span>
                         </span>
@@ -248,6 +260,10 @@
                         </tbody>
                     </table>
                 </div>
+            </div>
+            <div class="row">
+                <span class="ms-3 text-uppercase text-secondary text-lg font-weight-bolder">주소</span>
+                <h6 class="ms-3 text-sm" th:text="${order.address.city + ' ' + order.address.street + ' ' + order.address.zipcode}"></h6>
             </div>
             <div class="card-footer text-center">
                 <h5 class="mt-3 mb-1">합계 :
@@ -283,9 +299,10 @@
 
                         <tbody>
                         <span class="text-center">
-                                    <h3 class="mt-2 text-info text-gradient"
-                                        th:text="${'주문번호 : ' + order.orderId}"></h3>
+                            <h3 class="mt-2 text-info text-gradient"
+                                th:text="${'주문번호 : ' + order.orderId}"></h3>
                             <h5 class="text-dark" th:text="${'주문 상태 : ' + order.status.description}"></h5>
+                            <p class="mb-0" th:text="${'결제 방식 : ' + order.payment.description}">결제 방식</p>
                             <span class="h6 text-muted fromNow inline" th:text="${order.orderedDate}"></span>
                             <span class="h6 text-muted inline">에 주문</span>
                         </span>
@@ -318,6 +335,10 @@
                         </tbody>
                     </table>
                 </div>
+            </div>
+            <div class="row">
+                <span class="ms-3 text-uppercase text-secondary text-lg font-weight-bolder">주소</span>
+                <h6 class="ms-3 text-sm" th:text="${order.address.city + ' ' + order.address.street + ' ' + order.address.zipcode}"></h6>
             </div>
             <div class="card-footer text-center">
                 <h5 class="mt-3 mb-1">합계 :

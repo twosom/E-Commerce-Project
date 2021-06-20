@@ -61,11 +61,11 @@
 
 
                     <!-- TODO 사용자 등급 보여주고 예상 할인 가격과 포인트 적립 보여주기 -->
-                    <form action="#" th:action="@{/order/direct(productId=${product.id})}" method="post" class="row row-cols-lg-auto g-3 my-auto">
-                        <input type="hidden" id="productId" th:value="${product.id}"/>
+                    <form action="#" th:action="@{/order/direct}" method="post" class="row row-cols-lg-auto g-3 my-auto">
+                        <input type="hidden" name="productId" id="productId" th:value="${product.id}"/>
                         <div class="col-12 align-items-center">
                             <label class="visually-hidden" for="quantity">수량</label>
-                            <input type="number" class="form-control" id="quantity" value="1" placeholder="수량" min="0"/>
+                            <input type="number" class="form-control" name="quantity" id="quantity" value="1" placeholder="수량" min="0"/>
                         </div>
 
                         <div th:if="${!product.isShoppingBagAdded()}" class="col-12 align-items-center">
