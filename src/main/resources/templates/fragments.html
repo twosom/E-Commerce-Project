@@ -194,6 +194,8 @@
                                                                         th:text="${#authentication.name}">
                                                                         계정 이름
                                                                     </h6>
+                                                                    <span th:text="${#conversions.convert(#authentication.principal, T(io.twosom.ecommerce.account.UserAccount)).account.memberGrade.gradeName + '등급'}"></span>
+                                                                    <div class="text-info text-gradient font-weight-bolder" th:text="${#numbers.formatInteger(#conversions.convert(#authentication.principal, T(io.twosom.ecommerce.account.UserAccount)).account.point, 1, 'COMMA') + ' 포인트'}"></div>
                                                                 </div>
                                                                 <img src="/images/down-arrow.svg" alt="down-arrow"
                                                                      class="arrow"/>
@@ -213,7 +215,7 @@
                                                 </li>
 
                                                 <li class="nav-item dropdown dropdown-hover dropdown-subitem list-group-item border-0 p-0">
-                                                    <a class="dropdown-item py-2 ps-3 border-radius-md" href="#">
+                                                    <span class="dropdown-item py-2 ps-3 border-radius-md">
                                                         <div class="d-flex">
                                                             <div class="icon h-10 me-3 d-flex mt-1">
                                                                 <i class="ni ni-lock-circle-open text-gradient text-primary"></i>
@@ -233,7 +235,7 @@
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                    </a>
+                                                    </span>
                                                 </li>
                                             </ul>
                                         </div>

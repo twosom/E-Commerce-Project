@@ -2,6 +2,7 @@ package io.twosom.ecommerce.order.repository;
 
 import io.twosom.ecommerce.account.domain.Account;
 import io.twosom.ecommerce.order.Order;
+import io.twosom.ecommerce.order.OrderStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -12,4 +13,5 @@ public interface OrderRepository extends JpaRepository<Order, String> {
 
     List<Order> findAllByAccount(Account account);
 
+    List<Order> findAllByAccountAndStatus(Account account, OrderStatus status);
 }

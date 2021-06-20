@@ -2,6 +2,7 @@ package io.twosom.ecommerce.order;
 
 import io.twosom.ecommerce.account.CurrentAccount;
 import io.twosom.ecommerce.account.domain.Account;
+import io.twosom.ecommerce.account.service.AccountService;
 import io.twosom.ecommerce.order.dto.OrderDto;
 import io.twosom.ecommerce.order.form.OrderForm;
 import io.twosom.ecommerce.order.form.ShoppingBagIdArrayForm;
@@ -40,6 +41,8 @@ public class OrderController {
     private final ShoppingBagRepository shoppingBagRepository;
     private final ShoppingBagQueryRepository shoppingBagQueryRepository;
     private final ShoppingBagService shoppingBagService;
+
+    private final AccountService accountService;
 
     private final OrderFormValidator orderFormValidator;
 
@@ -110,12 +113,18 @@ public class OrderController {
     }
 
     @PostMapping("/order/confirmation")
-    public String confirmationOrder(@RequestParam("orderId") String orderId) {
+    public String confirmationOrder(@CurrentAccount Account account, @RequestParam("orderId") String orderId) {
         Order order = orderRepository.findById(orderId).get();
         if (order == null) {
             throw new RuntimeException("존재하지 않는 주문입니다.");
         }
-        order.setStatus(OrderStatus.COMP);
+
+        int savedPoint = accountService.savePoint(account.getId(), order.getTotalSumPrice());
+        orderService.confirmationOrder(order, savedPoint);
+        int totalPayedPriceByAccount =  orderService.getTotalPayedPriceByAccount(account);
+        accountService.updateGrade(account.getId(), totalPayedPriceByAccount);
+
+
         //TODO 판매자에게 알림 보내기
         return "redirect:/order/list";
     }

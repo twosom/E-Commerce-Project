@@ -14,7 +14,7 @@ import java.util.List;
 @Transactional(readOnly = true)
 public interface ShoppingBagRepository extends JpaRepository<ShoppingBag, Long> {
 
-    boolean existsByAccountAndProductAndStatus(Account account, Product product, ShoppingBagStatus status);
+    boolean existsByAccountAndProductIdAndStatus(Account account, Long productId, ShoppingBagStatus status);
 
     ShoppingBag findByAccountAndProductAndStatus(Account account, Product product, ShoppingBagStatus status);
 

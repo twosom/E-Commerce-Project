@@ -26,6 +26,7 @@
                     <tr>
                         <th class="text-uppercase text-secondary text-lg font-weight-bolder">상품 정보</th>
                         <th class="text-uppercase text-secondary text-lg font-weight-bolder ps-2">수량 / 가격</th>
+                        <th class="text-uppercase text-secondary text-lg font-weight-bolder ps-2">적립 예정 포인트</th>
                         <th class="text-uppercase text-secondary text-lg font-weight-bolder ps-2"></th>
 
                     </tr>
@@ -63,11 +64,22 @@
 
                         <td>
                             <p class="text-xs font-weight-bold mb-0" th:text="${shoppingBag.shoppingBagQuantity + '개'}">
-                                수량</p>
+                                수량
+                            </p>
                             <p class="text-xs text-secondary mb-0"
                                th:text="${#numbers.formatCurrency(shoppingBag.getTotalPrice())}">
-                                총 가격</p>
+                                총 가격
+                            </p>
                         </td>
+
+                        <td>
+                            <p class="text-xs text-bolder mb-0"
+                               th:text="${#numbers.formatInteger((shoppingBag.getTotalPrice() * #conversions.convert(#authentication.principal, T(io.twosom.ecommerce.account.UserAccount)).account.memberGrade.pointSaveRate) / 100 , 3, 'COMMA') + ' 포인트'}">
+                                총 가격
+                            </p>
+                        </td>
+
+
                         <td>
                             <button type="button" id="cancelBtn" th:onclick="|removeItem('${shoppingBag.productId}')|"
                                     class="btn btn-outline-danger btn-sm">취소하기

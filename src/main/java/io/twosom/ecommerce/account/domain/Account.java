@@ -32,8 +32,13 @@ public class Account {
 
     private LocalDateTime joinedAt;
 
+    @ManyToOne
+    private MemberGrade memberGrade;
+
     @Enumerated(EnumType.STRING)
     private Role role;
+
+    private int point = 0;
 
     @Embedded
     private Address address;

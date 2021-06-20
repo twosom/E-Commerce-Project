@@ -27,6 +27,8 @@ public class OrderDto {
 
     private int totalSumPrice;
 
+    private int savedPoint = 0;
+
     private Payment payment;
 
     private Address address;

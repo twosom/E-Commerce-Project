@@ -27,7 +27,7 @@ public class ShoppingBagListDto {
         if (isSale()) {
             return salePrice * shoppingBagQuantity;
         } else {
-            return productPrice * shoppingBagQuantity;
+            return salePrice == 0 ? productPrice * shoppingBagQuantity : salePrice * shoppingBagQuantity;
         }
     }
 
