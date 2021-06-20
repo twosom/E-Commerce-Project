@@ -39,6 +39,25 @@
 
     <!-- Control Center for Soft UI Design System: parallax effects, scripts for the example pages etc -->
     <script src="/js/soft-design-system-pro.min.js" type="text/javascript"></script>
+    <script src="/node_modules/devtools-detect/index.js"></script>
+    <script>
+        window.addEventListener('devtoolschange', event => {
+            if (event.detail.isOpen) {
+                console.clear();
+                console.log('  _________          ______   _____  ____  __  __ \n' +
+                    ' |__   __\\ \\        / / __ \\ / ____|/ __ \\|  \\/  |\n' +
+                    '    | |   \\ \\  /\\  / / |  | | (___ | |  | | \\  / |\n' +
+                    '    | |    \\ \\/  \\/ /| |  | |\\___ \\| |  | | |\\/| |\n' +
+                    '    | |     \\  /\\  / | |__| |____) | |__| | |  | |\n' +
+                    '    |_|      \\/  \\/   \\____/|_____/ \\____/|_|  |_|\n' +
+                    '                                                  \n' +
+                    '                                                  ');
+                console.warn('UI에 관련된 소스들은 모두 create-tim 에서 라이센스를 구입하여 사용하였습니다.\n' +
+                    '따라서 해당 소스들을 무단으로 도용하여 사용하시면 안됩니다.\n' +
+                    '찾아주셔서 감사합니다.');
+            }
+        });
+    </script>
 </div>
 
 
@@ -270,13 +289,13 @@
                                     <a class="nav-link" href="#" th:href="@{/sign-up}">가입</a>
                                 </li>
 
-                                <li class="nav-item me-1" sec:authorize="isAuthenticated()" >
+                                <li class="nav-item me-1" sec:authorize="isAuthenticated()">
                                     <a class="nav-link" href="#"
                                        th:href="@{/order/list}">주문 조회</a>
                                 </li>
 
                                 <!-- ADMIN_MENU -->
-                                <li class="nav-item me-1" sec:authorize="hasRole('ROLE_ADMIN')" >
+                                <li class="nav-item me-1" sec:authorize="hasRole('ROLE_ADMIN')">
                                     <a class="nav-link" href="#"
                                        th:href="@{/admin/menu}">관리자 메뉴</a>
                                 </li>
@@ -290,7 +309,8 @@
                                 <li class="nav-item me-1" sec:authorize="isAuthenticated()">
                                     <a class="nav-link" href="#" th:href="@{/shopping-bag/list}">
                                         <i class="ni ni-bag-17">
-                                            <span class="text-primary text-bolder" th:text="${shoppingBagCount}">1</span>
+                                            <span class="text-primary text-bolder"
+                                                  th:text="${shoppingBagCount}">1</span>
                                         </i>
                                     </a>
                                 </li>

@@ -2,6 +2,7 @@ package io.twosom.ecommerce.order.dto;
 
 import io.twosom.ecommerce.account.domain.Address;
 import io.twosom.ecommerce.order.OrderStatus;
+import io.twosom.ecommerce.order.Payment;
 import io.twosom.ecommerce.product.dto.ProductDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -25,6 +26,8 @@ public class OrderDto {
     private List<ProductDtoForOrderDto> productDtoList = new ArrayList<>();
 
     private int totalSumPrice;
+
+    private Payment payment;
 
     private Address address;
 

@@ -71,6 +71,7 @@ public class OrderQueryRepository {
                         order.orderedDate,
                         order.totalSumPrice,
                         order.address,
+                        order.payment,
                         order.status))
                 .from(order)
                 .where(order.account.eq(account))
@@ -109,6 +110,7 @@ public class OrderQueryRepository {
                         order.orderedDate,
                         order.totalSumPrice,
                         order.address,
+                        order.payment,
                         order.status))
                 .from(order)
                 .where(order.id.eq(orderId))

@@ -49,9 +49,8 @@ public class OrderController {
     }
 
     /* 장바구니를 통한 구매 */
-    @GetMapping("/order")
+    @GetMapping("/order/form")
     public String orderItem(@CurrentAccount Account account, ShoppingBagIdArrayForm shoppingBagIdArrayForm, Model model) {
-        System.out.println("OrderController.orderItem");
         List<ShoppingBagListDto> shoppingBagList = shoppingBagQueryRepository.findAllByIdIn(shoppingBagIdArrayForm.getIdArray());
         int totalSumPrice = getTotalSumPrice(shoppingBagList);
 
@@ -100,13 +99,14 @@ public class OrderController {
     /* 장바구니를 통해서가 아닌 직접 구매 */
     @PostMapping("/order/direct")
     public String orderWithoutShoppingBagAdd(@CurrentAccount Account account,
-                                             @RequestParam("productId") Long productId) {
+                                             Long productId,
+                                             int quantity) {
         ShoppingBagForm shoppingBagForm = ShoppingBagForm.builder()
                 .productId(productId)
-                .quantity(1)
+                .quantity(quantity)
                 .build();
         Long shoppingBagId = shoppingBagService.add(account, shoppingBagForm);
-        return "redirect:/order?idArray=" + shoppingBagId;
+        return "redirect:/order/form?idArray=" + shoppingBagId;
     }
 
     @PostMapping("/order/confirmation")
