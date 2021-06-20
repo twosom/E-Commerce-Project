@@ -50,6 +50,8 @@ public class Order {
 
     private int totalSumPrice;
 
+    private int savedPoint = 0;
+
     public static Order createNewOrder(Account account, Address address, List<ShoppingBag> shoppingBagList, int totalSumPrice, Payment payment) {
         Order order = new Order();
 

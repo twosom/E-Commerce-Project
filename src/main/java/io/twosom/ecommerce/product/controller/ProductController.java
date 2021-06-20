@@ -50,16 +50,13 @@ public class ProductController {
     }
 
     @GetMapping("/product/info")
-    public String viewDetailProductInfo(@CurrentAccount Account account, @RequestParam("id") Long id, Model model) {
+    public String viewDetailProductInfo(@CurrentAccount Account account, @RequestParam("id") Long productId, Model model) {
 
-        ProductViewDto productDto = productQueryRepository.findByIdAndPublished(id);
+        ProductViewDto productDto = productQueryRepository.findByIdAndPublished(productId);
         if (productDto == null) {
             throw new IllegalArgumentException("존재하지 않는 상품입니다.");
         }
-
-        Product product = new Product();
-        product.setId(id);
-        boolean shoppingBagAdded = shoppingBagRepository.existsByAccountAndProductAndStatus(account, product, ShoppingBagStatus.STANDBY);
+        boolean shoppingBagAdded = shoppingBagRepository.existsByAccountAndProductIdAndStatus(account, productId, ShoppingBagStatus.STANDBY);
         productDto.setShoppingBagAdded(shoppingBagAdded);
         model.addAttribute("product", productDto);
 

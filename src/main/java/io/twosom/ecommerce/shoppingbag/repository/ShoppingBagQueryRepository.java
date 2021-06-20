@@ -33,7 +33,7 @@ public class ShoppingBagQueryRepository {
                             shoppingBag.product.sale,
                             shoppingBag.product.saleRate,
                             shoppingBag.product.productPrice,
-                            shoppingBag.product.salePrice))
+                            shoppingBag.salePrice))
                 .from(shoppingBag)
                 .where(shoppingBag.account.eq(account).and(shoppingBag.status.eq(status)))
                 .fetch();

@@ -1,10 +1,7 @@
 package io.twosom.ecommerce.account.service;
 
 import io.twosom.ecommerce.account.UserAccount;
-import io.twosom.ecommerce.account.domain.Account;
-import io.twosom.ecommerce.account.domain.Address;
-import io.twosom.ecommerce.account.domain.PreviousPassword;
-import io.twosom.ecommerce.account.domain.Role;
+import io.twosom.ecommerce.account.domain.*;
 import io.twosom.ecommerce.account.event.AccountCreatedEvent;
 import io.twosom.ecommerce.account.event.AccountMailResendEvent;
 import io.twosom.ecommerce.account.event.AccountResetPasswordConfirmEvent;
@@ -13,8 +10,10 @@ import io.twosom.ecommerce.account.form.AccountPasswordEditForm;
 import io.twosom.ecommerce.account.form.AccountProfileEditForm;
 import io.twosom.ecommerce.account.form.SignUpForm;
 import io.twosom.ecommerce.account.repository.AccountRepository;
+import io.twosom.ecommerce.account.repository.MemberGradeRepository;
 import io.twosom.ecommerce.account.repository.PreviousPasswordRepository;
 import io.twosom.ecommerce.main.form.ResetPasswordForm;
+import io.twosom.ecommerce.order.Order;
 import lombok.RequiredArgsConstructor;
 import net.bytebuddy.utility.RandomString;
 import org.modelmapper.ModelMapper;
@@ -35,6 +34,8 @@ public class AccountService implements UserDetailsService {
 
     private final AccountRepository accountRepository;
     private final PreviousPasswordRepository previousPasswordRepository;
+
+    private final MemberGradeRepository memberGradeRepository;
 
     private final ModelMapper modelMapper;
     private final PasswordEncoder passwordEncoder;
@@ -82,6 +83,8 @@ public class AccountService implements UserDetailsService {
     public boolean verifyCode(Account account, String verificationCode) {
         Account findAccount = accountRepository.findByEmail(account.getEmail());
         if (findAccount.verifyCode(verificationCode)) {
+            MemberGrade familyGrade = memberGradeRepository.findByGradeName("FAMILY");
+            findAccount.setMemberGrade(familyGrade);
             login(findAccount);
             return true;
         }
@@ -159,5 +162,31 @@ public class AccountService implements UserDetailsService {
         findAccount.setPassword(passwordEncoder.encode(newPassword));
 
         eventPublisher.publishEvent(new AccountResetPasswordConfirmEvent(findAccount, newPassword));
+    }
+
+    public int savePoint(Long accountId, int orderTotalSumPrice) {
+        Account account = accountRepository.findById(accountId).get();
+
+        int pointSaveRate = account.getMemberGrade().getPointSaveRate();
+        int savedPoint = orderTotalSumPrice * pointSaveRate / 100;
+        account.setPoint(account.getPoint() + savedPoint);
+        login(account);
+        return savedPoint;
+    }
+
+    public void updateGrade(Long accountId, int totalPayedPrice) {
+
+        Account account = accountRepository.findById(accountId).get();
+
+        if (totalPayedPrice >= 1_000_000) {
+            account.setMemberGrade(memberGradeRepository.findByGradeName("VIP"));
+        } else if (totalPayedPrice >= 500_000) {
+            account.setMemberGrade(memberGradeRepository.findByGradeName("GOLD"));
+        } else if (totalPayedPrice >= 200_000) {
+            account.setMemberGrade(memberGradeRepository.findByGradeName("SILVER"));
+        }
+
+        accountRepository.save(account);
+        login(account);
     }
 }

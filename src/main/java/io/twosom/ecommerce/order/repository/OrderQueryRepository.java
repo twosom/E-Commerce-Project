@@ -70,6 +70,7 @@ public class OrderQueryRepository {
                         order.id.as("orderId"),
                         order.orderedDate,
                         order.totalSumPrice,
+                        order.savedPoint,
                         order.address,
                         order.payment,
                         order.status))
