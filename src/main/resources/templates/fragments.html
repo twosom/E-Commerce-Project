@@ -39,7 +39,7 @@
 
     <!-- Control Center for Soft UI Design System: parallax effects, scripts for the example pages etc -->
     <script src="/js/soft-design-system-pro.min.js" type="text/javascript"></script>
-    <script src="/node_modules/devtools-detect/index.js"></script>
+    <script src="/node_modules/devtools-detect/index.js" type="text/javascript"></script>
     <script>
         window.addEventListener('devtoolschange', event => {
             if (event.detail.isOpen) {
@@ -252,6 +252,8 @@
                                                                 th:text="${#authentication.name}">
                                                                 계정 이름
                                                             </h6>
+                                                            <span th:text="${#conversions.convert(#authentication.principal, T(io.twosom.ecommerce.account.UserAccount)).account.memberGrade.gradeName + '등급'}"></span>
+                                                            <div class="text-info text-gradient font-weight-bolder" th:text="${#numbers.formatInteger(#conversions.convert(#authentication.principal, T(io.twosom.ecommerce.account.UserAccount)).account.point, 1, 'COMMA') + ' 포인트'}"></div>
                                                         </div>
                                                     </div>
                                                 </div>

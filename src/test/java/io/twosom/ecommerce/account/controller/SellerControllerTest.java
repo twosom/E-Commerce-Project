@@ -1,10 +1,12 @@
 package io.twosom.ecommerce.account.controller;
 
+import io.twosom.ecommerce.account.domain.Account;
 import io.twosom.ecommerce.account.domain.Address;
 import io.twosom.ecommerce.account.event.AccountCreatedEvent;
 import io.twosom.ecommerce.account.event.AccountEventListener;
 import io.twosom.ecommerce.account.form.SignUpForm;
 import io.twosom.ecommerce.account.repository.AccountRepository;
+import io.twosom.ecommerce.account.repository.MemberGradeRepository;
 import io.twosom.ecommerce.account.service.AccountService;
 import io.twosom.ecommerce.category.CategoryRepository;
 import io.twosom.ecommerce.category.CategoryService;
@@ -70,6 +72,9 @@ class SellerControllerTest {
     @Autowired
     SaleHistoryRepository saleHistoryRepository;
 
+    @Autowired
+    MemberGradeRepository memberGradeRepository;
+
     @BeforeEach
     void beforeEach() {
         createNewAccount("twosom", "twosom@twosom.com", "11111111", "seller");
@@ -110,7 +115,8 @@ class SellerControllerTest {
                 .userOrSeller(userOrSeller)
                 .build();
 
-        accountService.createAccount(signUpForm);
+        Account account = accountService.createAccount(signUpForm);
+        account.setMemberGrade(memberGradeRepository.findByGradeName("FAMILY"));
 
     }
 

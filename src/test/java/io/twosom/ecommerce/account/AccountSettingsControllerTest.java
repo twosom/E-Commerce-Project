@@ -8,6 +8,7 @@ import io.twosom.ecommerce.account.event.AccountEventListener;
 import io.twosom.ecommerce.account.event.AccountMailResendEvent;
 import io.twosom.ecommerce.account.form.SignUpForm;
 import io.twosom.ecommerce.account.repository.AccountRepository;
+import io.twosom.ecommerce.account.repository.MemberGradeRepository;
 import io.twosom.ecommerce.account.repository.PreviousPasswordRepository;
 import io.twosom.ecommerce.account.service.AccountService;
 import org.junit.jupiter.api.AfterEach;
@@ -59,6 +60,9 @@ class AccountSettingsControllerTest {
     @MockBean
     AccountEventListener accountEventListener;
 
+    @Autowired
+    MemberGradeRepository memberGradeRepository;
+
     @BeforeEach
     void beforeEach() {
         createNewAccount("twosom", "twosom@twosom.com", "11111111");
@@ -84,7 +88,8 @@ class AccountSettingsControllerTest {
                 .userOrSeller("user")
                 .build();
 
-        accountService.createAccount(signUpForm);
+        Account account = accountService.createAccount(signUpForm);
+        account.setMemberGrade(memberGradeRepository.findByGradeName("FAMILY"));
     }
 
 

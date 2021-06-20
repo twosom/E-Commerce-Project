@@ -139,6 +139,9 @@ class AccountControllerTest{
                 .andExpect(status().isOk());
 
         assertTrue(findAccount.isEmailVerified());
+
+        assertNotNull(findAccount.getMemberGrade());
+        assertEquals(findAccount.getMemberGrade().getGradeName(), "FAMILY");
     }
 
     @DisplayName("인증코드 - 이메일 재전송 성공")

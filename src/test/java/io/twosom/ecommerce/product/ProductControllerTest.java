@@ -7,6 +7,7 @@ import io.twosom.ecommerce.account.event.AccountCreatedEvent;
 import io.twosom.ecommerce.account.event.AccountEventListener;
 import io.twosom.ecommerce.account.form.SignUpForm;
 import io.twosom.ecommerce.account.repository.AccountRepository;
+import io.twosom.ecommerce.account.repository.MemberGradeRepository;
 import io.twosom.ecommerce.account.service.AccountService;
 import io.twosom.ecommerce.category.Category;
 import io.twosom.ecommerce.category.CategoryRepository;
@@ -24,13 +25,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Collections;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.then;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.anonymous;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.authentication;
 import static org.springframework.security.test.web.servlet.response.SecurityMockMvcResultMatchers.unauthenticated;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -63,6 +69,9 @@ class ProductControllerTest {
 
     @Autowired
     ProductService productService;
+
+    @Autowired
+    MemberGradeRepository memberGradeRepository;
 
 
     @BeforeEach
@@ -110,6 +119,7 @@ class ProductControllerTest {
     private void changeToAdmin(String nickname) {
         Account account = accountRepository.findByNickname(nickname);
         account.setRole(Role.ROLE_ADMIN);
+        account.setMemberGrade(memberGradeRepository.findByGradeName("FAMILY"));
     }
 
     private void createNewCategory(String title, String parentCategoryTitle, String description) {
@@ -160,7 +170,8 @@ class ProductControllerTest {
 
         Product testProduct = productRepository.findByProductName("testProduct");
 
-        mockMvc.perform(get("/product/info?id={id}", testProduct.getId()))
+        mockMvc.perform(
+                get("/product/info?id={id}", testProduct.getId()))
                 .andExpect(status().isOk())
                 .andExpect(model().attributeExists("product"))
                 .andExpect(view().name("product/detail"));
