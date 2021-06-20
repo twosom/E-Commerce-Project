@@ -44,9 +44,6 @@ public class CustomAuthenticationSuccessHandler extends SimpleUrlAuthenticationS
         if (targetUrl.contains("node_modules")) {
             targetUrl = "/";
         }
-//        if (targetUrl.equals("http://localhost:8080/node_modules/devtools-detect/index.js")) {
-//            targetUrl = "/";
-//        }
 
         getRedirectStrategy().sendRedirect(request, response, targetUrl);
     }

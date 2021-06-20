@@ -2,11 +2,13 @@ package io.twosom.ecommerce.order;
 
 import io.twosom.ecommerce.account.domain.Account;
 import io.twosom.ecommerce.account.domain.Address;
+import io.twosom.ecommerce.account.domain.MemberGrade;
 import io.twosom.ecommerce.account.domain.Role;
 import io.twosom.ecommerce.account.event.AccountCreatedEvent;
 import io.twosom.ecommerce.account.event.AccountEventListener;
 import io.twosom.ecommerce.account.form.SignUpForm;
 import io.twosom.ecommerce.account.repository.AccountRepository;
+import io.twosom.ecommerce.account.repository.MemberGradeRepository;
 import io.twosom.ecommerce.account.service.AccountService;
 import io.twosom.ecommerce.category.Category;
 import io.twosom.ecommerce.category.CategoryRepository;
@@ -91,6 +93,9 @@ class OrderControllerTest {
     @Autowired
     EntityManager em;
 
+    @Autowired
+    MemberGradeRepository memberGradeRepository;
+
 
     @BeforeEach
     void beforeEach() {
@@ -152,6 +157,9 @@ class OrderControllerTest {
     private void changeToAdmin(String nickname) {
         Account account = accountRepository.findByNickname(nickname);
         account.setRole(Role.ROLE_ADMIN);
+        MemberGrade memberGrade = memberGradeRepository.findByGradeName("FAMILY");
+        System.out.println("memberGrade = " + memberGrade);
+        account.setMemberGrade(memberGrade);
     }
 
     private void createNewCategory(String title, String parentCategoryTitle, String description) {
@@ -193,7 +201,6 @@ class OrderControllerTest {
     @DisplayName("장바구니를 통한 구매 - 성공")
     @Test
     void order_with_shopping_bag_with_correct_value() throws Exception {
-
         String idArray = getShoppingBagIdArrayToString();
 
         mockMvc.perform(
@@ -254,6 +261,25 @@ class OrderControllerTest {
                 .param("quantity", "1")
                 .with(csrf()))
                 .andExpect(status().is3xxRedirection());
+    }
+    
+    @WithUserDetails(value = "twosom", setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    @DisplayName("구매 확정")
+    @Test
+    void order_confirm() throws Exception {
+        order_with_shopping_bag_with_correct_value();
+        List<Order> orders = orderRepository.findAll();
+        Order order = orders.get(0);
+        String orderId = order.getId();
+
+        mockMvc.perform(
+                post("/order/confirmation")
+                        .param("orderId", orderId)
+                        .with(csrf()))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/order/list"));
+
+        assertTrue(order.getSavedPoint() > 0);
     }
 
 

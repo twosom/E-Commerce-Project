@@ -2,11 +2,13 @@ package io.twosom.ecommerce.account.controller;
 
 import io.twosom.ecommerce.account.domain.Account;
 import io.twosom.ecommerce.account.domain.Address;
+import io.twosom.ecommerce.account.domain.MemberGrade;
 import io.twosom.ecommerce.account.domain.Role;
 import io.twosom.ecommerce.account.event.AccountCreatedEvent;
 import io.twosom.ecommerce.account.event.AccountEventListener;
 import io.twosom.ecommerce.account.form.SignUpForm;
 import io.twosom.ecommerce.account.repository.AccountRepository;
+import io.twosom.ecommerce.account.repository.MemberGradeRepository;
 import io.twosom.ecommerce.account.service.AccountService;
 import io.twosom.ecommerce.category.Category;
 import io.twosom.ecommerce.category.CategoryRepository;
@@ -64,6 +66,9 @@ class AdminControllerTest {
     @Autowired
     ProductService productService;
 
+    @Autowired
+    MemberGradeRepository memberGradeRepository;
+
     @BeforeEach
     void beforeEach() {
         createNewAccount("twosom", "twosom@twosom.com", "11111111");
@@ -92,6 +97,7 @@ class AdminControllerTest {
     private void changeToAdmin(String nickname) {
         Account account = accountRepository.findByNickname(nickname);
         account.setRole(Role.ROLE_ADMIN);
+        account.setMemberGrade(memberGradeRepository.findByGradeName("FAMILY"));
     }
 
     private void createNewCategory(String title, String parentCategoryTitle, String description) {

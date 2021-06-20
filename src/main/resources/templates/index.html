@@ -131,7 +131,7 @@
 <footer th:replace="fragments.html::footer"></footer>
 </body>
 <script th:replace="fragments.html::uiScripts"></script>
-<script th:if="${account != null && !account.emailVerified}">
+<script th:if="${account != null && !account.emailVerified}" type="text/javascript">
     function resendVerificationCode() {
         const csrfHeader = document.querySelector('#_csrf_header').content;
         const csrf = document.querySelector('#_csrf').content;
@@ -173,7 +173,7 @@
 </script>
 
 
-<script th:if="${account != null && !account.emailVerified}">
+<script th:if="${account != null && !account.emailVerified}" type="text/javascript">
     (function () {
         let elementGroup = [];
         let verificationCode = new String();
