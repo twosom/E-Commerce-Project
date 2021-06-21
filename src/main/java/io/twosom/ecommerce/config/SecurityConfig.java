@@ -56,7 +56,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(WebSecurity web) throws Exception {
         web.ignoring()
-                .requestMatchers(PathRequest.toStaticResources().atCommonLocations(), new AntPathRequestMatcher("/fonts/**"));
+                .requestMatchers(PathRequest.toStaticResources().atCommonLocations(), new AntPathRequestMatcher("/fonts/**"), new AntPathRequestMatcher("/node_modules/**"));
     }
 
     @Override

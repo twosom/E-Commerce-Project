@@ -57,7 +57,7 @@
                         <span class="text-dark text-muted"> 포인트 적립 예정</span>
                     </p>
 
-                    <p class="my-auto" th:if="${product.isSale()}">
+                    <p sec:authorize="isAuthenticated()" class="my-auto" th:if="${product.isSale()}">
                         <span class="text-dark text-muted">구매 확정시</span>
                         <span class="text-primary text-gradient font-weight-bolder text-lg" th:text="${#numbers.formatInteger((product.getSalePrice() * #conversions.convert(#authentication.principal, T(io.twosom.ecommerce.account.UserAccount)).account.memberGrade.pointSaveRate) / 100 , 3, 'COMMA')}"></span>
                         <span class="text-dark text-muted"> 포인트 적립 예정</span>
@@ -71,7 +71,7 @@
                     <p class="card-description mb-4">
                         <span th:text="${product.productStock + '개 남음'}"></span>
                     </p>
-                    <!-- TODO 사용자 등급 보여주고 예상 할인 가격과 포인트 적립 보여주기 -->
+
                     <form action="#" th:action="@{/order/direct}" method="post" class="row row-cols-lg-auto g-3 my-auto">
                         <input type="hidden" name="productId" id="productId" th:value="${product.id}"/>
                         <div class="col-12 align-items-center">
@@ -187,6 +187,14 @@
         const quantityElement = document.querySelector('#quantity');
         const priceDisplay = document.querySelector('#priceDisplay');
 
+        quantityElement.onchange = function () {
+            let value = quantityElement.value * document.querySelector('#currentPrice').value;
+            priceDisplay.innerText = new Intl.NumberFormat('ko-KR', {
+                style: 'currency',
+                currency: 'KRW'
+            }).format(value);
+        };
+
         quantityElement.onkeyup = function () {
             let value = quantityElement.value * document.querySelector('#currentPrice').value;
             priceDisplay.innerText = new Intl.NumberFormat('ko-KR', {
@@ -194,6 +202,7 @@
                 currency: 'KRW'
             }).format(value);
         };
+
     }());
 </script>
 <script th:if="${product.isSale()}">

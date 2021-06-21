@@ -310,14 +310,24 @@
                                        th:href="@{/seller/menu}">판매자 메뉴</a>
                                 </li>
 
+                                <!-- SHOPPING_BAG -->
                                 <li class="nav-item me-1" sec:authorize="isAuthenticated()">
                                     <a class="nav-link" href="#" th:href="@{/shopping-bag/list}">
                                         <i class="ni ni-bag-17">
-                                            <span class="text-primary text-bolder"
-                                                  th:text="${shoppingBagCount}">1</span>
+                                            <span class="text-primary text-bolder" th:text="${shoppingBagCount}">1</span>
                                         </i>
                                     </a>
                                 </li>
+
+                                <!-- NOTIFICATION -->
+                                <li class="nav-item me-1" sec:authorize="hasRole('ROLE_SELLER')">
+                                    <a class="nav-link" href="#" th:href="@{/notifications}">
+                                        <i th:class="${countByAccountAndChecked > 0 ?  'fas fa-bell' : 'far fa-bell'}">
+                                            <span class="text-primary text-bolder" th:text="${countByAccountAndChecked}"></span>
+                                        </i>
+                                    </a>
+                                </li>
+
                             </ul>
                         </div>
                     </div>
@@ -355,7 +365,7 @@
                             <div class="form-group">
                                 <label for="password">비밀번호</label>
                                 <input id="password" name="password" type="password" class="form-control"
-                                       placeholder="Password"
+                                       placeholder="Password" autocomplete="off"
                                        aria-describedby="passwordHelp" required/>
                                 <small id="passwordHelp" class="form-text text-muted">
                                     비밀번호가 기억나지 않는다면, <strong><a href="#"
