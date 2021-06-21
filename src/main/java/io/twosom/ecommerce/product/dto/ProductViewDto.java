@@ -32,10 +32,10 @@ public class ProductViewDto {
 
 
     //originalPriceValue - (originalPriceValue * saleRate * 0.01
-    public Double getSalePrice() {
+    public int getSalePrice() {
         if (isSale()) {
-            return getProductPrice() - (getProductPrice() * getSaleRate() * 0.01);
+            return (int) (getProductPrice() - (getProductPrice() * getSaleRate() * 0.01));
         }
-        return null;
+        return 0;
     }
 }

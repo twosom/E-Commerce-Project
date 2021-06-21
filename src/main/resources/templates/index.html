@@ -42,9 +42,31 @@
                                 <div class="glide__container">
                                     <div class="card">
                                         <div class="card-body text-center pb-0 position-relative">
-                                            <img class="w-50 end-0 start-0 mx-auto top-0 mt-lg-n6 mt-n4" th:src="${product.productImage}" th:alt="${product.productName}">
+                                            <img class="w-50 end-0 start-0 mx-auto top-0 mt-lg-n6 mt-n4"
+                                                 th:src="${product.productImage}" th:alt="${product.productName}">
                                             <h6 class="mt-6" th:text="${product.productName}"></h6>
-                                            <a role="button" href="#" th:href="@{/product/info(id=${product.id})}" class="btn btn-sm btn-rounded btn-outline-dark">사러 가기</a>
+                                            <div class="text-gradient text-primary text-uppercase font-weight-bold"
+                                                 th:text="${product.category.title}"></div>
+                                            <span th:if="${!product.isSale()}" class="card-title h5 d-block text-darker"
+                                                  id="priceDisplay"
+                                                  th:text="${#numbers.formatCurrency(product.productPrice)}">
+                                            </span>
+
+                                            <span th:if="${product.isSale()}" class="card-title">
+                                                <del th:text="${#numbers.formatCurrency(product.productPrice)}"></del>
+                                                <span class="text-bolder text-lg text-danger text-gradient ms-3"
+                                                      th:text="${'-' +  product.saleRate + '%'}"></span>
+                                                <span class="h5 d-block text-darker" id="salePriceDisplay"
+                                                      th:text="${#numbers.formatCurrency(product.getSalePrice())}"></span>
+                                            </span>
+                                            <div class="name ps-2">
+                                                <span>판매자 : </span>
+                                                <span th:text="${product.sellerName}"></span>
+                                            </div>
+                                            <a role="button" href="#" th:href="@{/product/info(id=${product.id})}"
+                                               class="btn btn-sm btn-rounded btn-outline-dark">
+                                                사러 가기
+                                            </a>
                                         </div>
                                     </div>
                                 </div>
