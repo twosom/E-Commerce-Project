@@ -6,6 +6,8 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import io.twosom.ecommerce.account.domain.Account;
 import io.twosom.ecommerce.order.dto.OrderDto;
 import io.twosom.ecommerce.order.dto.ProductDtoForOrderDto;
+import io.twosom.ecommerce.shoppingbag.domain.ShoppingBag;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
@@ -26,8 +28,11 @@ public class OrderQueryRepository {
 
     private final JPAQueryFactory queryFactory;
 
+    private final EntityManager em;
+
     public OrderQueryRepository(EntityManager em) {
         this.queryFactory = new JPAQueryFactory(em);
+        this.em = em;
     }
 
 
@@ -131,5 +136,16 @@ public class OrderQueryRepository {
                 .leftJoin(shoppingBag.product.seller, account)
                 .where(shoppingBag.order.id.eq(orderId))
                 .transform(groupBy(shoppingBag.product.seller).as(list(shoppingBag.product.productName)));
+    }
+
+    public void updateOrderedProductSellCount(String orderId) {
+        //TODO BATCH 쿼리 바꿀 수 있으면 바꾸기
+        List<ShoppingBag> result = queryFactory
+                .select(shoppingBag)
+                .from(shoppingBag)
+                .where(shoppingBag.order.id.eq(orderId))
+                .fetch();
+
+        result.forEach(e -> e.getProduct().setSellCount(e.getProduct().getSellCount() + e.getQuantity()));
     }
 }

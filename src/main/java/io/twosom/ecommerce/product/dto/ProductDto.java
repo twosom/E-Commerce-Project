@@ -24,6 +24,7 @@ public class ProductDto {
     private int productStock;
     private boolean publish;
     private boolean sale;
+    private int sellCount;
 
     private CategoryDto category;
 

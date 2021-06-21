@@ -22,4 +22,6 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     List<Product> findByCategoryAndPublish(Category category, boolean publish);
 
     Product findByIdAndPublish(Long id, boolean publish);
+
+    List<Product> getTop10ByOrderBySellCountDesc();
 }

@@ -40,6 +40,8 @@ public class OrderEventListener {
     @EventListener
     public void handleOrderConfirmedEvent(OrderConfirmedEvent orderConfirmedEvent) {
         createNotificationToSeller(orderConfirmedEvent.getOrderId(), NotificationType.ORDER_CONFIRMED, "구매 확정 안내", "구매 확정");
+        //TODO 해당 상품에 판매량 수정
+        orderQueryRepository.updateOrderedProductSellCount(orderConfirmedEvent.getOrderId());
     }
 
     @EventListener
