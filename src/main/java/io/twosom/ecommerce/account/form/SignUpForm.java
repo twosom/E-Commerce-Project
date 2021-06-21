@@ -28,8 +28,11 @@ public class SignUpForm {
     @Length(min = 3, max = 20)
     private String nickname;
 
-    @Size(min = 8,max = 50)
+    @Size(min = 8, max = 50)
     private String password;
+
+    @Size(min = 8, max = 50)
+    private String passwordConfirm;
 
     private Address address;
 

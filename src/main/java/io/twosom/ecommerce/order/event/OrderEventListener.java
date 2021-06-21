@@ -6,6 +6,7 @@ import io.twosom.ecommerce.notification.NotificationRepository;
 import io.twosom.ecommerce.notification.domain.NotificationType;
 import io.twosom.ecommerce.order.repository.OrderQueryRepository;
 import io.twosom.ecommerce.order.repository.OrderRepository;
+import io.twosom.ecommerce.shoppingbag.repository.ShoppingBagQueryRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.tomcat.util.buf.StringUtils;
@@ -28,6 +29,7 @@ public class OrderEventListener {
     private final NotificationRepository notificationRepository;
     private final OrderQueryRepository orderQueryRepository;
     private final OrderRepository orderRepository;
+    private final ShoppingBagQueryRepository shoppingBagQueryRepository;
 
 
     @EventListener
@@ -42,6 +44,7 @@ public class OrderEventListener {
         createNotificationToSeller(orderConfirmedEvent.getOrderId(), NotificationType.ORDER_CONFIRMED, "구매 확정 안내", "구매 확정");
         //TODO 해당 상품에 판매량 수정
         orderQueryRepository.updateOrderedProductSellCount(orderConfirmedEvent.getOrderId());
+        shoppingBagQueryRepository.updateShoppingBagStatusToConfirmByOrderId(orderConfirmedEvent.getOrderId());
     }
 
     @EventListener

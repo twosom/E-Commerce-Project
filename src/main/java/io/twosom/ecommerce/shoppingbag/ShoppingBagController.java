@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -53,8 +54,32 @@ public class ShoppingBagController {
 
     @GetMapping("/shopping-bag/list")
     public String shoppingBagList(@CurrentAccount Account account, Model model) {
-        List<ShoppingBagListDto> shoppingBagList = shoppingBagQueryRepository.findByAccountAndStatusToDto(account, ShoppingBagStatus.STANDBY);
-        model.addAttribute("shoppingBagList", shoppingBagList);
+        List<ShoppingBagListDto> shoppingBagList = shoppingBagQueryRepository.findStandByOrOrderedShoppingBagByAccount(account);
+
+
+
+        List<ShoppingBagListDto> standByList = new ArrayList<>();
+        List<ShoppingBagListDto> orderedList = new ArrayList<>();
+
+        for (ShoppingBagListDto shoppingBagListDto : shoppingBagList) {
+            switch (shoppingBagListDto.getStatus()) {
+                case STANDBY:
+                    standByList.add(shoppingBagListDto);
+                    break;
+                case ORDERED:
+                    orderedList.add(shoppingBagListDto);
+                    break;
+            }
+        }
+
+        if (orderedList.size() > 0) {
+            int orderedTotalPrice = orderedList.stream().map(ShoppingBagListDto::getTotalPrice)
+                    .mapToInt(i -> i).sum();
+            model.addAttribute("orderedTotalPrice", orderedTotalPrice);
+        }
+
+        model.addAttribute("standByList", standByList);
+        model.addAttribute("orderedList", orderedList);
 
         return "shopping-bag/list";
     }

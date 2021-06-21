@@ -1,5 +1,6 @@
 package io.twosom.ecommerce.shoppingbag.dto;
 
+import io.twosom.ecommerce.shoppingbag.ShoppingBagStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -20,6 +21,8 @@ public class ShoppingBagListDto {
     private int productPrice;
     private int salePrice;
 
+    private ShoppingBagStatus status;
+
     private boolean sale;
     private int saleRate;
 
@@ -27,7 +30,7 @@ public class ShoppingBagListDto {
         if (isSale()) {
             return salePrice * shoppingBagQuantity;
         } else {
-            return salePrice == 0 ? productPrice * shoppingBagQuantity : salePrice * shoppingBagQuantity;
+            return productPrice * shoppingBagQuantity;
         }
     }
 

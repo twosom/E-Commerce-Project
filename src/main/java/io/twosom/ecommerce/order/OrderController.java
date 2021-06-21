@@ -163,8 +163,7 @@ public class OrderController {
     private int getTotalSumPrice(List<ShoppingBagListDto> shoppingBagList) {
         return shoppingBagList.stream()
                 .map(ShoppingBagListDto::getTotalPrice)
-                .collect(Collectors.toList()).
-                        stream().mapToInt(i -> i).sum();
+                .mapToInt(i -> i).sum();
     }
 
 

@@ -84,6 +84,7 @@ class AccountControllerTest{
                         .param("email", "test@test.com")
                         .param("nickname", "testNickname")
                         .param("password", "11111111")
+                        .param("passwordConfirm", "11111111")
                         .param("address.city", "Seoul")
                         .param("address.street", "Garosugil")
                         .param("address.zipcode", "222111")
