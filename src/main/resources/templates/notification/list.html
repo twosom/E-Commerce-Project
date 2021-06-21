@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments.html::head"></head>
+<body>
+<span th:replace="fragments.html::main-nav"></span>
+<header class="header-2">
+    <div class="page-header min-vh-50 relative" style="background-image: url('/images/office-2.jpeg')">
+        <div class="mask bg-gradient-warning opacity-4"></div>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-7 text-center mx-auto">
+                    <h1 class="text-white pt-3 mt-n5">알림 목록</h1>
+                </div>
+            </div>
+        </div>
+        <div th:replace="fragments.html::wave-animation"></div>
+    </div>
+</header>
+
+
+<div class="container">
+    <div class="row py-5 text-center">
+
+
+        <div class="col-3">
+            <ul class="list-group">
+                <a href="#" th:href="@{/notifications}" th:classappend="${isNew} ? 'active'"
+                   class="list-group-item list-group-item-action d-flex justify-content-between">
+                    읽지 않은 알림
+                    <span class="badge badge-primary badge-pill" th:text="${countOfNotChecked}"></span>
+                </a>
+                <a href="#" th:href="@{/notifications/old}" th:classappend="${!isNew} ? 'active'"
+                   class="list-group-item list-group-item-action d-flex justify-content-between">
+                    읽은 알림
+                    <span class="badge badge-primary badge-pill" th:text="${countOfChecked}"></span>
+                </a>
+            </ul>
+
+            <ul class="list-group mt-4">
+                <a href="#" th:if="${!#arrays.isEmpty(orderCreatedNotificationList)}"
+                   class="list-group-item list-group-item-action d-flex justify-content-between">
+                    주문 생성 알림
+                    <span class="badge badge-primary badge-pill" th:text="${orderCreatedNotificationList.size()}"></span>
+                </a>
+                <a href="#" th:if="${!#arrays.isEmpty(orderConfirmedNotificationList)}"
+                   class="list-group-item list-group-item-action d-flex justify-content-between">
+                    구매 확정 알림
+                    <span class="badge badge-primary badge-pill" th:text="${orderConfirmedNotificationList.size()}"></span>
+                </a>
+                <a href="#" th:if="${!#arrays.isEmpty(orderCancelledNotificationList)}"
+                   class="list-group-item list-group-item-action d-flex justify-content-between">
+                    주문 취소 알림
+                    <span class="badge badge-primary badge-pill" th:text="${orderCancelledNotificationList.size()}"></span>
+                </a>
+            </ul>
+
+            <ul class="list-group mt-4" th:if="${countOfChecked > 0}">
+                <form th:method="delete" th:action="@{/notifications}" class="d-grid gap-2">
+                    <button type="submit" class="btn btn-outline-warning">읽은 알림 삭제</button>
+                </form>
+            </ul>
+        </div>
+
+
+
+
+        <div class="col-9">
+            <div class="card shadow-xl" th:if="${#arrays.isEmpty(notificationList)}">
+                <div class="card-header">
+                    알림 메시지가 없습니다.
+                </div>
+            </div>
+
+            <div class="card shadow-xl" th:if="${!#arrays.isEmpty(orderConfirmedNotificationList)}">
+                <div class="card-header">
+                    주문 생성 알림 메시지
+                </div>
+                <div th:each="createdNotification : ${orderCreatedNotificationList}">
+                    <div class="alert alert-primary alert-dismissible fade show text-white text-start" role="alert">
+                        <div class="d-flex justify-content-between mb-3">
+                            <span class="alert-text text-xs"><strong th:text="${createdNotification.title}"></strong></span>
+                            <span class="alert-text text-xs fromNow font-weight-bolder"><strong th:text="${createdNotification.createdDate}"></strong></span>
+                        </div>
+                        <div class="alert-text" th:text="${createdNotification.message}"></div>
+                        <button type="button" th:if="${isNew}" class="btn-close" th:value="${createdNotification.id}" data-bs-dismiss="alert" aria-label="Close">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card shadow-xl mt-4" th:if="${!#arrays.isEmpty(orderConfirmedNotificationList)}">
+                <div class="card-header">
+                    구매 확정 알림 메시지
+                </div>
+                <div th:each="confirmedNotification : ${orderConfirmedNotificationList}">
+                    <div class="alert alert-info alert-dismissible fade show text-dark text-start" role="alert">
+                        <div class="d-flex justify-content-between mb-3">
+                            <span class="alert-text text-xs"><strong th:text="${confirmedNotification.title}"></strong></span>
+                            <span class="alert-text text-xs fromNow font-weight-bolder"><strong th:text="${confirmedNotification.createdDate}"></strong></span>
+                        </div>
+                        <div class="alert-text" th:text="${confirmedNotification.message}"></div>
+                        <button type="button" th:if="${isNew}" class="btn-close" th:value="${confirmedNotification.id}" data-bs-dismiss="alert" aria-label="Close">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="card shadow-xl mt-4" th:if="${!#arrays.isEmpty(orderCancelledNotificationList)}">
+                <div class="card-header">
+                    주문 취소 알림 메시지
+                </div>
+                <div th:each="cancelledNotification : ${orderCancelledNotificationList}">
+                    <div class="alert alert-warning alert-dismissible fade show text-dark text-start" role="alert">
+                        <div class="d-flex justify-content-between mb-3">
+                            <span class="alert-text text-xs"><strong th:text="${cancelledNotification.title}"></strong></span>
+                            <span class="alert-text text-xs fromNow font-weight-bolder"><strong th:text="${cancelledNotification.createdDate}"></strong></span>
+                        </div>
+                        <div class="alert-text" th:text="${cancelledNotification.message}"></div>
+                        <button type="button" th:if="${isNew}" class="btn-close" th:value="${cancelledNotification.id}" data-bs-dismiss="alert" aria-label="Close">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+</body>
+<script>
+    (function () {
+        const btnCloseNodes = document.querySelectorAll('.btn-close');
+
+        btnCloseNodes.forEach(element => {
+            element.onclick = async function () {
+
+                const csrfHeader = document.querySelector('#_csrf_header').content;
+                const csrf = document.querySelector('#_csrf').content;
+
+
+                const notificationId = element.value;
+                console.log(notificationId);
+                const options = {
+                    method: 'post',
+                    headers: {
+                        'content-type': 'application/json',
+                        [csrfHeader]: csrf
+                    },
+                    body: JSON.stringify(notificationId)
+                };
+
+                const response = await fetch('/notifications', options);
+
+                if (response.ok) {
+                    location.reload();
+                } else {
+                    alert('잘못된 요청입니다.');
+                }
+
+
+            };
+        })
+
+    }());
+</script>
+<script th:replace="fragments.html::uiScripts"></script>
+<script th:replace="fragments.html::date-time"></script>
+</html>

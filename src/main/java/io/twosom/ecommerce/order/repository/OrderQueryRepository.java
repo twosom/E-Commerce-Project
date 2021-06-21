@@ -13,7 +13,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import static com.querydsl.core.group.GroupBy.groupBy;
+
+import static com.querydsl.core.group.GroupBy.list;
+import static io.twosom.ecommerce.account.domain.QAccount.*;
 import static io.twosom.ecommerce.order.QOrder.*;
+import static io.twosom.ecommerce.product.domain.QProduct.*;
 import static io.twosom.ecommerce.shoppingbag.domain.QShoppingBag.*;
 
 @Repository
@@ -116,5 +121,15 @@ public class OrderQueryRepository {
                 .from(order)
                 .where(order.id.eq(orderId))
                 .fetchOne();
+    }
+
+    public Map<Account, List<String>> findSellerAndProductFromOrderById(String orderId) {
+
+        return queryFactory
+                .from(shoppingBag)
+                .leftJoin(shoppingBag.product, product)
+                .leftJoin(shoppingBag.product.seller, account)
+                .where(shoppingBag.order.id.eq(orderId))
+                .transform(groupBy(shoppingBag.product.seller).as(list(shoppingBag.product.productName)));
     }
 }

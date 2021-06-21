@@ -4,6 +4,7 @@ import io.twosom.ecommerce.account.CurrentAccount;
 import io.twosom.ecommerce.account.domain.Account;
 import io.twosom.ecommerce.account.service.AccountService;
 import io.twosom.ecommerce.order.dto.OrderDto;
+import io.twosom.ecommerce.order.event.OrderCreatedEvent;
 import io.twosom.ecommerce.order.form.OrderForm;
 import io.twosom.ecommerce.order.form.ShoppingBagIdArrayForm;
 import io.twosom.ecommerce.order.repository.OrderQueryRepository;
@@ -15,6 +16,7 @@ import io.twosom.ecommerce.shoppingbag.form.ShoppingBagForm;
 import io.twosom.ecommerce.shoppingbag.repository.ShoppingBagQueryRepository;
 import io.twosom.ecommerce.shoppingbag.repository.ShoppingBagRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
@@ -41,8 +43,9 @@ public class OrderController {
     private final ShoppingBagRepository shoppingBagRepository;
     private final ShoppingBagQueryRepository shoppingBagQueryRepository;
     private final ShoppingBagService shoppingBagService;
-
     private final AccountService accountService;
+
+    private final ApplicationEventPublisher applicationEventPublisher;
 
     private final OrderFormValidator orderFormValidator;
 
@@ -82,9 +85,7 @@ public class OrderController {
         }
 
         String savedOrderId = orderService.createNewOrder(account, orderForm, totalSumPrice);
-
-        //TODO 주문 완료 시 주문 목록들로 리다이렉트 "/order/list" 주문 완료 상태일 때는 salePrice 컬럼이 비어있지 않으면 salePrice 보여주기
-        //TODO RedirectAttribute 에 OrderDto 넣기
+        applicationEventPublisher.publishEvent(new OrderCreatedEvent(savedOrderId));
         OrderDto orderDtoForModal = orderQueryRepository.getOrderDtoForModalById(savedOrderId);
         redirectAttributes.addFlashAttribute("orderDtoForModal", orderDtoForModal);
         return "redirect:/order/list";
@@ -131,12 +132,7 @@ public class OrderController {
 
     @PostMapping("/order/cancel")
     public String cancelOrder(@RequestParam("orderId") String orderId) {
-        Order order = orderRepository.findById(orderId).get();
-        if (order == null) {
-            throw new RuntimeException("존재하지 않는 주문입니다.");
-        }
-        order.setStatus(OrderStatus.CANCEL);
-        //TODO 판매자에게 알림 보내기
+        orderService.cancelOrder(orderId);
         return "redirect:/order/list";
     }
 
