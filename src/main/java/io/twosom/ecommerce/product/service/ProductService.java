@@ -85,6 +85,7 @@ public class ProductService {
             findProduct.setSalePrice(findProduct.calculateSalePrice());
         } else if (productForm.getSaleRate() == 0) {
             findProduct.setSale(false);
+            findProduct.setSalePrice(0);
         }
         saveSaleHistory(findProduct);
     }

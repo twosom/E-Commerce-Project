@@ -2,6 +2,7 @@ package io.twosom.ecommerce.shoppingbag;
 
 import io.twosom.ecommerce.account.UserAccount;
 import io.twosom.ecommerce.account.domain.Account;
+import io.twosom.ecommerce.shoppingbag.repository.ShoppingBagQueryRepository;
 import io.twosom.ecommerce.shoppingbag.repository.ShoppingBagRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
@@ -20,7 +21,8 @@ import javax.servlet.http.HttpServletResponse;
 @RequiredArgsConstructor
 public class ShoppingBagInterceptor implements HandlerInterceptor {
 
-    private final ShoppingBagRepository shoppingBagRepository;
+//    private final ShoppingBagRepository shoppingBagRepository;
+    private final ShoppingBagQueryRepository shoppingBagQueryRepository;
 
 
     @Override
@@ -33,7 +35,8 @@ public class ShoppingBagInterceptor implements HandlerInterceptor {
 
         if (modelAndView != null && !isRedirect(modelAndView) && authentication != null && authentication.getPrincipal() instanceof UserAccount) {
             Account account = ((UserAccount) authentication.getPrincipal()).getAccount();
-            long shoppingBagCount = shoppingBagRepository.countByAccountAndStatus(account, ShoppingBagStatus.STANDBY);
+            long shoppingBagCount = shoppingBagQueryRepository.countByAccount(account);
+//            long shoppingBagCount = shoppingBagRepository.countByAccountAndStatus(account, ShoppingBagStatus.STANDBY);
             modelAndView.addObject("shoppingBagCount", shoppingBagCount);
         }
     }
