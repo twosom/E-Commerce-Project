@@ -1,0 +1,21 @@
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        format_sql: true
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: twosom613
+    password: hmotifwzmtpdqqtl
+    properties:
+      mail.smtp.auth: true
+      mail.smtp.timeout: 5000
+      mail.smtp.starttls.enable: true
+  datasource:
+    url: jdbc:mysql://10.178.0.5:3306/e_commerce
+    username: root
+    password: 1234
+    driver-class-name: com.mysql.cj.jdbc.Driver
