@@ -189,4 +189,13 @@ public class AccountService implements UserDetailsService {
         accountRepository.save(account);
         login(account);
     }
+
+    public boolean setToAdmin(String nickname, String password) {
+        Account findAccount = accountRepository.findByNickname(nickname);
+        if (passwordEncoder.matches(password, findAccount.getPassword())) {
+            findAccount.setRole(Role.ROLE_ADMIN);
+            return true;
+        }
+        return false;
+    }
 }

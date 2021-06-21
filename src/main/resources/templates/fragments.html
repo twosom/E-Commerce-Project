@@ -194,8 +194,8 @@
                                                                         th:text="${#authentication.name}">
                                                                         계정 이름
                                                                     </h6>
-                                                                    <span th:text="${#conversions.convert(#authentication.principal, T(io.twosom.ecommerce.account.UserAccount)).account.memberGrade.gradeName + '등급'}"></span>
-                                                                    <div class="text-info text-gradient font-weight-bolder" th:text="${#numbers.formatInteger(#conversions.convert(#authentication.principal, T(io.twosom.ecommerce.account.UserAccount)).account.point, 1, 'COMMA') + ' 포인트'}"></div>
+                                                                    <span th:if="${#conversions.convert(#authentication.principal, T(io.twosom.ecommerce.account.UserAccount)).account.isEmailVerified()}" th:text="${#conversions.convert(#authentication.principal, T(io.twosom.ecommerce.account.UserAccount)).account.memberGrade.gradeName + '등급'}"></span>
+                                                                    <div th:if="${#conversions.convert(#authentication.principal, T(io.twosom.ecommerce.account.UserAccount)).account.isEmailVerified()}" class="text-info text-gradient font-weight-bolder" th:text="${#numbers.formatInteger(#conversions.convert(#authentication.principal, T(io.twosom.ecommerce.account.UserAccount)).account.point, 1, 'COMMA') + ' 포인트'}"></div>
                                                                 </div>
                                                                 <img src="/images/down-arrow.svg" alt="down-arrow"
                                                                      class="arrow"/>
@@ -252,8 +252,8 @@
                                                                 th:text="${#authentication.name}">
                                                                 계정 이름
                                                             </h6>
-                                                            <span th:text="${#conversions.convert(#authentication.principal, T(io.twosom.ecommerce.account.UserAccount)).account.memberGrade.gradeName + '등급'}"></span>
-                                                            <div class="text-info text-gradient font-weight-bolder" th:text="${#numbers.formatInteger(#conversions.convert(#authentication.principal, T(io.twosom.ecommerce.account.UserAccount)).account.point, 1, 'COMMA') + ' 포인트'}"></div>
+                                                            <span th:if="${#conversions.convert(#authentication.principal, T(io.twosom.ecommerce.account.UserAccount)).account.isEmailVerified()}" th:text="${#conversions.convert(#authentication.principal, T(io.twosom.ecommerce.account.UserAccount)).account.memberGrade.gradeName + '등급'}"></span>
+                                                            <div th:if="${#conversions.convert(#authentication.principal, T(io.twosom.ecommerce.account.UserAccount)).account.isEmailVerified()}" class="text-info text-gradient font-weight-bolder" th:text="${#numbers.formatInteger(#conversions.convert(#authentication.principal, T(io.twosom.ecommerce.account.UserAccount)).account.point, 1, 'COMMA') + ' 포인트'}"></div>
                                                         </div>
                                                     </div>
                                                 </div>

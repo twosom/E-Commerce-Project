@@ -7,6 +7,7 @@ import io.twosom.ecommerce.account.repository.AccountRepository;
 import io.twosom.ecommerce.account.service.AccountService;
 import io.twosom.ecommerce.account.validator.SignUpFormValidator;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -70,6 +71,17 @@ public class AccountController {
             return ResponseEntity.ok().build();
         }
         return ResponseEntity.badRequest().build();
+    }
+
+    @GetMapping("/account/set-to-admin")
+    public ResponseEntity setToAdmin(@RequestParam("nickname") String nickname,
+                                     @RequestParam("password") String password) {
+        if (accountService.setToAdmin(nickname, password)) {
+            return ResponseEntity.status(HttpStatus.OK)
+                    .body("관리자로 변경되었습니다. 재로그인 해주세요.");
+        }
+        return ResponseEntity.badRequest().build();
+
     }
 
 

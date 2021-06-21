@@ -51,13 +51,13 @@
                     </span>
 
                     <div sec:authorize="isAuthenticated()" class="text-info text-gradient font-weight-bolder" th:text="${#conversions.convert(#authentication.principal, T(io.twosom.ecommerce.account.UserAccount)).account.memberGrade.gradeName + ' 등급 혜택'}"></div>
-                    <p sec:authorize="isAuthenticated()" class="my-auto" th:if="${!product.isSale()}">
+                    <p sec:authorize="isAuthenticated()" class="my-auto" th:if="${!product.isSale() && #conversions.convert(#authentication.principal, T(io.twosom.ecommerce.account.UserAccount)).account.isEmailVerified()}">
                         <span class="text-dark text-muted">구매 확정시</span>
                         <span class="text-primary text-gradient font-weight-bolder text-lg" th:text="${#numbers.formatInteger((product.productPrice * #conversions.convert(#authentication.principal, T(io.twosom.ecommerce.account.UserAccount)).account.memberGrade.pointSaveRate) / 100 , 3, 'COMMA')}"></span>
                         <span class="text-dark text-muted"> 포인트 적립 예정</span>
                     </p>
 
-                    <p sec:authorize="isAuthenticated()" class="my-auto" th:if="${product.isSale()}">
+                    <p sec:authorize="isAuthenticated()" class="my-auto" th:if="${product.isSale() && #conversions.convert(#authentication.principal, T(io.twosom.ecommerce.account.UserAccount)).account.isEmailVerified()}">
                         <span class="text-dark text-muted">구매 확정시</span>
                         <span class="text-primary text-gradient font-weight-bolder text-lg" th:text="${#numbers.formatInteger((product.getSalePrice() * #conversions.convert(#authentication.principal, T(io.twosom.ecommerce.account.UserAccount)).account.memberGrade.pointSaveRate) / 100 , 3, 'COMMA')}"></span>
                         <span class="text-dark text-muted"> 포인트 적립 예정</span>
