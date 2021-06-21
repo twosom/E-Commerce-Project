@@ -71,6 +71,9 @@
                                                     상품 재고
                                                 </th>
                                                 <th class="text-uppercase text-primary text-xxs font-weight-bolder ps-2">
+                                                    판매량
+                                                </th>
+                                                <th class="text-uppercase text-primary text-xxs font-weight-bolder ps-2">
                                                     판매자
                                                 </th>
                                                 <th class="text-uppercase text-primary text-xxs font-weight-bolder ps-2">
@@ -94,6 +97,7 @@
                                                         th:text="${product.productName}"> </span></a></td>
                                                 <td th:text="${#numbers.formatCurrency(product.productPrice)}"></td>
                                                 <td th:text="${product.productStock}"></td>
+                                                <td th:text="${product.sellCount}"></td>
                                                 <td th:text="${product.sellerName}"></td>
                                                 <td>
                                                     <span th:if="${product.isSale()}" class="badge bg-gradient-primary">할인중</span>

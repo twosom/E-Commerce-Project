@@ -26,109 +26,144 @@
            aria-hidden="true"><strong class="text-info text-bolder">여기</strong></a>
         <span class="text-white text-bold"> 를 클릭해주세요.</span>
     </div>
-</div>
+
+    <section class="testimonial-2 mt-5 pt-5" th:if="${topSellProductList.size() > 0}">
+
+        <div class="card shadow-xl">
+            <div class="card-header text-center">
+                <h3 class="card-title text-primary text-gradient font-weight-bolder">판매량 Top 10</h3>
+            </div>
+            <div class="card-body">
+                <div class="gliderrr">
+                    <div data-glide-el="track" class="glide__track">
+                        <ul class="glide__slides">
+
+                            <li class="glide__slide" th:each="product : ${topSellProductList}">
+                                <div class="glide__container">
+                                    <div class="card">
+                                        <div class="card-body text-center pb-0 position-relative">
+                                            <img class="w-50 end-0 start-0 mx-auto top-0 mt-lg-n6 mt-n4" th:src="${product.productImage}" th:alt="${product.productName}">
+                                            <h6 class="mt-6" th:text="${product.productName}"></h6>
+                                            <a role="button" href="#" th:href="@{/product/info(id=${product.id})}" class="btn btn-sm btn-rounded btn-outline-dark">사러 가기</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
 
 
-<div class="modal fade" id="emailVerificationModal" th:if="${account!= null && !account.emailVerified}" tabindex="-1"
-     aria-labelledby="emailVerificationModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <!-- CONTENT -->
-        <div class="modal-content">
-            <div class="card">
-                <div class="card-body px-lg-5 py-lg-5 text-center">
-                    <div class="info mb-4">
-                        <div class="icon icon-shape icon-xl rounded-circle bg-gradient-warning shadow text-center py-3 mx-auto">
-                            <i class="ni ni-lock-circle-open" style="font-size: 100px;"></i>
-                        </div>
+                        </ul>
                     </div>
-                    <h2 class="text-info text-gradient modal-title" id="emailVerificationModalLabel">인증 코드 확인</h2>
-                    <h3 class="text-danger text-gradient" id="emailVerificationFailedMessage"></h3>
-                    <h3 class="text-primary text-gradient" id="emailVerificationSuccessMessage"></h3>
-                    <p class="mb-4">
-                        이메일에 전송된 6자리의 인증 코드를 입력해주세요. <br/>
-                        <span class="text-primary text-gradient text-bold">대소문자를 구분합니다.</span>
-                    </p>
-                    <div class="row mb-4">
-                        <div class="col-lg-2 col-md-2 col-2 ps-0 ps-md-2">
-                            <input id="input1" type="text" class="form-control text-lg text-center" maxlength="1"/>
-                        </div>
-                        <div class="col-lg-2 col-md-2 col-2 ps-0 ps-md-2">
-                            <input id="input2" type="text" class="form-control text-lg text-center" maxlength="1"/>
-                        </div>
-                        <div class="col-lg-2 col-md-2 col-2 ps-0 ps-md-2">
-                            <input id="input3" type="text" class="form-control text-lg text-center" maxlength="1"/>
-                        </div>
-                        <div class="col-lg-2 col-md-2 col-2 ps-0 ps-md-2">
-                            <input id="input4" type="text" class="form-control text-lg text-center" maxlength="1"/>
-                        </div>
-                        <div class="col-lg-2 col-md-2 col-2 ps-0 ps-md-2">
-                            <input id="input5" type="text" class="form-control text-lg text-center" maxlength="1"/>
-                        </div>
-                        <div class="col-lg-2 col-md-2 col-2 ps-0 ps-md-2">
-                            <input id="input6" type="text" class="form-control text-lg text-center" maxlength="1"/>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn bg-gradient-secondary" data-bs-dismiss="modal">닫기</button>
-                    <button type="button" class="btn bg-gradient-warning" data-bs-toggle="modal"
-                            data-bs-target="#resendEmailVerificationCodeModal">인증 코드 재전송
-                    </button>
                 </div>
             </div>
+        </div>
+    </section>
 
+
+    <div class="modal fade" id="emailVerificationModal" th:if="${account!= null && !account.emailVerified}"
+         tabindex="-1"
+         aria-labelledby="emailVerificationModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <!-- CONTENT -->
+            <div class="modal-content">
+                <div class="card">
+                    <div class="card-body px-lg-5 py-lg-5 text-center">
+                        <div class="info mb-4">
+                            <div class="icon icon-shape icon-xl rounded-circle bg-gradient-warning shadow text-center py-3 mx-auto">
+                                <i class="ni ni-lock-circle-open" style="font-size: 100px;"></i>
+                            </div>
+                        </div>
+                        <h2 class="text-info text-gradient modal-title" id="emailVerificationModalLabel">인증 코드 확인</h2>
+                        <h3 class="text-danger text-gradient" id="emailVerificationFailedMessage"></h3>
+                        <h3 class="text-primary text-gradient" id="emailVerificationSuccessMessage"></h3>
+                        <p class="mb-4">
+                            이메일에 전송된 6자리의 인증 코드를 입력해주세요. <br/>
+                            <span class="text-primary text-gradient text-bold">대소문자를 구분합니다.</span>
+                        </p>
+                        <div class="row mb-4">
+                            <div class="col-lg-2 col-md-2 col-2 ps-0 ps-md-2">
+                                <input id="input1" type="text" class="form-control text-lg text-center" maxlength="1"/>
+                            </div>
+                            <div class="col-lg-2 col-md-2 col-2 ps-0 ps-md-2">
+                                <input id="input2" type="text" class="form-control text-lg text-center" maxlength="1"/>
+                            </div>
+                            <div class="col-lg-2 col-md-2 col-2 ps-0 ps-md-2">
+                                <input id="input3" type="text" class="form-control text-lg text-center" maxlength="1"/>
+                            </div>
+                            <div class="col-lg-2 col-md-2 col-2 ps-0 ps-md-2">
+                                <input id="input4" type="text" class="form-control text-lg text-center" maxlength="1"/>
+                            </div>
+                            <div class="col-lg-2 col-md-2 col-2 ps-0 ps-md-2">
+                                <input id="input5" type="text" class="form-control text-lg text-center" maxlength="1"/>
+                            </div>
+                            <div class="col-lg-2 col-md-2 col-2 ps-0 ps-md-2">
+                                <input id="input6" type="text" class="form-control text-lg text-center" maxlength="1"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn bg-gradient-secondary" data-bs-dismiss="modal">닫기</button>
+                        <button type="button" class="btn bg-gradient-warning" data-bs-toggle="modal"
+                                data-bs-target="#resendEmailVerificationCodeModal">인증 코드 재전송
+                        </button>
+                    </div>
+                </div>
+
+            </div>
         </div>
     </div>
-</div>
 
 
-<div class="modal fade" th:if="${account!= null && !account.emailVerified}" id="resendEmailVerificationCodeModal"
-     tabindex="-1"
-     aria-labelledby="resendEmailVerificationCodeModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <!-- CONTENT -->
-        <div class="modal-content">
-            <div class="card bg-gradient-dark">
-                <div class="card-body px-lg-5 py-lg-5">
+    <div class="modal fade" th:if="${account!= null && !account.emailVerified}" id="resendEmailVerificationCodeModal"
+         tabindex="-1"
+         aria-labelledby="resendEmailVerificationCodeModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <!-- CONTENT -->
+            <div class="modal-content">
+                <div class="card bg-gradient-dark">
+                    <div class="card-body px-lg-5 py-lg-5">
+                        <div class="row">
+                            <div class="info mb-4 col-4">
+                                <div class="icon icon-shape icon-xl rounded-circle bg-gradient-primary shadow text-center py-3 mx-auto">
+                                    <i class="ni ni-email-83" style="font-size: 50px;"></i>
+                                </div>
+                            </div>
+                            <div class="col-8">
+                                <div class="row justify-content-start">
+                                    <h2 class="col-12 text-info text-gradient modal-title"
+                                        id="resendEmailVerificationCodeModalLabel">인증 코드 재전송</h2>
+                                    <p class="col-12 mb-4 text-white">
+                                        이메일을 받지 못하셨나요?<br/>
+                                        인증 코드를 재전송 받을 이메일을 입력해주세요.
+                                    </p>
+                                </div>
+                            </div>
+
+                        </div>
+                        <h3 class="text-warning text-gradient" id="resendEmailVerificationCodeFailedMessage"></h3>
+                        <h3 class="text-primary text-gradient" id="resendEmailVerificationCodeSuccessMessage"></h3>
+
+
+                        <div class="form-group">
+                            <label for="resendEmailAddress" class="ms-auto text-white">이메일</label>
+                            <input id="resendEmailAddress" type="email" class="form-control"
+                                   placeholder="email@example.com"/>
+                        </div>
+                    </div>
                     <div class="row">
-                        <div class="info mb-4 col-4">
-                            <div class="icon icon-shape icon-xl rounded-circle bg-gradient-primary shadow text-center py-3 mx-auto">
-                                <i class="ni ni-email-83" style="font-size: 50px;"></i>
-                            </div>
+                        <div class="col-6 ms-auto mb-3 form-inline">
+                            <button type="button" class="btn bg-gradient-primary" id="resendBtn">전송하기</button>
+                            <button type="button" class="btn bg-gradient-secondary ms-auto me-auto"
+                                    data-bs-dismiss="modal">
+                                닫기
+                            </button>
                         </div>
-                        <div class="col-8">
-                            <div class="row justify-content-start">
-                                <h2 class="col-12 text-info text-gradient modal-title"
-                                    id="resendEmailVerificationCodeModalLabel">인증 코드 재전송</h2>
-                                <p class="col-12 mb-4 text-white">
-                                    이메일을 받지 못하셨나요?<br/>
-                                    인증 코드를 재전송 받을 이메일을 입력해주세요.
-                                </p>
-                            </div>
-                        </div>
-
-                    </div>
-                    <h3 class="text-warning text-gradient" id="resendEmailVerificationCodeFailedMessage"></h3>
-                    <h3 class="text-primary text-gradient" id="resendEmailVerificationCodeSuccessMessage"></h3>
-
-
-                    <div class="form-group">
-                        <label for="resendEmailAddress" class="ms-auto text-white">이메일</label>
-                        <input id="resendEmailAddress" type="email" class="form-control"
-                               placeholder="email@example.com"/>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-6 ms-auto mb-3 form-inline">
-                        <button type="button" class="btn bg-gradient-primary" id="resendBtn">전송하기</button>
-                        <button type="button" class="btn bg-gradient-secondary ms-auto me-auto" data-bs-dismiss="modal">닫기</button>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+    <footer th:replace="fragments.html::footer"></footer>
 </div>
-<footer th:replace="fragments.html::footer"></footer>
 </body>
 <script th:replace="fragments.html::uiScripts"></script>
 <script th:if="${account != null && !account.emailVerified}" type="text/javascript">
@@ -171,8 +206,6 @@
         };
     }());
 </script>
-
-
 <script th:if="${account != null && !account.emailVerified}" type="text/javascript">
     (function () {
         let elementGroup = [];
@@ -251,6 +284,60 @@
 
                 }
             }
+        }
+    }());
+</script>
+<script th:if="${topSellProductList.size() > 0}">
+    (function () {
+        if (document.getElementsByClassName('glide')) {
+            const glider = new Glide('.gliderrr', {
+                autoplay: 10000,
+                type: 'carousel',
+                perView: 4,
+                breakpoints: {
+                    800: {
+                        perView: 2
+                    }
+                }
+            });
+            // The classname for the element that gets transformed
+            const tiltableElement = '.glide__container';
+            glider.mount();
+        }
+
+
+        if (document.getElementById('choice-button')) {
+            var element = document.getElementById('choice-button');
+            const example = new Choices(element, {
+                searchEnabled: false
+            });
+
+        }
+        if (document.getElementById('choice-remove-button')) {
+            var element = document.getElementById('choice-remove-button');
+            const example = new Choices(element, {
+                searchEnabled: false
+            });
+        }
+
+        if (document.querySelector('.datepicker')) {
+            flatpickr('.datepicker', {
+                mode: "range"
+            }); // flatpickr
+        }
+
+        if (document.getElementById('language-button')) {
+            var element = document.getElementById('language-button');
+            const example = new Choices(element, {
+                searchEnabled: false
+            });
+
+        }
+        if (document.getElementById('currency-button')) {
+            var element = document.getElementById('currency-button');
+            const example = new Choices(element, {
+                searchEnabled: false
+            });
         }
     }());
 </script>

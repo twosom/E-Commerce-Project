@@ -52,6 +52,8 @@ public class Product {
 
     private int salePrice;
 
+    private int sellCount;
+
     //originalPriceValue - (originalPriceValue * saleRate * 0.01
     public int calculateSalePrice() {
         return (int) (getProductPrice() - (getProductPrice() * getSaleRate() * 0.01));
