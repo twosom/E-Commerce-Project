@@ -4,15 +4,17 @@ import io.twosom.ecommerce.account.CurrentAccount;
 import io.twosom.ecommerce.account.domain.Account;
 import io.twosom.ecommerce.category.Category;
 import io.twosom.ecommerce.category.CategoryDto;
-import io.twosom.ecommerce.category.CategoryRepository;
+import io.twosom.ecommerce.category.repository.CategoryQueryRepository;
+import io.twosom.ecommerce.category.repository.CategoryRepository;
 import io.twosom.ecommerce.category.CategoryService;
 import io.twosom.ecommerce.category.form.CategoryCreateForm;
 import io.twosom.ecommerce.category.form.CategoryEditForm;
 import io.twosom.ecommerce.category.validator.CategoryCreateFormValidator;
 import io.twosom.ecommerce.category.validator.CategoryEditFormValidator;
 import io.twosom.ecommerce.product.domain.Product;
-import io.twosom.ecommerce.product.dto.ProductDto;
+import io.twosom.ecommerce.product.dto.ProductDtoForAdminAndSeller;
 import io.twosom.ecommerce.product.form.ProductForm;
+import io.twosom.ecommerce.product.repository.ProductQueryRepository;
 import io.twosom.ecommerce.product.repository.ProductRepository;
 import io.twosom.ecommerce.product.service.ProductService;
 import io.twosom.ecommerce.product.validator.ProductFormValidator;
@@ -34,9 +36,11 @@ import java.util.stream.Collectors;
 public class AdminController {
 
     private final ProductRepository productRepository;
+    private final ProductQueryRepository productQueryRepository;
     private final ProductService productService;
 
     private final CategoryRepository categoryRepository;
+    private final CategoryQueryRepository categoryQueryRepository;
     private final CategoryService categoryService;
     private final ModelMapper modelMapper;
 
@@ -68,12 +72,9 @@ public class AdminController {
 
     @GetMapping("/product")
     public String productList(Model model) {
-        // TODO 그냥 QueryDSL 사용하기
-        List<ProductDto> productList = productService.convertProductListToProductDtoList(productRepository.findAll());
+        List<ProductDtoForAdminAndSeller> productList = productQueryRepository.findAllToProductDtoForAdminMenu();
 
-        List<CategoryDto> categoryList = categoryRepository.findAllByParentCategoryIsNotNull()
-                .stream().map(category -> modelMapper.map(category, CategoryDto.class))
-                .collect(Collectors.toList());
+        List<CategoryDto> categoryList = categoryQueryRepository.findAllByParentCategoryIsNotNullToDto();
 
         model.addAttribute("categoryList", categoryList);
         model.addAttribute("productList", productList);

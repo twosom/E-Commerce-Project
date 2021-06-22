@@ -8,7 +8,7 @@ import io.twosom.ecommerce.account.form.SignUpForm;
 import io.twosom.ecommerce.account.repository.AccountRepository;
 import io.twosom.ecommerce.account.repository.MemberGradeRepository;
 import io.twosom.ecommerce.account.service.AccountService;
-import io.twosom.ecommerce.category.CategoryRepository;
+import io.twosom.ecommerce.category.repository.CategoryRepository;
 import io.twosom.ecommerce.category.CategoryService;
 import io.twosom.ecommerce.category.form.CategoryCreateForm;
 import io.twosom.ecommerce.product.domain.Product;

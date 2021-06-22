@@ -2,7 +2,7 @@ package io.twosom.ecommerce.main;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.twosom.ecommerce.product.domain.Product;
+import io.twosom.ecommerce.product.dto.ProductDto;
 import io.twosom.ecommerce.product.repository.ProductQueryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -35,7 +35,7 @@ public class SearchController {
 
     @GetMapping("/search/keyword")
     public String searchByKeyword(@RequestParam("keyword") String keyword, Model model) {
-        List<Product> productList = productQueryRepository.getAllProductByKeyword(keyword);
+        List<ProductDto> productList = productQueryRepository.getAllProductByKeyword(keyword);
         model.addAttribute("productList", productList);
 
         return "search/result";

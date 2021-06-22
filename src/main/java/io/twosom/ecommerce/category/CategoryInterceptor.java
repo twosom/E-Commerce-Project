@@ -1,5 +1,6 @@
 package io.twosom.ecommerce.category;
 
+import io.twosom.ecommerce.category.repository.CategoryRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;

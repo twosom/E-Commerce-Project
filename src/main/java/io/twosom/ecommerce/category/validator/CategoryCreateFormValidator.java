@@ -1,6 +1,6 @@
 package io.twosom.ecommerce.category.validator;
 
-import io.twosom.ecommerce.category.CategoryRepository;
+import io.twosom.ecommerce.category.repository.CategoryRepository;
 import io.twosom.ecommerce.category.form.CategoryCreateForm;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;

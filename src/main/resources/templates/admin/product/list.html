@@ -71,6 +71,9 @@
                                                     상품 재고
                                                 </th>
                                                 <th class="text-uppercase text-primary text-xxs font-weight-bolder ps-2">
+                                                    판매량
+                                                </th>
+                                                <th class="text-uppercase text-primary text-xxs font-weight-bolder ps-2">
                                                     판매자
                                                 </th>
                                                 <th class="text-uppercase text-primary text-xxs font-weight-bolder ps-2">
@@ -84,13 +87,14 @@
                                             </thead>
                                             <tbody>
                                             <tr th:each="product : ${productList}"
-                                                th:if="${product.category.id == category.id}">
+                                                th:if="${product.categoryId == category.id}">
                                                 <td th:text="${product.id}"></td>
                                                 <td><a href="#" class="text-decoration-none"
                                                        th:href="@{/admin/product/{id}(id=${product.id})}"><span
                                                         th:text="${product.productName}"> </span></a></td>
                                                 <td th:text="${product.productPrice}"></td>
                                                 <td th:text="${product.productStock}"></td>
+                                                <td th:text="${product.sellCount}"></td>
                                                 <td th:text="${product.sellerName}"></td>
                                                 <td>
                                                     <form th:if="${!product.publish}"

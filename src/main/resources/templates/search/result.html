@@ -37,7 +37,7 @@
 
                 <div class="card-body">
                     <span class="text-gradient text-primary text-uppercase font-weight-bold"
-                          th:text="${product.category.title}"></span>
+                          th:text="${product.categoryTitle}"></span>
                     <a href="#" th:href="@{/product/info(id=${product.id})}"
                        class="card-title mt-3 h5 d-block text-darker" th:text="${product.productName}"></a>
 <!--                    <p class="card-description mb-4" th:text="${#numbers.formatCurrency(product.productPrice)}"></p>-->
@@ -60,7 +60,7 @@
                     <div class="author align-items-center">
                         <div class="name ps-2">
                             <span>판매자 : </span>
-                            <span th:text="${product.seller.nickname}"></span>
+                            <span th:text="${product.seller}"></span>
                             <div class="stats">
                                 <small>작성 시간 : </small><small th:text="${product.createdDate}" class="fromNow"></small>
                             </div>

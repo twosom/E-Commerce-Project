@@ -90,7 +90,7 @@
                                             </thead>
                                             <tbody>
                                             <tr th:each="product : ${productList}"
-                                                th:if="${product.category.id == category.id}">
+                                                th:if="${product.categoryId == category.id}">
                                                 <td th:text="${product.id}"></td>
                                                 <td><a href="#" class="text-decoration-none"
                                                        th:href="@{/seller/product/{id}(id=${product.id})}"><span

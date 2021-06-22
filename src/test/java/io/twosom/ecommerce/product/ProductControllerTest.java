@@ -10,7 +10,7 @@ import io.twosom.ecommerce.account.repository.AccountRepository;
 import io.twosom.ecommerce.account.repository.MemberGradeRepository;
 import io.twosom.ecommerce.account.service.AccountService;
 import io.twosom.ecommerce.category.Category;
-import io.twosom.ecommerce.category.CategoryRepository;
+import io.twosom.ecommerce.category.repository.CategoryRepository;
 import io.twosom.ecommerce.category.CategoryService;
 import io.twosom.ecommerce.category.form.CategoryCreateForm;
 import io.twosom.ecommerce.product.domain.Product;
@@ -25,18 +25,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.security.authentication.AnonymousAuthenticationToken;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Collections;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.then;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.anonymous;
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.authentication;
 import static org.springframework.security.test.web.servlet.response.SecurityMockMvcResultMatchers.unauthenticated;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
