@@ -11,7 +11,7 @@ import io.twosom.ecommerce.account.repository.AccountRepository;
 import io.twosom.ecommerce.account.repository.MemberGradeRepository;
 import io.twosom.ecommerce.account.service.AccountService;
 import io.twosom.ecommerce.category.Category;
-import io.twosom.ecommerce.category.CategoryRepository;
+import io.twosom.ecommerce.category.repository.CategoryRepository;
 import io.twosom.ecommerce.category.CategoryService;
 import io.twosom.ecommerce.category.form.CategoryCreateForm;
 import io.twosom.ecommerce.order.repository.OrderRepository;
@@ -38,7 +38,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
-import javax.swing.text.html.parser.Entity;
 import java.util.List;
 import java.util.stream.Collectors;
 

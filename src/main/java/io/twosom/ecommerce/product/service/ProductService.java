@@ -2,10 +2,9 @@ package io.twosom.ecommerce.product.service;
 
 import io.twosom.ecommerce.account.domain.Account;
 import io.twosom.ecommerce.category.Category;
-import io.twosom.ecommerce.category.CategoryRepository;
+import io.twosom.ecommerce.category.repository.CategoryRepository;
 import io.twosom.ecommerce.product.domain.Product;
 import io.twosom.ecommerce.product.domain.SaleHistory;
-import io.twosom.ecommerce.product.dto.ProductDto;
 import io.twosom.ecommerce.product.form.ProductForm;
 import io.twosom.ecommerce.product.repository.ProductRepository;
 import io.twosom.ecommerce.product.repository.SaleHistoryRepository;
@@ -13,9 +12,6 @@ import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -66,17 +62,6 @@ public class ProductService {
     public void unPublishProduct(Long productId, Account account) {
         Product product = findProductAndValidateSeller(productId, account);
         product.setPublish(false);
-    }
-
-
-    public List<ProductDto> convertProductListToProductDtoList(List<Product> productList) {
-        return productList.stream()
-                            .map(product -> {
-                                ProductDto productDto = modelMapper.map(product, ProductDto.class);
-                                productDto.setSellerName(product.getSeller().getNickname());
-                                return productDto;
-                            })
-                            .collect(Collectors.toList());
     }
 
     private void setSaleIfActivated(ProductForm productForm, Product findProduct) {

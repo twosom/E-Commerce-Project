@@ -2,6 +2,7 @@ package io.twosom.ecommerce.category;
 
 import io.twosom.ecommerce.category.form.CategoryCreateForm;
 import io.twosom.ecommerce.category.form.CategoryEditForm;
+import io.twosom.ecommerce.category.repository.CategoryRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;

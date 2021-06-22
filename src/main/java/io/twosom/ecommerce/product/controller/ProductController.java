@@ -2,9 +2,9 @@ package io.twosom.ecommerce.product.controller;
 
 import io.twosom.ecommerce.account.CurrentAccount;
 import io.twosom.ecommerce.account.domain.Account;
-import io.twosom.ecommerce.category.CategoryRepository;
+import io.twosom.ecommerce.category.repository.CategoryRepository;
 import io.twosom.ecommerce.category.CategoryService;
-import io.twosom.ecommerce.product.domain.Product;
+import io.twosom.ecommerce.product.dto.ProductDto;
 import io.twosom.ecommerce.product.dto.ProductViewDto;
 import io.twosom.ecommerce.product.repository.ProductQueryRepository;
 import io.twosom.ecommerce.product.repository.ProductRepository;
@@ -41,7 +41,7 @@ public class ProductController {
         if (!categoryRepository.existsByTitle(title)) {
             throw new IllegalArgumentException("존재하지 않는 카테고리입니다.");
         }
-        List<ProductViewDto> productList = productQueryRepository.findAllByCategoryTitleAndPublished(title);
+        List<ProductDto> productList = productQueryRepository.findAllByCategoryTitleAndPublished(title);
 
         model.addAttribute("productList", productList);
         model.addAttribute("categoryTitle", title);

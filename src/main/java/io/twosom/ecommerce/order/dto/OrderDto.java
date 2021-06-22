@@ -3,7 +3,6 @@ package io.twosom.ecommerce.order.dto;
 import io.twosom.ecommerce.account.domain.Address;
 import io.twosom.ecommerce.order.OrderStatus;
 import io.twosom.ecommerce.order.Payment;
-import io.twosom.ecommerce.product.dto.ProductDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

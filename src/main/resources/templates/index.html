@@ -46,7 +46,7 @@
                                                  th:src="${product.productImage}" th:alt="${product.productName}">
                                             <h6 class="mt-6" th:text="${product.productName}"></h6>
                                             <div class="text-gradient text-primary text-uppercase font-weight-bold"
-                                                 th:text="${product.category.title}"></div>
+                                                 th:text="${product.categoryTitle}"></div>
                                             <span th:if="${!product.isSale()}" class="card-title h5 d-block text-darker"
                                                   id="priceDisplay"
                                                   th:text="${#numbers.formatCurrency(product.productPrice)}">
