@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments.html::head"></head>
+<body>
+<span th:replace="fragments.html::main-nav"></span>
+
+<header class="header-2">
+    <div class="page-header min-vh-50 relative" style="background-image: url('/images/office-2.jpeg')">
+        <div class="mask bg-gradient-faded-light opacity-4"></div>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-7 text-center mx-auto">
+                    <h1 class="text-white pt-3 mt-n5">상품 검색</h1>
+                    <p class="lead text-white mt-3">
+
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div th:replace="fragments.html::wave-animation"></div>
+    </div>
+</header>
+
+<div class="container">
+    <div class="row">
+
+        <div class="col-lg-4 mb-lg-0 mb-4" th:each="product : ${productList}">
+            <div class="card my-3">
+                <div class="card-header p-0 mx-3 mt-3 position-relative z-index-1 text-center">
+                    <a href="#" th:href="@{/product/info(id=${product.id})}" class="d-block blur-shadow-image">
+                        <img th:src="${product.productImage}" class="img-fluid border-radius-md"
+                             th:alt="${product.productName}"/>
+                    </a>
+                    <div class="colored-shadow"
+                         th:style="'background-image:url(' + ${product.productImage} + ');'"></div>
+                </div>
+
+                <div class="card-body">
+                    <span class="text-gradient text-primary text-uppercase font-weight-bold"
+                          th:text="${product.category.title}"></span>
+                    <a href="#" th:href="@{/product/info(id=${product.id})}"
+                       class="card-title mt-3 h5 d-block text-darker" th:text="${product.productName}"></a>
+<!--                    <p class="card-description mb-4" th:text="${#numbers.formatCurrency(product.productPrice)}"></p>-->
+
+
+                    <span th:if="${!product.isSale()}" class="card-title h5 d-block text-darker" id="priceDisplay"
+                          th:text="${#numbers.formatCurrency(product.productPrice)}">
+                    </span>
+
+                    <span th:if="${product.isSale()}" class="card-title">
+                        <del th:text="${#numbers.formatCurrency(product.productPrice)}"></del>
+                        <span class="text-bolder text-lg text-danger text-gradient ms-3" th:text="${'-' +  product.saleRate + '%'}"></span>
+                        <span class="h5 d-block text-darker" id="salePriceDisplay"
+                              th:text="${#numbers.formatCurrency(product.getSalePrice())}"></span>
+                    </span>
+
+
+
+                    <p class="card-description mb-4 text-end me-3" th:text="${product.productStock + '개 남음'}"></p>
+                    <div class="author align-items-center">
+                        <div class="name ps-2">
+                            <span>판매자 : </span>
+                            <span th:text="${product.seller.nickname}"></span>
+                            <div class="stats">
+                                <small>작성 시간 : </small><small th:text="${product.createdDate}" class="fromNow"></small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<footer th:replace="fragments.html::footer"></footer>
+</body>
+<script th:replace="fragments.html::uiScripts"></script>
+<script th:replace="fragments.html::date-time"></script>
+</html>

@@ -16,7 +16,7 @@
     <!-- Soft UI Design System -->
     <link type="text/css" href="/css/soft-design-system-pro.min.css" rel="stylesheet">
 
-
+    <link rel="stylesheet" href="/node_modules/@tarekraafat/autocomplete.js/dist/css/autoComplete.02.css">
     <title>E-Commerce</title>
 </head>
 
@@ -58,6 +58,93 @@
             }
         });
     </script>
+
+    <script src="/node_modules/@tarekraafat/autocomplete.js/dist/autoComplete.js"></script>
+    <script>
+        (async function () {
+
+            const csrfHeader = document.querySelector('#_csrf_header').content;
+            const csrf = document.querySelector('#_csrf').content;
+
+            const options = {
+                method: 'post',
+                headers: {
+                    [csrfHeader]: csrf
+                }
+            };
+
+
+            const searchBarAutoComplete = new autoComplete({
+                selector: '#searchBar',
+                placeHolder: "상품명을 검색해주세요.",
+                data: {
+                    src: async (query) => {
+                        try {
+                            // Fetch Data from external Source
+                            if (query.length === 0) {
+                                return;
+                            } else {
+                                const url = `/search/fragment/${query}`;
+                                console.log(url);
+                                const source = await fetch(url, options);
+                                // Data is array of `Objects` | `Strings`
+                                return await source.json();
+
+                            }
+                        } catch (error) {
+                            return error;
+                        }
+                    },
+                    cache: true,
+                },
+                resultsList: {
+                    element: (list, data) => {
+                        if (!data.results.length) {
+                            // Create "No Results" message element
+                            const message = document.createElement("div");
+                            // Add class to the created element
+                            message.setAttribute("class", "no_result");
+                            // Add message text content
+                            message.innerHTML = `<span>"${data.query}" 에 대한 결과가 없습니다.</span>`;
+                            // Append message element to the results list
+                            list.prepend(message);
+                        }
+                    },
+                    noResults: true,
+                },
+                resultItem: {
+                    highlight: true
+                },
+                events: {
+
+                    input: {
+                        selection: (event) => {
+                            console.log('/search/?productName=' + event.detail.selection.value);
+                            location.href = '/search?productName=' + event.detail.selection.value;
+                        },
+                        results: async (event) => {
+                            const response = await fetch('/search/fragment/' + event.detail.query, options);
+                            if (response.ok) {
+                                searchBarAutoComplete.data.store = await response.json();
+                            }
+                        }
+                    }
+
+                }
+            });
+
+
+            const searchBar = document.querySelector('#searchBar');
+            searchBar.onkeydown = function (event) {
+                if (event.keyCode === 13) {
+                    location.href = '/search/keyword?keyword=' + searchBar.value;
+                }
+            };
+
+
+        }());
+    </script>
+
 </div>
 
 
@@ -159,14 +246,16 @@
                                 </li>
                             </ul>
 
-<!--                            <ul class="navbar-nav ms-auto">-->
-<!--                                <li class="nav-item">-->
-<!--                                    <form th:action="@{/search/product}" class="form-inline" method="get">-->
-<!--                                        <input class="form-control me-lg-8 text-center" name="keyword" type="search"-->
-<!--                                               placeholder="상품 검색"/>-->
-<!--                                    </form>-->
-<!--                                </li>-->
-<!--                            </ul>-->
+                            <ul class="navbar-nav ms-auto">
+                                <li class="nav-item">
+                                    <div class="autoComplete_wrapper">
+                                        <input class="form-control me-lg-8 text-center" type="search" dir="ltr"
+                                               placeholder="상품 검색" spellcheck=false autocorrect="off" id="searchBar"
+                                               autocomplete="off"
+                                               autocapitalize="off"/>
+                                    </div>
+                                </li>
+                            </ul>
 
                             <ul class="navbar-nav navbar-nav-hover mx-auto" sec:authorize="isAuthenticated()">
                                 <li class="nav-item dropdown dropdown-hover mx-2">
@@ -194,8 +283,11 @@
                                                                         th:text="${#authentication.name}">
                                                                         계정 이름
                                                                     </h6>
-                                                                    <span th:if="${#conversions.convert(#authentication.principal, T(io.twosom.ecommerce.account.UserAccount)).account.isEmailVerified()}" th:text="${#conversions.convert(#authentication.principal, T(io.twosom.ecommerce.account.UserAccount)).account.memberGrade.gradeName + '등급'}"></span>
-                                                                    <div th:if="${#conversions.convert(#authentication.principal, T(io.twosom.ecommerce.account.UserAccount)).account.isEmailVerified()}" class="text-info text-gradient font-weight-bolder" th:text="${#numbers.formatInteger(#conversions.convert(#authentication.principal, T(io.twosom.ecommerce.account.UserAccount)).account.point, 1, 'COMMA') + ' 포인트'}"></div>
+                                                                    <span th:if="${#conversions.convert(#authentication.principal, T(io.twosom.ecommerce.account.UserAccount)).account.isEmailVerified()}"
+                                                                          th:text="${#conversions.convert(#authentication.principal, T(io.twosom.ecommerce.account.UserAccount)).account.memberGrade.gradeName + '등급'}"></span>
+                                                                    <div th:if="${#conversions.convert(#authentication.principal, T(io.twosom.ecommerce.account.UserAccount)).account.isEmailVerified()}"
+                                                                         class="text-info text-gradient font-weight-bolder"
+                                                                         th:text="${#numbers.formatInteger(#conversions.convert(#authentication.principal, T(io.twosom.ecommerce.account.UserAccount)).account.point, 1, 'COMMA') + ' 포인트'}"></div>
                                                                 </div>
                                                                 <img src="/images/down-arrow.svg" alt="down-arrow"
                                                                      class="arrow"/>
@@ -252,8 +344,11 @@
                                                                 th:text="${#authentication.name}">
                                                                 계정 이름
                                                             </h6>
-                                                            <span th:if="${#conversions.convert(#authentication.principal, T(io.twosom.ecommerce.account.UserAccount)).account.isEmailVerified()}" th:text="${#conversions.convert(#authentication.principal, T(io.twosom.ecommerce.account.UserAccount)).account.memberGrade.gradeName + '등급'}"></span>
-                                                            <div th:if="${#conversions.convert(#authentication.principal, T(io.twosom.ecommerce.account.UserAccount)).account.isEmailVerified()}" class="text-info text-gradient font-weight-bolder" th:text="${#numbers.formatInteger(#conversions.convert(#authentication.principal, T(io.twosom.ecommerce.account.UserAccount)).account.point, 1, 'COMMA') + ' 포인트'}"></div>
+                                                            <span th:if="${#conversions.convert(#authentication.principal, T(io.twosom.ecommerce.account.UserAccount)).account.isEmailVerified()}"
+                                                                  th:text="${#conversions.convert(#authentication.principal, T(io.twosom.ecommerce.account.UserAccount)).account.memberGrade.gradeName + '등급'}"></span>
+                                                            <div th:if="${#conversions.convert(#authentication.principal, T(io.twosom.ecommerce.account.UserAccount)).account.isEmailVerified()}"
+                                                                 class="text-info text-gradient font-weight-bolder"
+                                                                 th:text="${#numbers.formatInteger(#conversions.convert(#authentication.principal, T(io.twosom.ecommerce.account.UserAccount)).account.point, 1, 'COMMA') + ' 포인트'}"></div>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -314,7 +409,8 @@
                                 <li class="nav-item me-1" sec:authorize="isAuthenticated()">
                                     <a class="nav-link" href="#" th:href="@{/shopping-bag/list}">
                                         <i class="ni ni-bag-17">
-                                            <span class="text-primary text-bolder" th:text="${shoppingBagCount}">1</span>
+                                            <span class="text-primary text-bolder"
+                                                  th:text="${shoppingBagCount}">1</span>
                                         </i>
                                     </a>
                                 </li>
@@ -323,7 +419,8 @@
                                 <li class="nav-item me-1" sec:authorize="hasRole('ROLE_SELLER')">
                                     <a class="nav-link" href="#" th:href="@{/notifications}">
                                         <i th:class="${countByAccountAndChecked > 0 ?  'fas fa-bell' : 'far fa-bell'}">
-                                            <span class="text-primary text-bolder" th:text="${countByAccountAndChecked}"></span>
+                                            <span class="text-primary text-bolder"
+                                                  th:text="${countByAccountAndChecked}"></span>
                                         </i>
                                     </a>
                                 </li>

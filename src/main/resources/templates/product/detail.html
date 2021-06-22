@@ -192,7 +192,7 @@
         });
     };
 </script>
-<script th:if="${!product.isSale()}">
+<script sec:authorize="isAuthenticated()" th:if="${!product.isSale()}">
     (function () {
         const quantityElement = document.querySelector('#quantity');
         const priceDisplay = document.querySelector('#priceDisplay');
@@ -215,7 +215,7 @@
 
     }());
 </script>
-<script th:if="${product.isSale()}">
+<script sec:authorize="isAuthenticated()" th:if="${product.isSale()}">
     (function () {
         const quantityElement = document.querySelector('#quantity');
         const salePriceDisplay = document.querySelector('#salePriceDisplay');

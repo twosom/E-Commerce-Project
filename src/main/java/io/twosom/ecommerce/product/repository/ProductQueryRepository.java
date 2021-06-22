@@ -1,12 +1,15 @@
 package io.twosom.ecommerce.product.repository;
 
+import com.querydsl.core.Tuple;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import io.twosom.ecommerce.product.domain.Product;
 import io.twosom.ecommerce.product.dto.ProductViewDto;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static io.twosom.ecommerce.product.domain.QProduct.product;
 
@@ -54,5 +57,41 @@ public class ProductQueryRepository {
                 .from(product)
                 .where(product.id.eq(id).and(product.publish.isTrue()))
                 .fetchOne();
+    }
+
+    public List<String> getAllProductNamesForSearch() {
+        return queryFactory
+                .select(product.productName)
+                .from(product)
+                .where(product.publish.isTrue())
+                .fetch();
+    }
+
+    public List<String> getAllProductNamesByKeyword(String keyword) {
+        List<Tuple> fetch = queryFactory
+                .select(product.productName, product.sellCount)
+                .from(product)
+                .where(product.productName.like("%" + keyword + "%").and(product.publish.isTrue()))
+                .fetch();
+        return fetch.stream().map(e -> {
+            return e.get(product.productName) + " - 판매량 : " + e.get(product.sellCount);
+        }).collect(Collectors.toList());
+    }
+
+    public Long getProductIdByProductName(String productName) {
+        return queryFactory
+                .select(product.id)
+                .from(product)
+                .where(product.productName.eq(productName))
+                .fetchOne();
+    }
+
+    public List<Product> getAllProductByKeyword(String keyword) {
+        return queryFactory
+                .select(product)
+                .from(product)
+                .where(product.productName.like("%" + keyword + "%")
+                        .and(product.publish.isTrue()))
+                .fetch();
     }
 }

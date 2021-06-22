@@ -13,6 +13,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@tarekraafat/autocomplete.js": "^10.1.5",
     "croppie": "^2.6.5",
     "devtools-detect": "^3.0.1",
     "moment": "^2.24.0",
