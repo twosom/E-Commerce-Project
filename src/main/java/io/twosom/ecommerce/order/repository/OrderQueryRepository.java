@@ -3,6 +3,7 @@ package io.twosom.ecommerce.order.repository;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.CaseBuilder;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.querydsl.jpa.impl.JPAUpdateClause;
 import io.twosom.ecommerce.account.domain.Account;
 import io.twosom.ecommerce.order.dto.OrderDto;
 import io.twosom.ecommerce.order.dto.ProductDtoForOrderDto;

@@ -282,6 +282,16 @@ class OrderControllerTest {
         assertTrue(order.getSavedPoint() > 0);
     }
 
+    @WithUserDetails(value = "twosom", setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    @DisplayName("구매 확정 후 판매 수량 검증")
+    @Test
+    void after_order_confirm() throws Exception {
+        order_confirm();
+        List<Product> allProduct = productRepository.findAll();
+        System.out.println("OrderControllerTest.order_confirm");
+
+    }
+
 
     private String getShoppingBagIdArrayToString() {
         List<String> collect = shoppingBagRepository.findAll().stream()
