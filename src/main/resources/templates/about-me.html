@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments.html::head"></head>
+<body>
+<span th:replace="fragments.html::main-nav"></span>
+<header class="header-2">
+    <div class="page-header min-vh-50 relative" style="background-image: url('/images/curved-images/curved1.jpg')">
+        <div class="mask bg-gradient-warning "></div>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-7 text-center mx-auto">
+                    <h1 class="text-white pt-3 mt-n5">About Me</h1>
+                </div>
+            </div>
+        </div>
+        <div th:replace="fragments.html::wave-animation"></div>
+    </div>
+</header>
+
+
+<div class="container-fluid">
+
+    <div class="row  d-flex justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-lg fadeInBottom fadeIn1">
+                <div class="card-header p-0 mx-3 mt-3 position-relative z-index-1">
+                    <h2 class="card-title text-info text-gradient fadeInBottom fadeIn2">AboutMe</h2>
+                </div>
+                <div class="card-body">
+                    <h4 class="font-weight-bolder text-dark fadeInBottom fadeIn3">기본 정보</h4>
+                    <div class="pull-left">
+                        <ul class="fadeInBottom fadeIn3">
+                            <li> email : two_somang@icloud.com</li>
+                            <li> github : https://github.com/twosom</li>
+                        </ul>
+                    </div>
+                    <hr class="horizontal dark mb-5"/>
+
+                    <h4 class="font-weight-bolder text-dark fadeInBottom fadeIn3">최종 학력</h4>
+                    <div class="pull-left">
+                        <ul class="fadeInBottom fadeIn3">
+                            <li> 남인천고등학교 2011.03 ~ 2014.02</li>
+                        </ul>
+                    </div>
+                    <hr class="horizontal dark mb-5"/>
+
+                    <h4 class="font-weight-bolder text-dark fadeInBottom fadeIn3">교육 수료</h4>
+                    <div class="pull-left">
+                        <ul class="fadeInBottom fadeIn3">
+                            <li> 안드로이드 & IOS앱 개발자 양성 (더조은아카데미) 2020.10 ~ 2021.03</li>
+                        </ul>
+                    </div>
+                    <hr class="horizontal dark mb-5"/>
+
+                </div>
+                <div class="card-header p-0 mx-3 mt-3 position-relative z-index-1">
+                    <h2 class="card-title text-info text-gradient fadeInBottom fadeIn4">이런 걸 할 줄 알아요.</h2>
+                </div>
+                <div class="card-body">
+                    <div class="row fadeInBottom fadeIn4">
+                        <div class="col-lg-6">
+                            <input class="form-control" id="choices-tags" data-color="dark" type="text"
+                                   value="Java, SpringBoot, SpringSecurity, SpringDataJPA, QueryDSl, ThymeLeaf, JUNIT5, MSA기본개념"
+                                   placeholder="Enter something" readonly/>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-header p-0 mx-3 mt-3 position-relative z-index-1">
+                    <h2 class="card-title text-info text-gradient fadeInBottom fadeIn4">이렇게 공부했어요.</h2>
+                    <img src="/images/my_learning_count.png" class="img-fluid border-radius-md"/>
+                    <img src="/images/my_learning_subjects.png" class="img-fluid border-radius-md"/>
+                </div>
+                <div class="card-body">
+                    <p>국비학원에서 프로그래밍을 처음 접했기 때문에 다른 전공자들보다 늦은 출발지점에서 시작했습니다.</p>
+                    <p>그걸 알기에 남들보다 더 열심히 하려고 잠 잘 시간 줄여가며 공부해왔습니다.</p>
+                    <p>전공자들보다는 못해도 "학원 출신이니 별로다" 라는 인상은 주지 않겠습니다.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer th:replace="fragments.html::footer"></footer>
+</div>
+</body>
+<script th:replace="fragments.html::uiScripts"></script>
+<script type="text/javascript">
+    if (document.getElementById('choices-button')) {
+        const element = document.getElementById('choices-button');
+        const example = new Choices(element, {});
+    }
+    const choicesTags = document.getElementById('choices-tags');
+    const color = choicesTags.dataset.color;
+    console.log(color);
+    if (choicesTags) {
+        const example = new Choices(choicesTags, {
+            delimiter: ',',
+            editItems: false,
+            removeItemButton: false,
+            addItems: false,
+            classNames: {
+                item: 'badge rounded-pill choices-' + color + ' me-2'
+            }
+        });
+    }
+</script>
+<script src="/js/plugins/choices.min.js"></script>
+</html>

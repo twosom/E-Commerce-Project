@@ -91,5 +91,10 @@ public class MainController {
         redirectAttributes.addFlashAttribute("message", "비밀번호 초기화를 완료하였습니다. 메일을 확인해주세요.");
         return "redirect:/reset-password";
     }
+
+    @GetMapping("/about-me")
+    public String aboutMe() {
+        return "about-me";
+    }
 }
 
