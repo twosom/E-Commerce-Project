@@ -74,11 +74,15 @@
                                 <label for="categoryName">카테고리</label>
                                 <select class="form-select" id="categoryName" name="categoryName"
                                         th:field="*{categoryName}">
-                                    <option th:value="${null}">없음</option>
-                                    <option th:each="categoryTitle : ${categoryTitleList}"
-                                            th:value="${categoryTitle}"
-                                            th:text="${categoryTitle}"></option>
+                                    <span th:each="category : ${categoryTitleList}">
+                                        <option th:value="${null}" th:text="${'==' + category.key.toString() + '=='}"></option>
+                                        <option th:each="categoryValue : ${category.value}"
+                                                th:value="${categoryValue}"
+                                                th:text="${categoryValue}"></option>
+                                    </span>
                                 </select>
+                                <small class="form-text text-danger" th:if="${#fields.hasErrors('categoryName')}"
+                                       th:errors="*{categoryName}"></small>
                             </div>
 
                             <div class="form-group">

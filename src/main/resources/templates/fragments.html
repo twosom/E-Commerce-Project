@@ -193,11 +193,11 @@
                                                                 <div class="w-100 d-flex justify-content-between align-items-center">
                                                                     <div>
                                                                         <h6 class="dropdown-header text-dark font-weight-bolder d-flex align-items-center p-0"
-                                                                            th:text="${category.title}">
+                                                                            th:text="${category.key.get(0).toString()}">
                                                                             Page Sections
                                                                         </h6>
                                                                         <span class="text-sm"
-                                                                              th:text="${category.description}">See all 109 Sections</span>
+                                                                              th:text="${category.key.get(1).toString()}">See all 109 Sections</span>
                                                                     </div>
                                                                     <img src="/images/down-arrow.svg" alt="down-arrow"
                                                                          class="arrow"/>
@@ -207,11 +207,10 @@
 
                                                         <div class="dropdown-menu mt-0 py-3 px-2 mt-3">
                                                             <a class="dropdown-item ps-3 border-radius-md mb-1"
-                                                               th:each="childCategory : ${category.childCategory}"
+                                                               th:each="childCategory : ${category.value}"
                                                                href="#"
-                                                               th:href="@{/product(category=${childCategory.title})}"
-                                                               th:if="${childCategory.publish}"
-                                                               th:text="${childCategory.title}"></a>
+                                                               th:href="@{/product(category=${childCategory})}"
+                                                               th:text="${childCategory}"></a>
                                                         </div>
                                                     </li>
                                                 </ul>
@@ -227,7 +226,7 @@
                                                         <div class="w-100 d-flex align-items-center justify-content-between">
                                                             <div>
                                                                 <h5 class="dropdown-header text-dark font-weight-bolder d-flex justify-content-center align-items-center p-0"
-                                                                    th:text="${category.title}">
+                                                                    th:text="${category.key.get(0).toString()}">
                                                                     Page Sections
                                                                 </h5>
                                                             </div>
@@ -235,10 +234,9 @@
                                                     </div>
                                                 </div>
                                                 <a class="dropdown-item ps-3 border-radius-md mb-1"
-                                                   href="#" th:href="@{/product(category=${childCategory.title})}"
-                                                   th:each="childCategory : ${category.childCategory}"
-                                                   th:if="${childCategory.publish}"
-                                                   th:text="${childCategory.title}">
+                                                   th:each="childCategory : ${category.value}"
+                                                   href="#" th:href="@{/product(category=${childCategory})}"
+                                                   th:text="${childCategory}">
                                                 </a>
                                             </div>
                                         </span>

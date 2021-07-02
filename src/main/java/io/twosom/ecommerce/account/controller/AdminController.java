@@ -4,11 +4,11 @@ import io.twosom.ecommerce.account.CurrentAccount;
 import io.twosom.ecommerce.account.domain.Account;
 import io.twosom.ecommerce.category.Category;
 import io.twosom.ecommerce.category.CategoryDto;
-import io.twosom.ecommerce.category.repository.CategoryQueryRepository;
-import io.twosom.ecommerce.category.repository.CategoryRepository;
 import io.twosom.ecommerce.category.CategoryService;
 import io.twosom.ecommerce.category.form.CategoryCreateForm;
 import io.twosom.ecommerce.category.form.CategoryEditForm;
+import io.twosom.ecommerce.category.repository.CategoryQueryRepository;
+import io.twosom.ecommerce.category.repository.CategoryRepository;
 import io.twosom.ecommerce.category.validator.CategoryCreateFormValidator;
 import io.twosom.ecommerce.category.validator.CategoryEditFormValidator;
 import io.twosom.ecommerce.product.domain.Product;
@@ -28,6 +28,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Controller
@@ -84,7 +85,8 @@ public class AdminController {
 
     @GetMapping("/product/new")
     public String createProductForm(Model model) {
-        categoryService.addCategoryTitleListToModel(model, categoryRepository.findAllByParentCategoryIsNotNull());
+        Map<String, List<String>> categoryTitleList = categoryQueryRepository.getCategoryTitleList();
+        model.addAttribute("categoryTitleList", categoryTitleList);
         model.addAttribute(new ProductForm());
 
         return "admin/product/new-product";
@@ -94,7 +96,8 @@ public class AdminController {
     public String createProduct(@CurrentAccount Account account, @Valid ProductForm productForm, Errors errors, Model model) {
 
         if (errors.hasErrors()) {
-            categoryService.addCategoryTitleListToModel(model, categoryRepository.findAllByParentCategoryIsNotNull());
+            Map<String, List<String>> categoryTitleList = categoryQueryRepository.getCategoryTitleList();
+            model.addAttribute("categoryTitleList", categoryTitleList);
             return "admin/product/new-product";
         }
 
@@ -107,7 +110,8 @@ public class AdminController {
         ProductForm productForm = modelMapper.map(product, ProductForm.class);
         productForm.setCategoryName(product.getCategory().getTitle());
 
-        categoryService.addCategoryTitleListToModel(model, categoryRepository.findAllByParentCategoryIsNotNull());
+        Map<String, List<String>> categoryTitleList = categoryQueryRepository.getCategoryTitleList();
+        model.addAttribute("categoryTitleList", categoryTitleList);
         model.addAttribute(productForm);
 
         return "admin/product/edit-product";
@@ -119,7 +123,8 @@ public class AdminController {
                               Errors errors, Model model) {
 
         if (errors.hasErrors()) {
-            categoryService.addCategoryTitleListToModel(model, categoryRepository.findAllByParentCategoryIsNotNull());
+            Map<String, List<String>> categoryTitleList = categoryQueryRepository.getCategoryTitleList();
+            model.addAttribute("categoryTitleList", categoryTitleList);
             return "admin/product/edit-product";
         }
 
