@@ -3,12 +3,12 @@ package io.twosom.ecommerce.category.repository;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import io.twosom.ecommerce.category.CategoryDto;
-import io.twosom.ecommerce.category.QCategory;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
-import java.util.List;
+import java.util.*;
 
+import static com.querydsl.core.group.GroupBy.*;
 import static io.twosom.ecommerce.category.QCategory.*;
 
 @Repository
@@ -42,5 +42,21 @@ public class CategoryQueryRepository {
                 .from(category)
                 .where(category.id.in(categoryIds))
                 .fetch();
+    }
+
+    public Map<String, List<String>> getCategoryTitleList() {
+
+        return queryFactory.from(category)
+                .where(category.publish.isTrue())
+                .transform(groupBy(category.parentCategory.title).as(list(category.title)));
+
+    }
+
+    public Map<List<?>, List<String>> getCategoryTitleForNav() {
+
+        return queryFactory.from(category)
+                .where(category.publish.isTrue())
+                .transform(groupBy(category.parentCategory.title, category.parentCategory.description)
+                        .as(list(category.title)));
     }
 }

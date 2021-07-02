@@ -1,5 +1,6 @@
 package io.twosom.ecommerce.category;
 
+import io.twosom.ecommerce.category.repository.CategoryQueryRepository;
 import io.twosom.ecommerce.category.repository.CategoryRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -12,6 +13,7 @@ import org.springframework.web.servlet.view.RedirectView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Component
@@ -20,6 +22,7 @@ import java.util.stream.Collectors;
 public class CategoryInterceptor implements HandlerInterceptor {
 
     private final CategoryRepository categoryRepository;
+    private final CategoryQueryRepository categoryQueryRepository;
     private final ModelMapper modelMapper;
 
 
@@ -30,11 +33,7 @@ public class CategoryInterceptor implements HandlerInterceptor {
                            ModelAndView modelAndView) throws Exception {
 
         if (modelAndView != null && !isRedirect(modelAndView)) {
-
-            List<CategoryDto> categories = categoryRepository.findAllByParentCategoryIsNullAndPublish(true)
-                    .stream()
-                    .map(category -> modelMapper.map(category, CategoryDto.class))
-                    .collect(Collectors.toList());
+            Map<List<?>, List<String>> categories = categoryQueryRepository.getCategoryTitleForNav();
             modelAndView.addObject("categories", categories);
         }
     }

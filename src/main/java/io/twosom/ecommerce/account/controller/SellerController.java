@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Controller
@@ -70,7 +71,8 @@ public class SellerController {
 
     @GetMapping("/product/new")
     public String createProductForm(Model model) {
-        categoryService.addCategoryTitleListToModel(model, categoryRepository.findAllByParentCategoryIsNotNull());
+        Map<String, List<String>> categoryTitleList = categoryQueryRepository.getCategoryTitleList();
+        model.addAttribute("categoryTitleList", categoryTitleList);
         model.addAttribute(new ProductForm());
 
         return "seller/new-product";
@@ -80,7 +82,8 @@ public class SellerController {
     public String createProduct(@CurrentAccount Account account, @Valid ProductForm productForm, Errors errors, Model model) {
 
         if (errors.hasErrors()) {
-            categoryService.addCategoryTitleListToModel(model, categoryRepository.findAllByParentCategoryIsNotNull());
+            Map<String, List<String>> categoryTitleList = categoryQueryRepository.getCategoryTitleList();
+            model.addAttribute("categoryTitleList", categoryTitleList);
             return "seller/new-product";
         }
 
@@ -93,7 +96,8 @@ public class SellerController {
         ProductForm productForm = modelMapper.map(product, ProductForm.class);
         productForm.setCategoryName(product.getCategory().getTitle());
 
-        categoryService.addCategoryTitleListToModel(model, categoryRepository.findAllByParentCategoryIsNotNull());
+        Map<String, List<String>> categoryTitleList = categoryQueryRepository.getCategoryTitleList();
+        model.addAttribute("categoryTitleList", categoryTitleList);
         model.addAttribute(productForm);
 
         return "seller/edit-product";
@@ -105,7 +109,8 @@ public class SellerController {
                               Errors errors, Model model) {
 
         if (errors.hasErrors()) {
-            categoryService.addCategoryTitleListToModel(model, categoryRepository.findAllByParentCategoryIsNotNull());
+            Map<String, List<String>> categoryTitleList = categoryQueryRepository.getCategoryTitleList();
+            model.addAttribute("categoryTitleList", categoryTitleList);
             return "seller/edit-product";
         }
 
